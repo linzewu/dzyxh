@@ -1,0 +1,55 @@
+<div class="easyui-tabs" data-options="fit:true,pill:true,plain:true,onSelect:loadReport">
+	<div data-options="title:'机动车业务'" style="margin: 5px">
+		<div id="yue1" style="min-width:700px;height:400px"></div>
+		<div>&nbsp;</div>
+		<table id="yue_jdc_Grid" class="easyui-datagrid"
+			data-options="url:'/veh/user/getUsers',fitColumns:true,singleSelect:true,toolbar:yue_jdcToolbar" style="height: 300px;width: 100%">
+			<thead> 
+				<tr>
+					<th data-options="field:'zjz',width:10">年份</th>
+					<th data-options="field:'xm',width:10">月度</th>
+					<th data-options="field:'gh',width:10">业务类型</th>
+					<th data-options="field:'sfzhm',width:20">业务量</th>
+					<th data-options="field:'szck',width:20">异常业务量</th>
+				</tr>
+			</thead>
+		</table>
+		<div id="yue_jdcToolbar">
+			<div>
+				<label>年份：</label>
+				<input class="easyui-combobox" data-options="valueField:'id',textField:'text',data:years">
+				<label>月份：</label>
+				<input class="easyui-combobox" data-options="valueField:'id',textField:'text',data:yue">
+				<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" >查询</a>
+			</div>
+		</div>
+	</div>
+	<div data-options="title:'驾驶证业务'" style="margin: 5px">
+		<div id="yue2" style="min-width:700px;height:400px"></div>
+		<div>&nbsp;</div>
+		<table id="yue_jsz_Grid" class="easyui-datagrid"
+			data-options="url:'/veh/user/getUsers',fitColumns:true,singleSelect:true,toolbar:yue_jszToolbar" style="height: 300px;width: 100%">
+			<thead> 
+				<tr>
+					<th data-options="field:'zjz',width:10">年份</th>
+					<th data-options="field:'xm',width:10">月度</th>
+					<th data-options="field:'gh',width:10">业务类型</th>
+					<th data-options="field:'sfzhm',width:20">业务量</th>
+					<th data-options="field:'szck',width:20">异常业务量</th>
+				</tr>
+			</thead>
+		</table>
+		
+		<div id="yue_jszToolbar">
+			<div>
+				<label>年份：</label>
+				<input class="easyui-combobox" data-options="data:years">
+				<label>月份：</label>
+				<input class="easyui-combobox">
+				<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" >查询</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="/dzyxh/js/demo.js"></script>

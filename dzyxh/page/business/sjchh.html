@@ -1,0 +1,24 @@
+<table id="suijiGrid" class="easyui-datagrid"
+	data-options="url:'/veh/user/getUsers',fitColumns:true,singleSelect:true,fit:true,toolbar:suijiToolbar">
+	<thead> 
+		<tr>
+			<th data-options="field:'ckmc',width:10">业务类型</th>
+			<th data-options="field:'dqh',width:10">业务流水</th>
+			<th data-options="field:'ywlx',width:20">业务窗口</th>
+			<th data-options="field:'hpzl',width:20">业务员</th>
+			<th data-options="field:'hphm',width:10">办理时间</th>
+		</tr>
+	</thead>
+</table>
+
+<div id="suijiToolbar">
+	<div>
+		<label>开始时间：</label>
+		<input class="easyui-datebox">
+		<label>结束时间：</label>
+		<input class="easyui-datebox">
+		<label>抽查数量：</label><input type="text" class="easyui-textbox" style="width: 30px;" value="20" />
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" >查询</a>
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="comm.openComWindow('/dzyxh/page/window/archives.html',{title:'档案详细信息',fit:true,top:0,left:0})" >档案明细</a>
+	</div>
+</div>

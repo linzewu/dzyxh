@@ -1,0 +1,181 @@
+<div class="easyui-layout" data-options="fit:true">
+	 <div data-options="region:'center'" style="padding:5px;background:#eee;">
+	 	 <fieldset class="base_fl">
+	 	 	<legend>查询条件</legend>
+	 	 	<table class="base_table" cellpadding="0"  cellspacing="0">
+				<tr>
+					<td class="info_title"><label for="date">号牌号码:</label></td>
+					<td class="info"><input class="easyui-textbox" /></td>
+					<td class="info_title"><label for="date" >号牌种类:</label></td>
+					<td class="info"><input class="easyui-combobox" data-options="data:getBaseParames('hpzl'),valueField:'id',textField:'value'" /></td>
+				</tr>
+				<tr>
+					<td class="info_title"><label for="date">车辆识别代号:</label></td>
+					<td class="info"><input class="easyui-textbox" /></td>
+					<td class="info_title"><label for="date">档案编号:</label></td>
+					<td class="info"><input class="easyui-textbox" /></td>
+				</tr>
+		 	</table>
+		 	<div style="text-align: right;"> 
+		 		<a href="#" class="easyui-linkbutton c6" style="width:80px;margin-top: 6px;">查询</a>
+		 		<a href="#" class="easyui-linkbutton c2" style="width:80px;margin-top: 6px;">退出</a>
+		 	</div>
+	 	 </fieldset>
+		 <fieldset class="base_fl">
+		 	<legend>业务信息</legend>
+			<table class="base_table" cellpadding="0"  cellspacing="0">
+				 <tr>
+					<td class="info_title"><label for="date">号牌号码:</label></td>
+					<td class="info">&nbsp;</td>
+					<td class="info_title"><label for="date">号牌种类:</label></td>
+					<td class="info">&nbsp;</td>
+				</tr>
+				 <tr>
+					<td class="info_title"><label for="date">车辆识别代号:</label></td>
+					<td class="info">&nbsp;</td>
+					<td class="info_title"><label for="date">出厂日期:</label></td>
+					<td class="info">&nbsp;</td>
+				</tr>
+				 <tr>
+					<td class="info_title"><label for="date">初次登记时间:</label></td>
+					<td class="info">&nbsp;</td>
+					<td class="info_title"><label for="date">最近定检日期:</label></td>
+					<td class="info">&nbsp;</td>
+				</tr>
+				 <tr>
+					<td class="info_title"><label for="date">使用性质:</label></td>
+					<td class="info">&nbsp;</td>
+					<td class="info_title"><label for="date">所有人:</label></td>
+					<td class="info">&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="info_title"><label for="date">身份证号码:</label></td>
+					<td class="info">&nbsp;</td>
+					<td class="info_title"><label for="date">车辆品牌:</label></td>
+					<td class="info">&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="info_title"><label for="date">发证机关:</label></td>
+					<td class="info">&nbsp;</td>
+					<td class="info_title"><label for="date">管理部门:</label></td>
+					<td class="info">&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="info_title"><label for="date">保险终止日期:</label></td>
+					<td class="info">&nbsp;</td>
+					<td class="info_title"><label for="date">机动车状态:</label></td>
+					<td class="info">&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="info_title"><label for="date">抵押标记:</label></td>
+					<td class="info">&nbsp;</td>
+					<td class="info_title"><label for="date">发动机型号:</label></td>
+					<td class="info">&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="info_title"><label for="date">燃料种类:</label></td>
+					<td class="info">&nbsp;</td>
+					<td class="info_title"><label for="date">排量:</label></td>
+					<td class="info">&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="info_title"><label for="date">功率:</label></td>
+					<td class="info">&nbsp;</td>
+					<td class="info_title"><label for="date">转向形式:</label></td>
+					<td class="info">&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="info_title"><label for="date">环保达标情况:</label></td>
+					<td class="info">&nbsp;</td>
+					<td class="info_title"><label for="date">车辆用途:</label></td>
+					<td class="info">&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="info_title"><label for="date">用途属性:</label></td>
+					<td class="info">&nbsp;</td>
+					<td class="info_title"><label for="date">行驶证证芯编号:</label></td>
+					<td class="info">&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="info_title"><label for="date">检验合格标示:</label></td>
+					<td class="info">&nbsp;</td>
+					<td class="info_title"><label for="date">行管理辖区:</label></td>
+					<td class="info">&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="info_title"><label for="date">住所地址行政区划:</label></td>
+					<td class="info">&nbsp;</td>
+					<td class="info_title"><label for="date">联系地址行政区划:</label></td>
+					<td class="info">&nbsp;</td>
+				</tr>
+			 </table>
+		 </fieldset>
+	 </div>
+	 <div data-options="region:'east',title:'档案照片'" style="width:40%;">
+	 	<div class="easyui-layout" data-options="fit:true">
+	 		<div data-options="region:'center'" style="padding:5px;">
+	 			<div class="easyui-tabs">
+	 				<div data-options="title:'注册登记',href:'/dzyxh/page/storage/img.html'"></div>
+	 				<div data-options="title:'转入',href:'/dzyxh/page/storage/img.html'"></div>
+	 				<div data-options="title:'转移登记',href:'/dzyxh/page/storage/img.html'"></div>
+	 				<div data-options="title:'转出',href:'/dzyxh/page/storage/img.html'"></div>
+	 				<div data-options="title:'变更车身颜色',href:'/dzyxh/page/storage/img.html'"></div>
+	 				<div data-options="title:'变更车架号',href:'/dzyxh/page/storage/img.html'"></div>
+	 				<div data-options="title:'更换发动机',href:'/dzyxh/page/storage/img.html'"></div>
+	 				<div data-options="title:'变更使用性质',href:'/dzyxh/page/storage/img.html'"></div>
+	 				<div data-options="title:'重新打刻VIN',href:'/dzyxh/page/storage/img.html'"></div>
+	 			</div>
+	 		</div>
+	 		<div data-options="region:'south'" style="height: 40px;text-align: center;">
+	 			 <a href="#" class="easyui-linkbutton c5" style="width:120px;margin-top: 6px;" onclick="openScan()">高速扫描</a>
+	 			 <a href="#" class="easyui-linkbutton c6" style="width:120px;margin-top: 6px;">快速存档</a>
+	 		</div>
+	 	</div>
+	 </div>
+</div>
+
+  <style type="text/css">
+        .products{
+            overflow:auto;
+            height:100%;
+            background:#fafafa;
+        }
+        .products ul{
+            list-style:none;
+            margin:0;
+            padding:0px;
+        }
+        .products li{
+            display:inline;
+            float:left;
+            margin:8px;
+        }
+        .item{
+            display:block;
+            text-decoration:none;
+        }
+        .item img{
+            border:1px solid #333;
+            width: 140px; height: 80px;
+        }
+        .item p{
+            margin:0;
+            font-weight:bold;
+            text-align:center;
+            color:#c3c3c3;
+        }
+        .cart{
+            float:right;
+            position:relative;
+            width:260px;
+            height:100%;
+            background:#ccc;
+            padding:0px 10px;
+        }
+        .ctitle{
+            text-align:center;
+            color:#555;
+            font-size:18px;
+            padding:10px;
+        }
+    </style>

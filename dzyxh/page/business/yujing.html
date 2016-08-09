@@ -1,0 +1,22 @@
+<table id="yujingGrid" class="easyui-datagrid"
+	data-options="url:'/veh/user/getUsers',fitColumns:true,singleSelect:true,fit:true,toolbar:yujingToolbar">
+	<thead> 
+		<tr>
+			<th data-options="field:'ckmc',width:10">警告信息</th>
+			<th data-options="field:'dqh',width:10">业务窗口</th>
+			<th data-options="field:'ywlx',width:20">业务类型</th>
+			<th data-options="field:'hpzl',width:20">业务流水</th>
+			<th data-options="field:'hphm',width:10">预警时间</th>
+		</tr>
+	</thead>
+</table>
+
+<div id="yujingToolbar">
+	<div>
+		<label>开始时间：</label>
+		<input class="easyui-datebox">
+		<label>结束时间：</label>
+		<input class="easyui-datebox">
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" >查询</a>
+	</div>
+</div>

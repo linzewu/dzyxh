@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html  lang=zh-cmn-Hans>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style type="text/css">
+.bxitem {
+	font-size: 12px;
+}
+
+.button-wrap {
+	    margin-left: 5px;
+	    margin-right: 5px;
+}
+
+</style>
+
+<link rel="stylesheet" type="text/css"
+	href="/dzyxh/css/flat1.4/jquery.mobile.flatui.css" />
+
+<link href="/dzyxh/css/jqm-datebox-1.4.5.css" rel="stylesheet" type="text/css" />
+<link href="/dzyxh/css/mobiscroll.custom-2.6.2.min.css" rel="stylesheet"
+	type="text/css" />
+
+<script src="/dzyxh/js/jquery-1.11.1.min.js"></script>
+<script src="/dzyxh/js/jquery.mobile-1.4.5.min.js"></script>
+<script src="/dzyxh/js/mobiscroll.custom-2.6.2.min.js" type="text/javascript"></script>
+
+<script src="/dzyxh/js/jqmdatebox.js" type="text/javascript"></script>
+<title>车管业务排队取号自助终端系统</title>
+</head>
+<body>
+	<div data-role="page" id="tbPage" >
+
+		<div data-role="header" data-theme="b">
+			<h1>车管业务排队取号自助终端系统</h1>
+		</div>
+
+		<div data-role="content" role="main">
+		  <fieldset class="ui-grid-b">
+	        <div class="ui-block-a"><button data-icon="flat-settings" data-theme="b" style="width: 98%" onclick="tb('注册登记')">注册登记</button></div>
+	        <div class="ui-block-b"><button data-icon="flat-new" data-theme="b" style="width: 98%" onclick="tb('转入')">转入</button></div>
+	        <div class="ui-block-c"><button data-icon="flat-new" data-theme="b" style="width: 98%" onclick="tb('转移登记')">转移登记</button></div>
+	      </fieldset>
+	      
+	      <fieldset class="ui-grid-b">
+	        <div class="ui-block-a"><button data-icon="flat-settings" data-theme="b" style="width: 98%" onclick="tb('转出')">转出</button></div>
+	        <div class="ui-block-b"><button data-icon="flat-new" data-theme="b" style="width: 98%" onclick="tb('变更车身颜色')">变更车身颜色</button></div>
+	        <div class="ui-block-c"><button data-icon="flat-new" data-theme="b" style="width: 98%" onclick="tb('更换车身或车架')">更换车身或车架</button></div>
+	      </fieldset>
+	      
+	      <fieldset class="ui-grid-b">
+	        <div class="ui-block-a"><button data-icon="flat-settings" data-theme="b" style="width: 98%" onclick="tb('更换发动机')">更换发动机</button></div>
+	        <div class="ui-block-b"><button data-icon="flat-new" data-theme="b" style="width: 98%" onclick="tb('变更使用性质')">变更使用性质</button></div>
+	        <div class="ui-block-c"><button data-icon="flat-new" data-theme="b" style="width: 98%" onclick="tb('重新打刻VIN')">重新打刻VIN</button></div>
+	      </fieldset>
+
+		  <fieldset class="ui-grid-b">
+	        <div class="ui-block-a"><button data-icon="flat-settings" data-theme="b" style="width: 98%" onclick="tb('重新打刻发动机号')">重新打刻发动机号</button></div>
+	        <div class="ui-block-b"><button data-icon="flat-new" data-theme="b" style="width: 98%" onclick="tb('更换整车')">更换整车</button></div>
+	        <div class="ui-block-c"><button data-icon="flat-new" data-theme="b" style="width: 98%" onclick="tb('加装/拆除操纵辅助装置')">加装/拆除操纵辅助装置</button></div>
+	      </fieldset>
+	      
+	      <fieldset class="ui-grid-b">
+	        <div class="ui-block-a"><button data-icon="flat-settings" data-theme="b" style="width: 98%" onclick="tb('申领登记证书')">申领登记证书</button></div>
+	        <div class="ui-block-b"><button data-icon="flat-new" data-theme="b" style="width: 98%" onclick="tb('补领登记证书')">补领登记证书</button></div>
+	        <div class="ui-block-c"><button data-icon="flat-new" data-theme="b" style="width: 98%" onclick="tb('监销')">监销</button></div>
+	      </fieldset>
+	      
+	      <fieldset class="ui-grid-b">
+	        <div class="ui-block-a"><button data-icon="flat-settings" data-theme="b" style="width: 98%" onclick="tb('申领登记证书')">申领登记证书</button></div>
+	        <div class="ui-block-b"><button data-icon="flat-new" data-theme="b" style="width: 98%" onclick="tb('补领登记证书')">补领登记证书</button></div>
+	        <div class="ui-block-c"><button data-icon="flat-new" data-theme="b" style="width: 98%" onclick="tb('监销')">监销</button></div>
+	      </fieldset>
+		 <fieldset class="ui-grid-b">
+	        <div class="ui-block-a"><button data-icon="flat-settings" data-theme="b" style="width: 98%" onclick="tb('其他/年检')">其他/年检</button></div>
+	        <div class="ui-block-b"><button data-icon="flat-new" data-theme="f" style="width: 98%" onclick="tb('领证')">领证</button></div>
+	        <div class="ui-block-c"><button data-icon="flat-new" data-theme="f" style="width: 98%" onclick="tb('换证')">换证</button></div>
+	      </fieldset>
+			
+		</div>
+	</div>
+
+	<div data-role="page" id="tb2Page">
+		<div data-role="header" data-theme="b">
+			<a href="#tbPage" data-role="button" data-icon="back">返回</a>
+			<h1 id="title">输入车辆信息</h1>
+		</div>
+		<div data-role="content">
+			<select name="bxqx" id="bxqx" data-native-menu="false"
+					data-theme="f" onchange="changeDate()" required="required">
+				<option value="">请选择号牌种类</option>
+				<option value="1">1天</option>
+				<option value="2">2天</option>
+				<option value="3">3天</option>
+				<option value="4">4天</option>
+				<option value="5">5天</option>
+				<option value="6">6天</option>
+				<option value="7">7天</option>
+				<option value="8">8天</option>
+				<option value="9">9天</option>
+				<option value="10">10天</option>
+			</select>
+			
+			<div data-role="fieldcontain">
+				<label for=name >号牌号码：</label> 
+				<input type="text" name="name" >
+			</div>
+			
+			<div data-role="fieldcontain">
+				<label for=name >车辆识别代号：</label> 
+				<input type="text" name="clsbdh" >
+			</div>
+			<input type="button"  value="提交" data-theme="b" onclick="alert('取号成功，您的号码是:0001,您前面还有0人排队')">
+		</div>
+
+	</div>
+
+</body>
+<script type="text/javascript">
+
+function createInfo(){
+	$("#mform").append($(copyinfo).clone()).trigger("create");
+}
+
+function deleteInfo(obj){
+	
+	$(obj).parent().parent().remove()
+	
+}
+
+$(function() {
+	dateInit();
+});
+
+function changeTBInfo(id) {
+
+	$(".tb_tab").button({
+		"theme" : "c"
+	});
+	$(id).button({
+		"theme" : "e"
+	});
+
+}
+
+function tb(title) {
+	$("#title").text(title);
+	
+	$.mobile.changePage("#tb2Page");
+
+}
+
+function pageInit() {
+	/* $(document).on("pagebeforeshow", "#tb2Page", function() {
+		var sd = $("#startDate").val();
+		var bxqx = $("#bxqx").val();
+		if (sd == "" || bxqx == "") {
+			window.location.href = "index.html"
+			return;
+		}
+	}); */
+}
+
+	function dateInit() {
+		var nowDate = new Date();
+		nowDate.setDate(nowDate.getDate() + 1);
+		/* 	var opt = {
+		 preset : 'date', //日期
+		 theme : 'jqm', //皮肤样式
+		 display : 'modal', //显示方式 
+		 mode : 'clickpick', //日期选择模式
+		 dateFormat : 'yy-mm-dd', // 日期格式
+		 setText : '确定', //确认按钮名称
+		 cancelText : '取消',//取消按钮名籍我
+		 dateOrder : 'yymmdd', //面板中日期排列格式
+		 dayText : '日',
+		 monthText : '月',
+		 yearText : '年', //面板中年月日文字
+		 endYear : nowDate.getFullYear() + 1, //结束年份
+		 minDate : nowDate
+		 };
+		 $('#startDate').mobiscroll(opt); */
+
+		var opt = {
+			"mode" : "datebox",
+			"themeButton" : "b",
+			"themeSetButton" : "b",
+			"themeHeader" : "b",
+			"maxYear" : nowDate.getFullYear() + 1,
+			"minDays" : -1,
+			"overrideDateFieldOrder" : [ "y", "m", "d" ]
+		}
+
+		$('#startDate').datebox(opt);
+		$('#endDate').datebox(opt);
+		$('#endDate').datebox('disable');
+
+		$("#startDate").val($.mobiscroll.formatDate('yy-mm-dd', nowDate));
+		$("#endDate").val($.mobiscroll.formatDate('yy-mm-dd', nowDate));
+
+	}
+
+	function changeDate() {
+
+		var sd = $("#startDate").val();
+
+		var bxqx = $("#bxqx").val();
+
+		if (sd == "" || bxqx == "") {
+			return;
+		} else {
+			var temp = $.mobiscroll.parseDate('yy-mm-dd', sd);
+			temp.setDate(Number(temp.getDate()) + Number(bxqx) - 1);
+
+			var strEndDate = $.mobiscroll.formatDate('yy-mm-dd', temp);
+
+			$("#endDate").val(strEndDate);
+		}
+	}
+</script>
+</html>

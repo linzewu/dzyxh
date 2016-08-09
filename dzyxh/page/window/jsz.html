@@ -1,0 +1,27 @@
+<table id="pdgrid" class="easyui-datagrid"
+	data-options="data:jszdata,fitColumns:true,singleSelect:true,fit:true,toolbar:pdToolbar">
+	<thead> 
+		<tr>
+			<th data-options="field:'dzpdh',width:10">电子排队号</th>
+			<th data-options="field:'ywlx',width:10">业务流水号</th>
+			<th data-options="field:'ywlsh',width:20">业务类型</th>
+			<th data-options="field:'xm',width:20">姓名</th>
+			<th data-options="field:'zjlx',width:30">证件类型</th>
+			<th data-options="field:'zjhm',width:10">证件号码</th>
+		</tr>
+	</thead>
+</table>
+
+<div id="pdToolbar">
+	<div>
+		<label>流水号：</label><input type="text" class="easyui-textbox" />
+		<label>业务类型：</label><input type="text" class="easyui-combobox" data-options="data:ywlx,valueField:'id',textField:'text'" />
+		<label>证件类型：</label><input type="text" class="easyui-combobox" data-options="data:zjlx,valueField:'id',textField:'text'"  />
+		<label>证件号码：</label><input type="text" class="easyui-textbox" />
+	</div>
+	<div>&nbsp;</div>
+	<div>
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" >查询</a>
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="comm.openComWindow('/dzyxh/page/window/jszInfo.html',{title:'档案详细信息',fit:true,top:0,left:0})" >档案明细</a>
+	</div>
+</div>

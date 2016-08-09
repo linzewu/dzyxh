@@ -1,0 +1,28 @@
+<table id="pdgrid" class="easyui-datagrid"
+	data-options="data:jdcdata,fitColumns:true,singleSelect:true,fit:true,toolbar:pdToolbar">
+	<thead> 
+		<tr>
+			<th data-options="field:'dzpdh',width:10">电子排队号</th>
+			<th data-options="field:'ywlsh',width:10">流水号</th>
+			<th data-options="field:'ywlx',width:20">办理业务</th>
+			<th data-options="field:'hpzl',width:20">号牌种类</th>
+			<th data-options="field:'hphm',width:10">号牌号码</th>
+			<th data-options="field:'clsbdh',width:30">车辆识别代号</th>
+		</tr>
+	</thead>
+</table>
+
+<div id="pdToolbar">
+	<div>
+		<label>流水号：</label><input type="text" class="easyui-textbox" />
+		<label>业务类型：</label><input type="text" class="easyui-combobox" data-options="data:ywlx,valueField:'id',textField:'text'" />
+		<label>号牌种类：</label><input type="text" class="easyui-combobox" data-options="data:getBaseParames('hpzl'),valueField:'id',textField:'value'" />
+		<label>号牌号码：</label><input type="text" class="easyui-textbox" />
+	</div>
+	<div>&nbsp;</div>
+	<div>
+		<label>车辆识别代号：</label><input type="text" class="easyui-textbox" />
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" >查询</a>
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="comm.openComWindow('/dzyxh/page/window/archives.html?times='+new Date().getTime(),{title:'档案详细信息',fit:true,top:0,left:0})" >档案明细</a>
+	</div>
+</div>

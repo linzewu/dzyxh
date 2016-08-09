@@ -1,0 +1,55 @@
+<div class="easyui-tabs" data-options="fit:true,pill:true,plain:true,onSelect:loadReport2">
+	<div data-options="title:'机动车业务统计'"  style="margin: 5px">
+		<div id="jidu1" style="min-width:700px;height:400px"></div>
+		<div>&nbsp;</div>
+		<table id="ji_jdc_Grid" class="easyui-datagrid"
+			data-options="url:'/veh/user/getUsers',fitColumns:true,singleSelect:true,toolbar:ji_jdcToolbar" style="height: 300px;width: 100%">
+			<thead> 
+				<tr>
+					<th data-options="field:'zjz',width:10">年份</th>
+					<th data-options="field:'xm',width:10">季度</th>
+					<th data-options="field:'gh',width:10">业务类型</th>
+					<th data-options="field:'sfzhm',width:20">业务量</th>
+					<th data-options="field:'szck',width:20">异常业务量</th>
+				</tr>
+			</thead>
+		</table>
+		
+		<div id="ji_jdcToolbar">
+			<div>
+				<label>年份：</label>
+				<input class="easyui-combobox" data-options="valueField:'id',textField:'text',data:years">
+				<label>季度：</label>
+				<input class="easyui-combobox" data-options="valueField:'id',textField:'text',data:jidu">
+				<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" >查询</a>
+			</div>
+		</div>
+	</div>
+	<div data-options="title:'驾驶证业务统计'"  style="margin: 5px">
+		<div id="jidu2" style="min-width:700px;height:400px"></div>
+		<div>&nbsp;</div>
+		<table id="ji_jsz_Grid" class="easyui-datagrid"
+		data-options="url:'/veh/user/getUsers',fitColumns:true,singleSelect:true,toolbar:ji_jszToolbar" style="height: 300px;width: 100%">
+			<thead> 
+				<tr>
+					<th data-options="field:'zjz',width:10">年份</th>
+					<th data-options="field:'xm',width:10">季度</th>
+					<th data-options="field:'gh',width:10">业务类型</th>
+					<th data-options="field:'sfzhm',width:20">业务量</th>
+					<th data-options="field:'szck',width:20">异常业务量</th>
+				</tr>
+			</thead>
+		</table>
+		
+		<div id="ji_jszToolbar">
+			<div>
+			<label>年份：</label>
+				<input class="easyui-combobox" data-options="valueField:'id',textField:'text',data:years">
+				<label>季度：</label>
+				<input class="easyui-combobox" data-options="valueField:'id',textField:'text',data:jidu">
+				<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" >查询</a>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="/dzyxh/js/demo.js"></script>

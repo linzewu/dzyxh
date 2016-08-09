@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="/dzyxh/js/easyui-1.4.3/themes/gray/easyui.css">
+<link rel="stylesheet" type="text/css" href="/dzyxh/js/easyui-1.4.3/themes/color.css">
+<link rel="stylesheet" type="text/css" href="/dzyxh/css/vhe_.css">
+<link rel="stylesheet" type="text/css" href="/dzyxh/css/base.css">
+<link rel="stylesheet" type="text/css" href="/dzyxh/js/easyui-1.4.3/themes/icon.css">
+<script type="text/javascript" src="/dzyxh/js/easyui-1.4.3/jquery.min.js"></script>
+<script type="text/javascript" src="/dzyxh/js/json2.js"></script>
+<script type="text/javascript" src="/dzyxh/js/easyui-1.4.3/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/dzyxh/js/easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="/dzyxh/js/my97/WdatePicker.js"></script>
+<script type="text/javascript" src="/dzyxh/js/easyui-1.4.3/datagrid-groupview.js"></script>
+<script type="text/javascript" src="/dzyxh/js/highcharts/highcharts.js"></script>
+ <script type="text/javascript" src="/dzyxh/js/highcharts/highcharts-3d.js"></script>
+ <script type="text/javascript" src="/dzyxh/js/common.js"></script>
+<script type="text/javascript" src="/dzyxh/js/dzyxh.js"></script>
+<script type="text/javascript" src="/dzyxh/js/extendValidate.js"></script>
+<script type="text/javascript" src="/dzyxh/bps/all.js"></script>
+<script type="text/javascript" src="/dzyxh/js/datas.js"></script>
+
+<title>电子档案影像化管理系统</title>
+</head>
+<body class="easyui-layout">
+	<div data-options="region:'north'" style="height:84px;border: 0;background-color: rgb(40,82,180);overflow-x: hidden; overflow-y: hidden;  ">
+		<img alt="" src="images/top_logo.jpg" style="border: 0">
+	</div>
+    <div data-options="region:'south'" style="height:30px;"></div>
+    <div data-options="region:'center',border: 0">
+    	<div class="easyui-tabs" data-options="fit:true,tabHeight:30">
+		    <div title="窗口采集" data-options="href:'page/window.html',onLoad:win.initEvents">
+		    </div>
+		    <div title="业务监督管理" data-options="href:'page/business.html',onLoad:business.initEvents">
+		    </div>
+		    <div title="库房管理"  data-options="href:'page/storage.html',onLoad:storage.initEvents">
+		    </div>
+		     <div title="系统管理"  data-options="href:'page/system.html',onLoad:system.initEvents">
+		    </div>
+		</div>
+	</div>
+	<div id="comm_window" class="easyui-window" data-options="title:'comon window',closed:true" ></div>
+	<div class="easyui-window" id="imgWindow"  style="width: 680px;height: 400px" title="图像" data-options="closed:true">
+	<img alt="" src="" style="width: 100%;height: 100%;" id="bigImg">
+</div>
+</body>
+</html>

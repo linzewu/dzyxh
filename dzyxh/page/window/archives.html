@@ -1,0 +1,430 @@
+<div class="easyui-layout" data-options="fit:true">
+	 <div data-options="region:'center'" style="padding:5px;background:#eee;">
+	 	 <fieldset class="base_fl">
+	 	 	<legend>查询条件</legend>
+	 	 	<table class="base_table" cellpadding="0"  cellspacing="0">
+		 		<tr>
+					<td class="info_title"><label for="date">业务流水号:</label></td>
+					<td class="info"><input class="easyui-textbox" /></td>
+					<td class="info_title"><label for="date">业务类型:</label></td>
+					<td class="info"><input class="easyui-combobox" data-options="data:ywlx,valueField:'id',textField:'text'"  /></td>
+				</tr>
+				<tr>
+					<td class="info_title"><label for="date">号牌号码:</label></td>
+					<td class="info"><input class="easyui-textbox" value="苏JAA2AA" /></td>
+					<td class="info_title"><label for="date">号牌种类:</label></td>
+					<td class="info"><input class="easyui-combobox" value="小型轿车" data-options="data:getBaseParames('hpzl'),valueField:'id',textField:'value'" /></td>
+				</tr>
+				<tr>
+					<td class="info_title"><label for="date">车辆识别代号:</label></td>
+					<td class="info"><input class="easyui-textbox" /></td>
+					<td class="info_title"><label for="date">档案编号:</label></td>
+					<td class="info"><input class="easyui-textbox" /></td>
+				</tr>
+		 	</table>
+		 	<div style="text-align: right;"> 
+		 		<a href="#" class="easyui-linkbutton c6" style="width:80px;margin-top: 6px;">查询</a>
+		 		<a href="#" class="easyui-linkbutton c2" style="width:80px;margin-top: 6px;">退出</a>
+		 	</div>
+	 	 </fieldset>
+		 <fieldset class="base_fl">
+		 	<legend>业务信息</legend>
+			<table class="base_table" cellpadding="0"  cellspacing="0">
+	 			<tr>
+					<td class="info_title"><label for="date">业务流水号:</label></td>
+					<td class="info">12345678901234567</td>
+					<td class="info_title"><label for="date">业务类型:</label></td>
+					<td class="info">转移登记</td>
+				</tr>
+				 <tr>
+					<td class="info_title"><label for="date">号牌号码:</label></td>
+					<td class="info">苏JAA2AA</td>
+					<td class="info_title"><label for="date">号牌种类:</label></td>
+					<td class="info">小型汽车</td>
+				</tr>
+				 <tr>
+					<td class="info_title"><label for="date">车辆识别代号:</label></td>
+					<td class="info">11XASDERYX11920976</td>
+					<td class="info_title"><label for="date">出厂日期:</label></td>
+					<td class="info">2013-10-29</td>
+				</tr>
+				 <tr>
+					<td class="info_title"><label for="date">初次登记时间:</label></td>
+					<td class="info">2014-01-22</td>
+					<td class="info_title"><label for="date">最近定检日期:</label></td>
+					<td class="info">2015-01-22</td>
+				</tr>
+				 <tr>
+					<td class="info_title"><label for="date">使用性质:</label></td>
+					<td class="info">非运营</td>
+					<td class="info_title"><label for="date">所有人:</label></td>
+					<td class="info">张小明</td>
+				</tr>
+				<tr>
+					<td class="info_title"><label for="date">身份证号码:</label></td>
+					<td class="info">445121198807104899</td>
+					<td class="info_title"><label for="date">车辆品牌:</label></td>
+					<td class="info">北京现代</td>
+				</tr>
+				<tr>
+					<td class="info_title"><label for="date">发证机关:</label></td>
+					<td class="info">苏J</td>
+					<td class="info_title"><label for="date">管理部门:</label></td>
+					<td class="info">苏J</td>
+				</tr>
+				<tr>
+					<td class="info_title"><label for="date">保险终止日期:</label></td>
+					<td class="info">2015-12-1</td>
+					<td class="info_title"><label for="date">机动车状态:</label></td>
+					<td class="info">--</td>
+				</tr>
+				<tr>
+					<td class="info_title"><label for="date">抵押标记:</label></td>
+					<td class="info">--</td>
+					<td class="info_title"><label for="date">发动机型号:</label></td>
+					<td class="info">SJ1184A</td>
+				</tr>
+				<tr>
+					<td class="info_title"><label for="date">燃料种类:</label></td>
+					<td class="info">汽油</td>
+					<td class="info_title"><label for="date">排量:</label></td>
+					<td class="info">1.6L</td>
+				</tr>
+				<tr>
+					<td class="info_title"><label for="date">功率:</label></td>
+					<td class="info">--</td>
+					<td class="info_title"><label for="date">转向形式:</label></td>
+					<td class="info">--</td>
+				</tr>
+				<tr>
+					<td class="info_title"><label for="date">环保达标情况:</label></td>
+					<td class="info">--</td>
+					<td class="info_title"><label for="date">车辆用途:</label></td>
+					<td class="info">01</td>
+				</tr>
+				<tr>
+					<td class="info_title"><label for="date">用途属性:</label></td>
+					<td class="info">02</td>
+					<td class="info_title"><label for="date">行驶证证芯编号:</label></td>
+					<td class="info">44401221123</td>
+				</tr>
+				<tr>
+					<td class="info_title"><label for="date">检验合格标示:</label></td>
+					<td class="info">&nbsp;</td>
+					<td class="info_title"><label for="date">行管理辖区:</label></td>
+					<td class="info"></td>
+				</tr>
+				<tr>
+					<td class="info_title"><label for="date">住所地址行政区划:</label></td>
+					<td class="info">&nbsp;</td>
+					<td class="info_title"><label for="date">联系地址行政区划:</label></td>
+					<td class="info">&nbsp;</td>
+				</tr>
+			 </table>
+		 </fieldset>
+	 </div>
+	 <div data-options="region:'east',title:'档案照片'" style="width:40%;">
+	 	<div class="easyui-layout" data-options="fit:true">
+	 		<div data-options="region:'center'" style="padding:5px;">
+	 			<div class="easyui-tabs">
+		 			<div data-options="title:'注册登记(14-07-11)'">
+		 				<div class="products"><ul>
+			 				 <li>
+				                <a href="#" class="item">
+				                    <img src="images/c1.jpg" />
+				                    <div>
+				                        <p>车辆识别代号</p>
+				                    </div>
+				                </a>
+				            </li>
+				            <li>
+				                <a href="#" class="item">
+				                    <img src="images/c2.jpg" />
+				                    <div>
+				                        <p>车辆右后45°</p>
+				                    </div>
+				                </a>
+				            </li>
+				            <li>
+				                <a href="#" class="item">
+				                    <img src="images/c3.jpg" />
+				                    <div>
+				                        <p>车辆左前45°</p>
+				                    </div>
+				                </a>
+				            </li>
+				            <li>
+				                <a href="#" class="item">
+				                    <img src="images/c4.jpg" />
+				                    <div>
+				                        <p>查验单</p>
+				                    </div>
+				                </a>
+				            </li>
+				            <li>
+				                <a href="#" class="item">
+				                    <img src="images/c5.jpg" />
+				                    <div>
+				                        <p>身份证</p>
+				                    </div>
+				                </a>
+				            </li>
+				            <li>
+				                <a href="#" class="item">
+				                    <img src=""  class="myImg" />
+				                    <div>
+				                        <p>窗口正面照</p>
+				                    </div>
+				                </a>
+				            </li>
+				            <li>
+				                <a href="#" class="item">
+				                    <img src="images/c7.jpg" />
+				                    <div>
+				                        <p>机动车检验标示申请表</p>
+				                    </div>
+				                </a>
+				            </li>
+				            <li>
+				                <a href="#" class="item">
+				                    <img src="images/c7.jpg" />
+				                    <div>
+				                        <p>资料照片</p>
+				                    </div>
+				                </a>
+				            </li>
+				            <li>
+				                <a href="#" class="item">
+				                    <img src="images/c7.jpg" />
+				                    <div>
+				                        <p>资料照片</p>
+				                    </div>
+				                </a>
+				            </li>
+				            <li>
+				                <a href="#" class="item">
+				                    <img src="images/c7.jpg" />
+				                    <div>
+				                        <p>资料照片</p>
+				                    </div>
+				                </a>
+				            </li>
+				            <li>
+				                <a href="#" class="item">
+				                    <img src="images/c7.jpg" />
+				                    <div>
+				                        <p>资料照片</p>
+				                    </div>
+				                </a>
+				            </li>
+				            <li>
+				                <a href="#" class="item">
+				                    <img src="images/c7.jpg" />
+				                    <div>
+				                        <p>资料照片</p>
+				                    </div>
+				                </a>
+				            </li>
+				            <li>
+				                <a href="#" class="item">
+				                    <img src="images/c7.jpg" />
+				                    <div>
+				                        <p>资料照片</p>
+				                    </div>
+				                </a>
+				            </li>
+				            <li>
+				                <a href="#" class="item">
+				                    <img src="images/c7.jpg" />
+				                    <div>
+				                        <p>资料照片</p>
+				                    </div>
+				                </a>
+				            </li>
+			 			</ul></div>
+		 			</div>
+		 			<div data-options="title:'变更车身颜色(14-12-21)'">
+		 				<div class="products"><ul>
+			 				 <li>
+				                <a href="#" class="item">
+				                    <img src="images/c7.jpg" />
+				                    <div>
+				                        <p>图片1</p>
+				                    </div>
+				                </a>
+				            </li>
+				            <li>
+				                <a href="#" class="item">
+				                    <img src="images/c7.jpg" />
+				                    <div>
+				                        <p>图片1</p>
+				                    </div>
+				                </a>
+				            </li>
+				            <li>
+				                <a href="#" class="item">
+				                    <img src="images/c7.jpg" />
+				                    <div>
+				                        <p>图片1</p>
+				                    </div>
+				                </a>
+				            </li>
+				            <li>
+				                <a href="#" class="item">
+				                    <img src="images/c7.jpg" />
+				                    <div>
+				                        <p>图片1</p>
+				                    </div>
+				                </a>
+				            </li>
+				            <li>
+				                <a href="#" class="item">
+				                    <img src="images/c7.jpg" />
+				                    <div>
+				                        <p>图片1</p>
+				                    </div>
+				                </a>
+				            </li>
+				            <li>
+				                <a href="#" class="item">
+				                    <img src="images/c7.jpg" />
+				                    <div>
+				                        <p>图片1</p>
+				                    </div>
+				                </a>
+				            </li>
+			 			</ul></div>
+		 			</div>
+		 			<div data-options="title:'转移登记(15-04-03)'">
+		 				<div class="products"><ul>
+			 				 <li>
+				                <a href="#" class="item">
+				                    <img src="images/c7.jpg" />
+				                    <div>
+				                        <p>图片1</p>
+				                    </div>
+				                </a>
+				            </li>
+				            <li>
+				                <a href="#" class="item">
+				                    <img src="images/c7.jpg" />
+				                    <div>
+				                        <p>图片1</p>
+				                    </div>
+				                </a>
+				            </li>
+				            <li>
+				                <a href="#" class="item">
+				                    <img src="images/c7.jpg" />
+				                    <div>
+				                        <p>图片1</p>
+				                    </div>
+				                </a>
+				            </li>
+				            <li>
+				                <a href="#" class="item">
+				                    <img src="images/c7.jpg" />
+				                    <div>
+				                        <p>图片1</p>
+				                    </div>
+				                </a>
+				            </li>
+				            <li>
+				                <a href="#" class="item">
+				                    <img src="images/c7.jpg" />
+				                    <div>
+				                        <p>图片1</p>
+				                    </div>
+				                </a>
+				            </li>
+				            <li>
+				                <a href="#" class="item">
+				                    <img src="images/c7.jpg" />
+				                    <div>
+				                        <p>图片1</p>
+				                    </div>
+				                </a>
+				            </li>
+				            <li>
+				                <a href="#" class="item">
+				                    <img src="images/c7.jpg" />
+				                    <div>
+				                        <p>图片1</p>
+				                    </div>
+				                </a>
+				            </li>
+				            <li>
+				                <a href="#" class="item">
+				                    <img src="images/c7.jpg" />
+				                    <div>
+				                        <p>图片1</p>
+				                    </div>
+				                </a>
+				            </li>
+			 			</ul></div>
+		 			</div>
+	 		</div>
+	 		<div data-options="region:'south'" style="height: 40px;text-align: center;">
+	 			 <a href="#" class="easyui-linkbutton c6" style="width:120px;margin-top: 6px;">拍照</a>
+	 		</div>
+	 	</div>
+	 </div>
+</div>
+
+
+<script type="text/javascript">
+	$(".products img").bind("click",function(){
+		console.log($(this).attr("src"));
+		$("#bigImg").attr("src",$(this).attr("src"));
+		$("#imgWindow").window("open");
+	});
+</script>
+
+  <style type="text/css">
+        .products{
+            overflow:auto;
+            height:100%;
+            background:#fafafa;
+        }
+        .products ul{
+            list-style:none;
+            margin:0;
+            padding:0px;
+        }
+        .products li{
+            display:inline;
+            float:left;
+            margin:8px;
+        }
+        .item{
+            display:block;
+            text-decoration:none;
+        }
+        .item img{
+            border:1px solid #333;
+            width: 140px; height: 80px;
+        }
+        .item p{
+            margin:0;
+            font-weight:bold;
+            text-align:center;
+            color:#c3c3c3;
+        }
+        .cart{
+            float:right;
+            position:relative;
+            width:260px;
+            height:100%;
+            background:#ccc;
+            padding:0px 10px;
+        }
+        .ctitle{
+            text-align:center;
+            color:#555;
+            font-size:18px;
+            padding:10px;
+        }
+    </style>
+    <script type="text/javascript">
+    	$(".myImg").attr("src","images/c6.jpg?times="+new Date().getTime())
+    </script>

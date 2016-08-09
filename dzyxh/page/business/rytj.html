@@ -1,0 +1,28 @@
+<table id="rytjGrid" class="easyui-datagrid"
+	data-options="url:'/veh/user/getUsers',fitColumns:true,singleSelect:true,fit:true,toolbar:rytjToolbar">
+	<thead> 
+		<tr>
+			<th data-options="field:'zjz',width:10">证件照</th>
+			<th data-options="field:'xm',width:10">业务员姓名</th>
+			<th data-options="field:'gh',width:10">工号</th>
+			<th data-options="field:'sfzhm',width:20">身份证号码</th>
+			<th data-options="field:'szck',width:20">所在窗口</th>
+			<th data-options="field:'pjl',width:20">日均业务量</th>
+			<th data-options="field:'zl',width:20">总办理业务量</th>
+			<th data-options="field:'pjsj',width:20">平均业务办理时间</th>
+		</tr>
+	</thead>
+</table>
+
+<div id="rytjToolbar">
+	<div>
+		<label>姓名：</label>
+		<input class="easyui-textbox">
+		<label>工号：</label>
+		<input class="easyui-textbox">
+		<label>身份证号：</label>
+		<input class="easyui-textbox">
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" >查询</a>
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="comm.openComWindow('/dzyxh/page/window/archives.html',{title:'档案详细信息',fit:true,top:0,left:0})" >档案明细</a>
+	</div>
+</div>

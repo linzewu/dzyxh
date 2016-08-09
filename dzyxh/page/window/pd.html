@@ -1,0 +1,39 @@
+<table id="pdgrid" class="easyui-datagrid"
+	data-options="url:'/dzyxh/datas/data1.json',fitColumns:true,singleSelect:true,fit:true,onLoadSuccess:cjsbLoad">
+	<thead> 
+		<tr>
+			<th data-options="field:'ckmc',width:10">窗口名称</th>
+			<th data-options="field:'slyw',width:20">受理业务</th>
+			<th data-options="field:'cjsbzt',width:20,formatter:cjsbztFormatter">采集设备状态</th>
+		</tr>
+	</thead>
+</table>
+<script type="text/javascript">
+	function cjsbLoad(data){
+		var message="采集设备没有启动，请检查设置！";
+		var cks="";
+		$.each(data.rows,function(i,n){
+			console.log(n)
+			if(n.cjsbzt==0){
+				cks+=n.ckmc+"、";
+			}
+		})
+		
+		if(cks.length>0){
+			cks=cks.substring(0, cks.length-1);
+			$.messager.alert("提示",cks+message);
+		}
+		
+		
+		
+	}
+
+	function cjsbztFormatter(value){
+		if(value==1){
+			return "<img  src='/dzyxh/images/start_16.png'>	已启动";
+		}
+		if(value==0){
+			return "<img  src='/dzyxh/images/stop_16.png'>	已停止";
+		}
+	}
+</script>

@@ -1,0 +1,25 @@
+<table  class="easyui-datagrid"
+	data-options="url:'/veh/user/getUsers',fitColumns:true,singleSelect:true,fit:true,toolbar:storageJszToolbar">
+	<thead> 
+		<tr>
+			<th data-options="field:'hpzl',width:20">姓名</th>
+			<th data-options="field:'pdrs',width:30">证件类型</th>
+			<th data-options="field:'hphm',width:10">证件号码</th>
+			<th data-options="field:'dalry',width:10">档案录入员</th>
+			<th data-options="field:'dalrsj',width:10">录入时间</th>
+			<th data-options="field:'dajdy',width:10">校对员</th>
+			<th data-options="field:'dajdsj',width:10">校对时间</th>
+			<th data-options="field:'zt',width:10">状态</th>
+		</tr>
+	</thead>
+</table>
+
+<div id="storageJszToolbar">
+	<div>
+		<label>流水号：</label><input type="text" class="easyui-textbox" />
+		<label>证件类型：</label><input type="text" class="easyui-combobox" data-options="data:zjlx,valueField:'id',textField:'text'" />
+		<label>证件号码：</label><input type="text" class="easyui-textbox" />
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" >查询</a>
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="comm.openComWindow('/dzyxh/page/storage/jszInfo.html',{title:'档案详细信息',fit:true,top:0,left:0})" >批量建档</a>
+	</div>
+</div>

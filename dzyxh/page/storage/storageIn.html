@@ -1,0 +1,61 @@
+<div class="easyui-tabs" data-options="fit:true,pill:true,plain:true,">
+	<div data-options="title:'机动车档案'">
+		<table class="easyui-datagrid"
+			data-options="url:'/veh/user/getUsers',fitColumns:true,singleSelect:true,fit:true,toolbar:storageOutToolbar">
+			<thead> 
+				<tr>
+					<th data-options="field:'dqh',width:10">档案编号</th>
+					<th data-options="field:'hpzl',width:20">号牌种类</th>
+					<th data-options="field:'hphm',width:10">号牌号码</th>
+					<th data-options="field:'pdrs',width:30">车辆识别代号</th>
+					<th data-options="field:'dalry',width:10">档案录入员</th>
+					<th data-options="field:'dalrsj',width:10">录入时间</th>
+					<th data-options="field:'dajdy',width:10">校对员</th>
+					<th data-options="field:'dajdsj',width:10">校对时间</th>
+					<th data-options="field:'zt',width:10">状态</th>
+				</tr>
+			</thead>
+		</table>
+		
+		<div id="storageOutToolbar">
+			<div>
+				<label>档案号码：</label><input type="text" class="easyui-textbox" />
+				<label>号牌种类：</label><input type="text" class="easyui-combobox" data-options="data:getBaseParames('hpzl'),valueField:'id',textField:'value'" />
+				<label>号牌号码：</label><input type="text" class="easyui-textbox" />
+			</div>
+			<div>&nbsp;</div>
+			<div>
+				<label>车辆识别代号：</label><input type="text" class="easyui-textbox" />
+				<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" >查询</a>
+				<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="comm.openComWindow('/dzyxh/page/storage/archives.html',{title:'档案详细信息',fit:true,top:0,left:0})" >档案入库</a>
+			</div>
+		</div>
+	</div>
+	<div data-options="title:'驾驶证档案'">
+		<table  class="easyui-datagrid"
+			data-options="url:'/veh/user/getUsers',fitColumns:true,singleSelect:true,fit:true,toolbar:storageInToolbar">
+			<thead> 
+				<tr>
+					<th data-options="field:'hpzl',width:20">姓名</th>
+					<th data-options="field:'pdrs',width:30">证件类型</th>
+					<th data-options="field:'hphm',width:10">证件号码</th>
+					<th data-options="field:'dalry',width:10">档案录入员</th>
+					<th data-options="field:'dalrsj',width:10">录入时间</th>
+					<th data-options="field:'dajdy',width:10">校对员</th>
+					<th data-options="field:'dajdsj',width:10">校对时间</th>
+					<th data-options="field:'zt',width:10">状态</th>
+				</tr>
+			</thead>
+		</table>
+		
+		<div id="storageInToolbar">
+			<div>
+				<label>流水号：</label><input type="text" class="easyui-textbox" />
+				<label>证件类型：</label><input type="text" class="easyui-combobox" data-options="data:zjlx,valueField:'id',textField:'text'" />
+				<label>证件号码：</label><input type="text" class="easyui-textbox" />
+				<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" >查询</a>
+				<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="comm.openComWindow('/dzyxh/page/storage/jszInfo.html',{title:'档案详细信息',fit:true,top:0,left:0})" >档案入库</a>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,57 @@
+
+<div class="easyui-tabs" data-options="fit:true">
+	<div data-options="title:'机动车档案'">
+		<table id="jdcsqGrid" class="easyui-datagrid"
+			data-options="url:'/veh/user/getUsers',fitColumns:true,singleSelect:true,fit:true,toolbar:jdcsqToolbar">
+			<thead> 
+				<tr>
+					<th data-options="field:'ckmc',width:10">申请时间</th>
+					<th data-options="field:'dqh',width:10">号牌号码</th>
+					<th data-options="field:'ywlx',width:20">号牌种类</th>
+					<th data-options="field:'clsbdh',width:20">车辆识别代号</th>
+					<th data-options="field:'hpzl',width:20">调阅原因</th>
+					<th data-options="field:'hphm',width:10">有效期止</th>
+					<th data-options="field:'sqzt',width:10">授权状态</th>
+				</tr>
+			</thead>
+		</table>
+		
+		<div id="jdcsqToolbar">
+			<div>
+				<label>申请时间：</label>
+				<input class="easyui-datebox">
+				<label>授权状态：</label>
+				<input class="easyui-combobox" >
+				<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" >查询</a>
+				<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'">授权审批</a>
+			</div>
+		</div>
+	</div>
+	<div data-options="title:'驾驶证档案'">
+		<table id="jszsqGrid" class="easyui-datagrid"
+			data-options="url:'/veh/user/getUsers',fitColumns:true,singleSelect:true,fit:true,toolbar:jszsqToolbar">
+			<thead> 
+				<tr>
+					<th data-options="field:'ckmc',width:10">申请时间</th>
+					<th data-options="field:'dqh',width:10">证件名称</th>
+					<th data-options="field:'clsbdh',width:20">证件号码</th>
+					<th data-options="field:'hpzl',width:20">调阅原因</th>
+					<th data-options="field:'hphm',width:10">有效期止</th>
+					<th data-options="field:'sqzt',width:10">授权状态</th>
+				</tr>
+			</thead>
+		</table>
+		
+		<div id="jszsqToolbar">
+			<div>
+				<label>申请时间：</label>
+				<input class="easyui-datebox">
+				<label>授权状态：</label>
+				<input class="easyui-combobox" >
+				<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" >查询</a>
+				<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'">授权审批</a>
+			</div>
+		</div>
+	</div>
+</div>
+
