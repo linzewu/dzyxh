@@ -6,8 +6,8 @@
 			<thead> 
 				<tr>
 					<th data-options="field:'jsmc'"  style="width: 200px;">角色名称</th>
-					<th data-options="field:'jsjb',formatter:jsjbFormatter"  style="width: 200px;">角色级别</th>
-					<th data-options="field:'jslx',formatter:jslxFormatter"  style="width: 200px;">角色类型</th>
+					<th data-options="field:'jsjb',formatter:roleManager.jsjbFormatter"  style="width: 200px;">角色级别</th>
+					<th data-options="field:'jslx',formatter:roleManager.jslxFormatter"  style="width: 200px;">角色类型</th>
 					<th data-options="field:'bz'"  style="width: 400px;">备注</th>
 				</tr>
 			</thead>
@@ -15,13 +15,13 @@
 		<div id="roleManagerToolbar" class="list-query-base">
 			<div>
 				<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="comm.createTab('#tab-role','新增角色','page/system/RoleInfo.html')">添加角色</a>
-				<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="editRole()">编辑角色</a>
-				<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="deleteRole()">删除角色</a>
+				<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="roleManager.editRole()">编辑角色</a>
+				<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="roleManager.deleteRole()">删除角色</a>
 			</div>
 			<div>
 				<label>角色名称：</label><input name="jsmc">
 				<label>角色级别：</label><select name="jsjb" id="list-jsjb"></select>
-				<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="queryRole()">查询</a>
+				<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="roleManager.queryRole()">查询</a>
 			</div>
 		</div>
 	</div>
@@ -29,18 +29,20 @@
 <script>
 
 	$(function(){
-		comm.createBaseSelect("select[name=jsjb]","jsjb","请选择角色级别");
+		comm.createBaseSelect("select[name=jsjb]","role.jsjb","请选择角色级别");
 	});
 	
-	function jsjbFormatter(value){
-		return comm.getParamNameByValue("jsjb", value);
-	}
+	var roleManager={};
 	
-	function jslxFormatter(value){
-		return comm.getParamNameByValue("jslx", value);
-	}
-
-	function queryRole(){
+	roleManager.jsjbFormatter=function(value){
+		return comm.getParamNameByValue("role.jsjb", value);
+	};
+	
+	roleManager.jslxFormatter=function(value){
+		return comm.getParamNameByValue("role.jslx", value);
+	};
+	
+	roleManager.queryRole=function (){
 		var jsmc = $("#roleManagerToolbar input[name=jsmc]").val();
 		var jsjb= $("#roleManagerToolbar select[name=jsjb]").val();
 		
@@ -55,10 +57,9 @@
 		}
 		$("#roleManager").datagrid("reload",param);
 		
-	}
-	
-	function editRole(){
-		
+	};
+
+	roleManager.editRole=function(){
 		var row = $("#roleManager").datagrid("getSelected");
 		if(row){
 			if(row.jslx==0){
@@ -71,9 +72,14 @@
 		}
 	}
 	
-	function deleteRole(){
+	roleManager.deleteRole=function(){
 		var row = $("#roleManager").datagrid("getSelected");
 		if(row){
+			
+			if(row.jslx==0){
+				$.messager.alert("提示","系统超级管理员不能删除","info");
+				return;
+			}
 			
 			$.messager.confirm("确认","您是否确认删除该角色?",function(r){
 				if(r){
@@ -82,7 +88,7 @@
 						"msg" : "数据删除中..."
 					});
 					
-					$.post("role/delete", function(data) {
+					$.post("role/delete",{id:row.id}, function(data) {
 						if(data.state==1){
 							$.messager.alert("提示","角色删除成功！","info",function(){
 								$("#roleManager").datagrid("reload");
@@ -104,5 +110,4 @@
 			$.messager.alert("提示","请选择角色删除！","info");
 		}
 	}
-	
 </script>

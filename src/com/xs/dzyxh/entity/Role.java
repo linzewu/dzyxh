@@ -13,18 +13,23 @@ import org.springframework.stereotype.Component;
 @Table(name = "TB_Role")
 public class Role extends BaseEntity {
 	
+	//角色名称
 	@Column(length=120)
 	private String jsmc;
 	
+	//角色级别
 	@Column
 	private Integer jsjb;
 	
+	//角色类型
 	@Column
 	private Integer jslx;
 	
+	//角色权限
 	@Column(length=4000)
 	private String jsqx;
 	
+	//备注
 	@Column(length=400)
 	private String bz;
 	

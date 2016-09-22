@@ -18,6 +18,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Table(name = "TB_User")
 public class User extends BaseEntity {
 	
+	
+	public final static Integer ZT_TY=2;
+	
+	public final static Integer ZT_CZMM=0;
+	
+	public final static Integer ZT_ZC=1;
+	
 	@Column(length=32)
 	private String bmdm;
 	

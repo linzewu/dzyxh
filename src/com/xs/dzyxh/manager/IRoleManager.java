@@ -14,8 +14,10 @@ public interface IRoleManager {
 	
 	public Role add(Role role);
 	
-	public Role save(Role role);
+	public Role save(Role role) throws Exception;
 	
-	public void delete(Integer id);
+	public void delete(Integer id) throws Exception;
+	
+	public Role getSystemRole();
 
 }

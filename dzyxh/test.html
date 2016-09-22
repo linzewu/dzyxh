@@ -1,16 +1,79 @@
 <!DOCTYPE html>
-<html>
+<html lange="en">
 <head>
-<meta charset="UTF-8">
-<title>电子档案影像化管理系统</title>
-<title>Insert title here</title>
+<title>点击左右按钮图片横向滚动</title>
+<meta charset=utf-8 " />
+<style type="text/css">
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	font-size: 12px;
+}
+
+.box {
+	height: 66px;
+	float: left;
+	width: 440px;
+	overflow: hidden;
+	position: relative;
+}
+
+.box li {
+	display: block;
+	float: left;
+	margin-left: 5px;
+	margin-right: 5px;
+	width: 100px;
+	height: 70px;
+	background: #BBB;
+	font-size: 50px;
+	color: #ccc;
+	line-height: 66px;
+	text-decoration: none;
+	text-align: center;
+	cursor: pointer;
+}
+
+.box li:hover {
+	color: #999;
+}
+
+.box li.active {
+	background-position: -174px 0;
+	color: #555;
+	cursor: default;
+}
+
+a.prev, a.next {
+	background: url(http://www.shengyijie.net/images/left_02.png) no-repeat
+		0 0;
+	display: block;
+	width: 23px;
+	height: 43px;
+	float: left;
+	margin: 15px 0 0 0;
+	cursor: pointer;
+}
+
+a.next {
+	background-image: url(http://www.shengyijie.net/images/right_02.png)
+}
+
+.scroll_list {
+	width: 10000em;
+	position: absolute;
+}
+</style>
+<!-- 引入jQuery -->
+<script src="http://jt.875.cn/js/jquery.js" type="text/javascript"></script>
 <script type="text/javascript">
-alert("1")
+	
 </script>
 </head>
 <body>
-这是页面内容
-
+	<!-- 例子 -->
 </body>
-
 </html>

@@ -2,7 +2,7 @@ html {
 	font-size: 100%;
 	-webkit-text-size-adjust: 100%;
 	-ms-text-size-adjust: 100%;
-	font-family: "Arial","Microsoft YaHei","ºÚÌå","ËÎÌå",sans-serif;
+	font-family: "Arial","Microsoft YaHei","ï¿½ï¿½ï¿½ï¿½","ï¿½ï¿½ï¿½ï¿½",sans-serif;
 }
 
 
@@ -18,7 +18,7 @@ html {
 }
 
 .panel_cyxm table tr td label{
-	font-family: "Arial","Microsoft YaHei","ºÚÌå","ËÎÌå",sans-serif;
+	font-family: "Arial","Microsoft YaHei","ï¿½ï¿½ï¿½ï¿½","ï¿½ï¿½ï¿½ï¿½",sans-serif;
 	font-size: 16px;
 }
 
@@ -80,3 +80,75 @@ html {
   color: #15428B;
 }
 
+.gather-ul{
+	list-style:none;
+}
+
+.gather-ul li{
+	float: left;
+	width: 220px;
+	margin: 5px 6px 5px 6px;
+}
+
+.gather-east{
+	text-align: center;margin: 20px 0 0 0;
+}
+
+.box {
+	height: 130px;
+	float: left;
+	width: 800px;
+	overflow: hidden;
+	position: relative;
+}
+
+.box li {
+	display: block;
+	float: left;
+	margin-left: 5px;
+	margin-right: 5px;
+	width: 160px;
+	height: 120px;
+	vertical-align: middle;
+	text-align: center;
+	color: #bbb;
+}
+
+.box li:hover {
+	color: #leee;
+	
+}
+
+.box li.active {
+	background-position: -174px 0;
+	color: #555;
+	cursor: default;
+}
+
+a.prev, a.next {
+	height: 120px;
+	float: left;
+	margin: 15px 0 0 0;
+	cursor: pointer;
+	color: #eee;
+	font-size:50px;
+	 text-decoration: none;
+	 text-align: left;
+  line-height:120px;   
+  overflow:hidden;   
+}
+
+a.next {
+	margin-left: 30px;
+}
+
+.scroll_list {
+	width: 10000em;
+	position: absolute;
+}
+
+.box li img{
+	width: 160px;
+	height: 120px;
+	border: 0;
+}

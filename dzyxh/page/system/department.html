@@ -9,7 +9,10 @@
 				<tr><td class="info_title">部门代码：</td>
 					<td class="info"><input name="bmdm" class="easyui-validatebox" data-options="required:true"></td>
 					<td class="info_title">部门级别：</td>
-					<td class="info"><select name="bmjb" class="easyui-validatebox" data-options="required:true"></select></td>
+					<td class="info">
+						<select name="bmjb" class="easyui-validatebox" data-options="required:true">
+						</select>
+					</td>
 				</tr>
 				<tr><td class="info_title">部门名称：</td>
 					<td class="info"> <input name="bmmc" class="easyui-validatebox" data-options="required:true"> </td>
@@ -162,7 +165,7 @@ function loadTree(selectNodeId){
 }
 
 $(function(){
-	comm.createBaseSelect("select[name=bmjb]","bmjb");
+	comm.createBaseSelect("select[name=bmjb]","dept.bmjb");
 	loadTree();
 })
 </script>

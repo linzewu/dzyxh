@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -12,6 +14,8 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,31 +24,43 @@ import com.xs.common.Annotation.FunctionAnnotation;
 import com.xs.common.Annotation.ModuleAnnotation;
 import com.xs.dzyxh.entity.Department;
 import com.xs.dzyxh.entity.Power;
+import com.xs.dzyxh.entity.Role;
+import com.xs.dzyxh.entity.User;
 import com.xs.dzyxh.manager.IDepartmentManager;
+import com.xs.dzyxh.manager.IRoleManager;
+import com.xs.dzyxh.manager.IUserManager;
 
 @Component("initServerCommonUtil")
 public class InitServerCommonUtil {
 	
+	protected static Log log = LogFactory.getLog(InitServerCommonUtil.class);
+
 	@Resource(name = "departmentManager")
 	private IDepartmentManager departmentManager;
-	
+
 	@Value("${dept.root.bmdm}")
 	private String bmdm;
-	
+
 	@Value("${dept.root.bmmc}")
 	private String bmmc;
 
-	public  List<Power> initPower(String[] packs) throws IOException {
+	@Resource(name = "roleManager")
+	private IRoleManager roleManager;
+
+	@Resource(name = "userManager")
+	private IUserManager userManager;
+
+	public List<Power> initPower(String[] packs) throws IOException {
 
 		List<Power> powers = new ArrayList<Power>();
-		//用来去重复的，临时map
+		// 用来去重复的，临时map
 		Map map = new HashMap();
 		int index = 0;
-		Set<Class<?>> classs =new HashSet<Class<?>>();
-		for(String pack:packs){
+		Set<Class<?>> classs = new HashSet<Class<?>>();
+		for (String pack : packs) {
 			classs.addAll(Common.getClasses(pack));
 		}
-		
+
 		for (Class<?> c : classs) {
 			Annotation[] as = c.getAnnotations();
 			for (Annotation a : as) {
@@ -92,7 +108,7 @@ public class InitServerCommonUtil {
 										Integer myIndex = (Integer) map
 												.get(power.getModule() + power.getApp() + power.getFunction());
 										Power myPower = powers.get(myIndex);
-										myPower.setKey(myPower.getKey() + "," + power.getKey());
+										myPower.setKey(myPower.getKey() + ";" + power.getKey());
 									}
 								}
 							}
@@ -103,23 +119,53 @@ public class InitServerCommonUtil {
 		}
 		return powers;
 	}
-	
-	public void initRootDepartment(){
-		
+
+	public void initRootDepartment() {
 		List<Department> depts = this.departmentManager.getDepts();
-		
-		if(depts==null||depts.isEmpty()){
-			Department rootDept=new Department();
-			
+		if (depts == null || depts.isEmpty()) {
+			Department rootDept = new Department();
 			rootDept.setBmjb(0);
 			rootDept.setBmdm(bmdm);
 			rootDept.setBmmc(bmmc);
 			rootDept.setBmqc(bmmc);
-			
 			departmentManager.saveDept(rootDept);
 		}
+	}
+
+	public void initAdminRole() {
+
+		int count = roleManager.getRoleCount(null);
+		if (count == 0) {
+			Role role = new Role();
+			role.setJsjb(0);
+			role.setJslx(0);
+			role.setJsmc("系统超级管理员");
+			this.roleManager.add(role);
+		}
+	}
+
+	public void initAdmin() {
 		
-		
+		log.info("初始化用户");
+		int count = userManager.getUserCount(null);
+		log.info("用户count："+count);
+		if (count == 0) {
+			Role role = roleManager.getSystemRole();
+			User user = new User();
+			user.setBmdm(bmdm);
+			user.setJs(role.getId().toString());
+			user.setMm("888888");
+			user.setMmyxq(new Date());
+			user.setYhm("admin");
+			user.setSeq(1);
+			user.setSfzh("000000000000000000");
+			user.setZt(User.ZT_CZMM);
+			Calendar calendar = Calendar.getInstance();
+			calendar.add(Calendar.YEAR, 3);
+			user.setZhyxq(calendar.getTime());
+			user.setYhxm("系统超级管理员");
+			this.userManager.saveUser(user);
+		}
 	}
 
 }

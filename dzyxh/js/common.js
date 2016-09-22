@@ -1,4 +1,7 @@
 
+
+
+
 var comm = {
 	getBaseParames : function(type) {
 		var array = [];
@@ -125,7 +128,6 @@ var gridUtil = {
 				
 				
 				$.post(options["url"]+"/save",rows[g.editIndex],function(rd){
-					$.messager.progress("close");
 					if(rd.state==1){
 						g.editIndex = null;
 						rows[g.editIndex]=rd.data;
@@ -141,6 +143,11 @@ var gridUtil = {
 						$.messager.alert("保存错误",errors,"error");
 						$(grid).datagrid('beginEdit', g.editIndex);
 					}
+				}).error(function(e){
+					$.messager.alert("错误",e.responseText,"error");
+					$(grid).datagrid('beginEdit', g.editIndex);
+				}).complete(function(e){
+					$.messager.progress("close");
 				});
 				
 			}
@@ -177,11 +184,14 @@ var gridUtil = {
 					$.messager.progress({"title":"处理删除中。。。"});
 					
 					$.post(options["url"]+"/delete",row,function(rd){
-						$.messager.progress("close");
 						$.messager.alert("提示","删除成功");
 						$(grid).datagrid('deleteRow', rowIndex);
 						g.editIndex = null;
-					})
+					}).error(function(e){
+						$.messager.alert("错误",e.responseText,"error");
+					}).complete(function(){
+						$.messager.progress("close");
+					});
 				}
 			});
 
@@ -245,3 +255,62 @@ var gridUtil = {
         return serializeObj;  
     };  
 })(jQuery);
+
+$(function($){  
+    //备份jquery的ajax方法  
+    var _ajax=$.ajax;  
+      
+    //重写jquery的ajax方法  
+    $.ajax=function(opt){  
+        //备份opt中error和success方法  
+        var fn = {  
+            error:function(XMLHttpRequest, textStatus, errorThrown){},  
+            success:function(data, textStatus){}  
+        }  
+        if(opt.error){  
+            fn.error=opt.error;  
+        }  
+        if(opt.success){  
+            fn.success=opt.success;  
+        }  
+          
+        //扩展增强处理  
+        var _opt = $.extend(opt,{  
+            error:function(XMLHttpRequest, textStatus, errorThrown){  
+                fn.error(XMLHttpRequest, textStatus, errorThrown);  
+            },  
+            success:function(data, textStatus){
+            	var temp={};
+            	if(typeof(data) == "string"){
+            		try{
+            			 if (data.match("^\{(.+:.+,*){1,}\}$"))
+                         {
+            				temp=$.parseJSON(data);
+                         }
+            		}catch (e) {
+            			console.log("返回非JSON对象");
+        			}
+            	}else if(typeof(data) == "object"&&!$.isArray(data)){
+            		temp=data;
+            	}
+                if(temp['state'] == 600) {
+                    window.location.href="login.html";
+                    return;
+                }
+                fn.success(data, textStatus);
+            }  
+        });  
+        return _ajax(_opt);  
+    };  
+});
+
+$(document).ajaxStart(function(){
+	$.messager.progress({
+		title:"请等待",
+		msg:"数据请求中。。。"
+	}); 
+});
+
+$(document).ajaxComplete(function(){
+	$.messager.progress('close');
+});

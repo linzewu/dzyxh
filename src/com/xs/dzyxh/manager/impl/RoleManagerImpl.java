@@ -9,6 +9,8 @@ import javax.annotation.Resource;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate4.HibernateCallback;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Service;
@@ -129,26 +131,43 @@ public class RoleManagerImpl implements IRoleManager {
 	}
 
 	@Override
-	public Role add(Role role) {
-		
+	public Role add(Role role){
 		Serializable id = hibernateTemplate.save(role);
-		
 		role.setId(Integer.parseInt(id.toString()));
-		
 		return role;
 	}
 
 	@Override
-	public Role save(Role role) {
-		
+	public Role save(Role role) throws Exception {
+		if(role.getJslx()==0){
+			throw new Exception("系统超级管理员无法修改！");
+		}
 		return hibernateTemplate.merge(role);
 	}
 
 	@Override
-	public void delete(Integer id) {
-		Role role=new Role();
-		role.setId(id);
-		hibernateTemplate.delete(role);
+	public void delete(Integer id) throws Exception {
+		Role role= this.hibernateTemplate.load(Role.class, id);
+		
+		if(role.getJslx()==0){
+			throw new Exception("系统超级管理员无法删除");
+		}else{
+			hibernateTemplate.delete(role);
+		}
+		
+	}
+
+	@Override
+	public Role getSystemRole() {
+		
+		DetachedCriteria dc = DetachedCriteria.forClass(Role.class);
+		
+		dc.add(Restrictions.eq("jsjb",0));
+		dc.add(Restrictions.eq("jslx",0));
+		
+		List<Role> roles = (List<Role>) this.hibernateTemplate.findByCriteria(dc);
+		
+		return roles.get(0);
 	}
 
 }

@@ -22,6 +22,7 @@
 	<mvc:resources location="/page/" mapping="/page/**" />
 	<mvc:resources location="/index.html" mapping="/index.html" />
 	<mvc:resources location="/login.html" mapping="/login.html" />
+	<mvc:resources location="/" mapping="/*.html" />
 
 	<!-- 自动加载构建bean -->
 	<context:component-scan base-package="com.xs.dzyxh.controller" />
@@ -57,27 +58,29 @@
 			</bean>
 		</mvc:message-converters>
 	</mvc:annotation-driven>
-	
-	<!-- 以下 validator  ConversionService 在使用 mvc:annotation-driven 会 自动注册-->  
-    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">  
-        <property name="providerClass" value="org.hibernate.validator.HibernateValidator"/>  
-        <!-- 如果不加默认到 使用classpath下的 ValidationMessages.properties -->  
-        <property name="validationMessageSource" ref="messageSource"/>  
-    </bean>  
-       
-    <!-- 国际化的消息资源文件（本系统中主要用于显示/错误消息定制） -->  
-    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">  
-        <property name="basenames">  
-            <list>  
-                <!-- 在web环境中一定要定位到classpath 否则默认到当前web应用下找  -->  
-                <value>classpath:messages</value>
-                <value>classpath:org/hibernate/validator/ValidationMessages</value>
-            </list>  
-        </property>
-        <property name="useCodeAsDefaultMessage" value="false"/>  
-        <property name="defaultEncoding" value="UTF-8"/>  
-        <property name="cacheSeconds" value="60"/>  
-    </bean>
+
+	<!-- 以下 validator ConversionService 在使用 mvc:annotation-driven 会 自动注册 -->
+	<bean id="validator"
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		<property name="providerClass" value="org.hibernate.validator.HibernateValidator" />
+		<!-- 如果不加默认到 使用classpath下的 ValidationMessages.properties -->
+		<property name="validationMessageSource" ref="messageSource" />
+	</bean>
+
+	<!-- 国际化的消息资源文件（本系统中主要用于显示/错误消息定制） -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<!-- 在web环境中一定要定位到classpath 否则默认到当前web应用下找 -->
+				<value>classpath:messages</value>
+				<value>classpath:org/hibernate/validator/ValidationMessages</value>
+			</list>
+		</property>
+		<property name="useCodeAsDefaultMessage" value="false" />
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="cacheSeconds" value="60" />
+	</bean>
 
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -87,6 +90,30 @@
 		<property name="suffix">
 			<value>.jsp</value>
 		</property>
+	</bean>
+
+	<!--配置拦截器, 多个拦截器,顺序执行 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/user/login" />
+			<mvc:exclude-mapping path="/bps/**" />
+			<mvc:exclude-mapping path="/images/**" />
+			<mvc:exclude-mapping path="/js/**" />
+			<mvc:exclude-mapping path="/css/**" />
+			<mvc:exclude-mapping path="/datas/**" />
+			<mvc:exclude-mapping path="/html/**" />
+			<mvc:exclude-mapping path="/page/**" />
+			<mvc:exclude-mapping path="/*.html" />
+			<bean class="com.xs.web.util.UserInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="utf-8"></property>
+		<property name="maxUploadSize" value="5242880"></property>
+		<property name="maxInMemorySize" value="40960"></property>
 	</bean>
 
 </beans>

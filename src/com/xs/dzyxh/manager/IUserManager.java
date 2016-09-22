@@ -22,6 +22,8 @@ public interface IUserManager {
 	
 	public void initAdmin();
 	
+	public User login(String userName, String password);
+	
 	
 
 }

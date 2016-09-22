@@ -3,7 +3,6 @@ package com.xs.common;
 public class Constant {
 
 	public static class ConstantState{
-		
 		public static final Integer STATE_SUCCESS = 1;
 		public static final Integer STATE_ERROR = 0;
 		public static final Integer STATE_VALIDATE_ERROR = 2;

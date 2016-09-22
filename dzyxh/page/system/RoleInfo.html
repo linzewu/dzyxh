@@ -29,11 +29,12 @@
 
 $(function(){
 	
-	comm.createBaseSelect("#roleInfoForm select[name=jsjb]","jsjb","请选择角色级别");
+	comm.createBaseSelect("#roleInfoForm select[name=jsjb]","role.jsjb","请选择角色级别");
 	$("#power-list").datagrid({
 		url:'role/getPowers',
 		height:300,
 		selectOnCheck:false,
+		rownumbers:true,
 	    columns:[[
 			{field:'ck',checkbox:true},
 	        {field:'module',title:'模块',width:100},

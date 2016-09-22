@@ -3,11 +3,14 @@ package com.xs.dzyxh.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.support.RequestContext;
 
@@ -17,22 +20,23 @@ import com.xs.common.ComputerInfoUtil;
 import com.xs.common.Constant;
 import com.xs.common.ResultHandler;
 import com.xs.dzyxh.entity.BaseParams;
+import com.xs.dzyxh.manager.IBaseParamsManager;
+import com.xs.web.util.PageInfo;
 
 @Controller
 @RequestMapping(value = "/bps")
 public class BaseParamsController {
 
+	@Resource(name = "baseParamsManager")
+	private IBaseParamsManager baseParamsManager;
+
 	@RequestMapping(value = "all.js", produces = "application/javascript; charset=utf-8")
 	public @ResponseBody String getBaseParamsOfJS(HttpServletRequest request) throws JsonProcessingException {
-
 		ServletContext servletContext = request.getSession().getServletContext();
-
 		List<BaseParams> bps = (List<BaseParams>) servletContext.getAttribute("bps");
 
 		ObjectMapper objectMapper = new ObjectMapper();
-
 		String js = " var bps=" + objectMapper.writeValueAsString(bps);
-		System.out.println(js);
 		return js;
 	}
 
@@ -51,16 +55,38 @@ public class BaseParamsController {
 	@RequestMapping(value = "getComputerInfo")
 	public @ResponseBody Map getComputer(HttpServletRequest request) {
 		Map map = ComputerInfoUtil.getComputerInfo();
-		return ResultHandler.toMyJSON(Constant.ConstantState.STATE_SUCCESS, Constant.ConstantMessage.SUCCESS,
-				map);
+		return ResultHandler.toMyJSON(Constant.ConstantState.STATE_SUCCESS, Constant.ConstantMessage.SUCCESS, map);
 	}
-	
+
 	@RequestMapping(value = "getLicenseInfo")
 	public @ResponseBody Map getLicenseInfo(HttpServletRequest request) {
 		Map map = ComputerInfoUtil.getComputerInfo();
-		
-		return ResultHandler.toMyJSON(Constant.ConstantState.STATE_SUCCESS, Constant.ConstantMessage.SUCCESS,
-				map);
+		return ResultHandler.toMyJSON(Constant.ConstantState.STATE_SUCCESS, Constant.ConstantMessage.SUCCESS, map);
+	}
+
+	@RequestMapping(value = "save", method = RequestMethod.POST)
+	public @ResponseBody Map save(BaseParams baseParams) {
+		baseParams = this.baseParamsManager.save(baseParams);
+		return ResultHandler.toMyJSON(Constant.ConstantState.STATE_SUCCESS, "保存成功",baseParams);
+	}
+
+	@RequestMapping(value = "delete", method = RequestMethod.POST)
+	public @ResponseBody Map delete(@RequestParam Integer id) {
+		this.baseParamsManager.delete(id);
+		return ResultHandler.toSuccessJSON("删除成功！");
+	}
+
+	@RequestMapping(value = "getBaseParamsOfPage")
+	public @ResponseBody Map getBaseParamsOfPage(PageInfo pageInfo,BaseParams param) {
+		Map data = this.baseParamsManager.getBaseParams(pageInfo,param);
+		return data;
+	}
+	
+	@RequestMapping(value = "refresh")
+	public @ResponseBody Map refresh(HttpServletRequest request) {
+		ServletContext servletContext = request.getSession().getServletContext();
+		servletContext.setAttribute("bps", baseParamsManager.getBaseParams());
+		return ResultHandler.toSuccessJSON("刷新成功");
 	}
 
 }

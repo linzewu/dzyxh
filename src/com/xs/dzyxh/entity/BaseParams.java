@@ -46,6 +46,9 @@ public class BaseParams {
 	public void setSeq(Integer seq) {
 		this.seq = seq;
 	}
+	
+	
+	
 	public Integer getId() {
 		return id;
 	}

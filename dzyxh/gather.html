@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>机动车电子档案影像系统(机动车档案采集)</title>
+<link rel="stylesheet" type="text/css" href="/dzyxh/js/easyui/themes/gray/easyui.css">
+<link rel="stylesheet" type="text/css" href="/dzyxh/js/easyui/themes/color.css">
+<link rel="stylesheet" type="text/css" href="/dzyxh/css/vhe_.css">
+<link rel="stylesheet" type="text/css" href="/dzyxh/js/easyui/themes/icon.css">
+<script type="text/javascript" src="/dzyxh/js/easyui/jquery.min.js"></script>
+<script type="text/javascript" src="/dzyxh/js/json2.js"></script>
+<script type="text/javascript" src="/dzyxh/js/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/dzyxh/js/easyui/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="/dzyxh/js/gather.js"></script>
+</head>
+<body style="margin: 10px 0 0 10px">
+	<div class="easyui-layout" style="width: 1000px;height: 630px;margin:0  auto;">
+		<div data-options="region:'north'" style="height:68px">
+			<ul class="gather-ul">
+				<li><label>业务流水：</label><span>32020912345678901</span></li>
+				<li><label>业务类型：</label><span>注册登记</span></li>
+				<li><label>号牌号码：</label><span></span></li>
+				<li><label>号牌种类：</label><span></span></li>
+				<li><label>车辆识别代号：</label><span>32020912345678901</span></li>
+				<li><label>车辆所有人：</label><span>张三</span></li>
+				<li><label>身份证号码：</label><span>445121198807104899</span></li>
+				<li><label>业务员：</label><span>李明明</span></li>
+			</ul>
+		</div>
+		<div data-options="region:'center',border:false">
+			<div class="easyui-layout" data-options="fit:true">
+				<div data-options="region:'center'" style="text-align: center;">
+					<object classid="clsid:090457CB-DF21-41EB-84BB-39AAFC9E271A"
+							id="ScanCtrl" codebase="*.cab#version=1,0,0,1" 
+						 style="margin: 5px 0 0 0 ; width: 780px; height: 400px;"></object>
+				</div>
+				 <div data-options="region:'east'"  style="width:200px;">
+				 	<div class="gather-east">
+				 		<label>摄像头：</label>
+				 		<span>设备1<input type="radio" name="camera" checked="checked" value="0">&nbsp;&nbsp;
+				 		设备2<input type="radio" name="camera" value="1"></span>
+				 	</div>
+				 	<div class="gather-east">
+				 		<label>分辨率：</label>
+				 		<select name="resolution" id="resolution"  style="width: 100px" onchange="resolutionChange(this.value)"></select>
+				 	</div>
+				 	<div class="gather-east">
+				 		<a href="#" class="easyui-linkbutton c1" style="width: 120px;" data-options="onClick:takePic">拍摄</a>
+				 	</div>
+				 	<div class="gather-east">
+				 		<a href="#" class="easyui-linkbutton c5" style="width: 120px;">退出</a>
+				 	</div>
+				 </div>
+				<div data-options="region:'south'" style="height:150px;overflow: hidden;">
+					<div class="scroll" style="margin: 0 auto; width: 950px;">
+						<a class="prev" href="javascript:void(0);">《</a>
+						<div class="box">
+							<div class="scroll_list">
+								<ul>
+									<li>
+										<div><input name="img-zplx" value="1"  index="1"  type="radio">照片1</div>
+										<img src="images/no-image.jpg">
+									</li>
+									<li>
+										<div><input name="img-zplx" value="2" index="2" type="radio">照片2</div>
+										<img src="images/no-image.jpg">
+									</li>
+									<li>
+										<div><input name="img-zplx" value="3" index="3" type="radio">照片3</div>
+										<img src="images/no-image.jpg">
+									</li>
+									<li>
+										<div><input name="img-zplx" value="4" index="4" type="radio">照片4</div>
+										<img src="images/no-image.jpg">
+									</li>
+									<li>
+										<div><input name="img-zplx" value="5" index="5" type="radio">照片5</div>
+										<img src="images/no-image.jpg">
+									</li>
+									<li>
+										<div><input name="img-zplx" value="6" index="6" type="radio">照片6</div>
+										<img src="images/no-image.jpg">
+									</li>
+									<li>
+										<div><input name="img-zplx" value="7" index="7" type="radio">照片7</div>
+										<img src="images/no-image.jpg">
+									</li>
+									<li>
+										<div><input name="img-zplx" value="8" index="8" type="radio">照片8</div>
+										<img src="images/no-image.jpg">
+									</li>
+									<li>
+										<div><input name="img-zplx" value="9" index="9" type="radio">照片9</div>
+										<img src="images/no-image.jpg">
+									</li>
+								</ul>
+							</div>
+						</div>
+						<a class="next" href="javascript:void(0);">》</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
