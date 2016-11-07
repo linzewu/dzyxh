@@ -1,4 +1,4 @@
-package com.xs.dzyxh.manager.impl;
+package com.xs.dzyxh.manager.sys.impl;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -15,13 +15,13 @@ import org.springframework.orm.hibernate4.HibernateCallback;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Service;
 
-import com.xs.dzyxh.entity.Role;
-import com.xs.dzyxh.manager.IRoleManager;
+import com.xs.dzyxh.entity.system.Role;
+import com.xs.dzyxh.manager.sys.IRoleManager;
 
 @Service("roleManager")
 public class RoleManagerImpl implements IRoleManager {
 	
-	@Resource(name = "hibernateTemplate")
+	@Resource(name = "sysHibernateTemplate")
 	private HibernateTemplate hibernateTemplate;
 
 	@Override

@@ -8,7 +8,7 @@ import javax.servlet.ServletContext;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.xs.dzyxh.entity.BaseParams;
+import com.xs.dzyxh.entity.system.BaseParams;
 
 public class BaseParamsUtil {
 

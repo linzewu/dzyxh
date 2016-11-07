@@ -1,4 +1,4 @@
-package com.xs.dzyxh.manager.impl;
+package com.xs.dzyxh.manager.sys.impl;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -14,14 +14,14 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Service;
 
-import com.xs.dzyxh.entity.BaseParams;
-import com.xs.dzyxh.manager.IBaseParamsManager;
+import com.xs.dzyxh.entity.system.BaseParams;
+import com.xs.dzyxh.manager.sys.IBaseParamsManager;
 import com.xs.web.util.PageInfo;
 
 @Service("baseParamsManager")
 public class BaseParamsManagerImpl implements IBaseParamsManager {
 
-	@Resource(name = "hibernateTemplate")
+	@Resource(name = "sysHibernateTemplate")
 	private HibernateTemplate hibernateTemplate;
 
 	public List<BaseParams> getBaseParams() {

@@ -10,7 +10,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.xs.dzyxh.entity.User;
+import com.xs.dzyxh.entity.system.User;
 
 public class UserInterceptor implements HandlerInterceptor {
 

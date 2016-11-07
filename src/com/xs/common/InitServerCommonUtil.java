@@ -22,13 +22,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.xs.common.Annotation.FunctionAnnotation;
 import com.xs.common.Annotation.ModuleAnnotation;
-import com.xs.dzyxh.entity.Department;
-import com.xs.dzyxh.entity.Power;
-import com.xs.dzyxh.entity.Role;
-import com.xs.dzyxh.entity.User;
-import com.xs.dzyxh.manager.IDepartmentManager;
-import com.xs.dzyxh.manager.IRoleManager;
-import com.xs.dzyxh.manager.IUserManager;
+import com.xs.dzyxh.entity.system.Department;
+import com.xs.dzyxh.entity.system.Power;
+import com.xs.dzyxh.entity.system.Role;
+import com.xs.dzyxh.entity.system.User;
+import com.xs.dzyxh.manager.sys.IDepartmentManager;
+import com.xs.dzyxh.manager.sys.IRoleManager;
+import com.xs.dzyxh.manager.sys.IUserManager;
 
 @Component("initServerCommonUtil")
 public class InitServerCommonUtil {

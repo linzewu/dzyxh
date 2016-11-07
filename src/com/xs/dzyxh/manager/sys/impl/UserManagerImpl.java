@@ -1,4 +1,4 @@
-package com.xs.dzyxh.manager.impl;
+package com.xs.dzyxh.manager.sys.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,14 +13,14 @@ import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Service;
 
 import com.xs.common.Common;
-import com.xs.dzyxh.entity.User;
-import com.xs.dzyxh.manager.IDepartmentManager;
-import com.xs.dzyxh.manager.IUserManager;
+import com.xs.dzyxh.entity.system.User;
+import com.xs.dzyxh.manager.sys.IDepartmentManager;
+import com.xs.dzyxh.manager.sys.IUserManager;
 
 @Service("userManager")
 public class UserManagerImpl implements IUserManager {
 
-	@Resource(name = "hibernateTemplate")
+	@Resource(name = "sysHibernateTemplate")
 	private HibernateTemplate hibernateTemplate;
 
 	@Resource(name = "departmentManager")

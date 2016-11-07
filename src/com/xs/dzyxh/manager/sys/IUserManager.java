@@ -1,8 +1,8 @@
-package com.xs.dzyxh.manager;
+package com.xs.dzyxh.manager.sys;
 
 import java.util.List;
 
-import com.xs.dzyxh.entity.User;
+import com.xs.dzyxh.entity.system.User;
 
 public interface IUserManager {
 	

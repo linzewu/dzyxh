@@ -1,4 +1,4 @@
-package com.xs.dzyxh.entity;
+package com.xs.dzyxh.entity.system;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -6,6 +6,8 @@ import javax.persistence.Table;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import com.xs.dzyxh.entity.BaseEntity;
 
 @Scope("prototype")
 @Component("department")

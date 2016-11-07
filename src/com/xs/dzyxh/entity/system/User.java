@@ -1,4 +1,4 @@
-package com.xs.dzyxh.entity;
+package com.xs.dzyxh.entity.system;
 
 import java.util.Date;
 
@@ -11,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.xs.dzyxh.entity.BaseEntity;
 
 @Scope("prototype")
 @Component("user")

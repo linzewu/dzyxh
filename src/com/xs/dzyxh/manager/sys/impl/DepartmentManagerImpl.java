@@ -1,4 +1,4 @@
-package com.xs.dzyxh.manager.impl;
+package com.xs.dzyxh.manager.sys.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,13 +10,13 @@ import org.hibernate.criterion.Order;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Service;
 
-import com.xs.dzyxh.entity.Department;
-import com.xs.dzyxh.manager.IDepartmentManager;
+import com.xs.dzyxh.entity.system.Department;
+import com.xs.dzyxh.manager.sys.IDepartmentManager;
 
 @Service("departmentManager")
 public class DepartmentManagerImpl implements IDepartmentManager {
 	
-	@Resource(name = "hibernateTemplate")
+	@Resource(name = "sysHibernateTemplate")
 	private HibernateTemplate hibernateTemplate;
 
 	@Override

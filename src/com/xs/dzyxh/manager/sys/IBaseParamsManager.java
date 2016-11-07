@@ -1,9 +1,9 @@
-package com.xs.dzyxh.manager;
+package com.xs.dzyxh.manager.sys;
 
 import java.util.List;
 import java.util.Map;
 
-import com.xs.dzyxh.entity.BaseParams;
+import com.xs.dzyxh.entity.system.BaseParams;
 import com.xs.web.util.PageInfo;
 
 public interface IBaseParamsManager {

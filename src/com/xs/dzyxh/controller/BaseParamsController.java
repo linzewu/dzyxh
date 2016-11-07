@@ -19,8 +19,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xs.common.ComputerInfoUtil;
 import com.xs.common.Constant;
 import com.xs.common.ResultHandler;
-import com.xs.dzyxh.entity.BaseParams;
-import com.xs.dzyxh.manager.IBaseParamsManager;
+import com.xs.dzyxh.entity.system.BaseParams;
+import com.xs.dzyxh.manager.sys.IBaseParamsManager;
 import com.xs.web.util.PageInfo;
 
 @Controller

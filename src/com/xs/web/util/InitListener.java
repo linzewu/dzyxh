@@ -16,10 +16,10 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.xs.common.DSACoder;
 import com.xs.common.InitServerCommonUtil;
-import com.xs.dzyxh.entity.BaseParams;
-import com.xs.dzyxh.entity.Power;
-import com.xs.dzyxh.manager.IBaseParamsManager;
-import com.xs.dzyxh.manager.IDepartmentManager;
+import com.xs.dzyxh.entity.system.BaseParams;
+import com.xs.dzyxh.entity.system.Power;
+import com.xs.dzyxh.manager.sys.IBaseParamsManager;
+import com.xs.dzyxh.manager.sys.IDepartmentManager;
 
 /**
  * Application Lifecycle Listener implementation class InitListener

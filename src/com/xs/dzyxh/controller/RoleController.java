@@ -18,9 +18,9 @@ import com.xs.common.Constant;
 import com.xs.common.ResultHandler;
 import com.xs.common.Annotation.FunctionAnnotation;
 import com.xs.common.Annotation.ModuleAnnotation;
-import com.xs.dzyxh.entity.Power;
-import com.xs.dzyxh.entity.Role;
-import com.xs.dzyxh.manager.IRoleManager;
+import com.xs.dzyxh.entity.system.Power;
+import com.xs.dzyxh.entity.system.Role;
+import com.xs.dzyxh.manager.sys.IRoleManager;
 
 @Controller
 @RequestMapping(value = "/role")

@@ -1,4 +1,4 @@
-package com.xs.dzyxh.entity;
+package com.xs.dzyxh.entity.system;
 
 public class Power {
 
