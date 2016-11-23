@@ -19,43 +19,48 @@ import javax.persistence.TemporalType;
 @Table(name = "TM_DRIVING_EXAMINATION", schema = "ARC_DRIVER")
 public class DrivingExamination implements java.io.Serializable {
 
-	private DrivingExaminationId id;
-	private String dabh;
-	private BigDecimal sg;
-	private BigDecimal zsl;
-	private BigDecimal ysl;
-	private Character bsl;
-	private Character tl;
-	private Character sz;
-	private Character zxz;
-	private Character yxz;
-	private Character qgjb;
-	private Date tjrq;
-	private String tjyymc;
-	private String lsh;
-	private Date gxsj;
-	private String xh;
-	private Character tlsfjz;
+	private DrivingExaminationId id;//联合主键
+	private String dabh;//档案编号
+	private BigDecimal sg;//身高
+	private BigDecimal zsl;//左视力
+	private BigDecimal ysl;//右视力
+	private Character bsl;//辨色力
+	private Character ztl;//左听力
+	private Character ytl;//右听力
+	private Character zsz;//左上肢
+	private Character ysz;//右上肢
+	private Character zxz;//左下肢
+	private Character yxz;//右下肢
+	private Character qgjb;//躯干颈部
+	private Date tjrq;//体检日期
+	private String tjyymc;//体检医院名称
+	private String lsh;//流水号
+	private Date gxsj;//更新时间
+	private String xh;//序号
+	private Character tlsfjz;//听力是否校正
 	private String fzjg;
 	private Character dyslze;
 	private BigDecimal yyspsy;
 	private Character zysfjz;
 	private Character yysfjz;
-	private String sqzjcxdh;
-	private String yjdz;
-	private String yjdh;
-	private Character sfjyjb;
-	private String jyjbqk;
-	private String wtdlrxm;
-	private String wtdlrsfzmc;
-	private String wtdlrsfzmhm;
-	private String wtdlrlxdz;
-	private String wtdlrlxdh;
-	private String sqfs;
-	private String sqrqzzp;
-	private String sqrqzp;
-	private String dlrqzzp;
+	private String sqzjcxdh;//申请/已具有的准驾车型代号
+	private String yjdz;//邮寄地址
+	private String yjdh;//邮寄电话
+	private Character sfjyjb;//是否具有疾病
+	private String jyjbqk;//具有疾病或情况
+	private String wtdlrxm;//委托代理人姓名
+	private String wtdlrsfzmc;//委托代理人身份名称
+	private String wtdlrsfzmhm;//委托代理人身份号码
+	private String wtdlrlxdz;//委托代理人联系地址
+	private String wtdlrlxdh;//委托代理人联系电话
+	private String sqfs;//申请方式
+	private String sqrqzzp;//申请人签字
+	private String sqrqzp;//医生签字
+	private String dlrqzzp;//代理人签字
 	private Character csbj;
+	private Date cjsj;// 创建时间
+	private String tjbzp;//体检表照片
+	
 
 	public DrivingExamination() {
 	}
@@ -65,19 +70,17 @@ public class DrivingExamination implements java.io.Serializable {
 	}
 
 	public DrivingExamination(DrivingExaminationId id, String dabh, BigDecimal sg, BigDecimal zsl, BigDecimal ysl,
-			Character bsl, Character tl, Character sz, Character zxz, Character yxz, Character qgjb, Date tjrq,
+			Character bsl, Character zxz, Character yxz, Character qgjb, Date tjrq,
 			String tjyymc, String lsh, Date gxsj, String xh, Character tlsfjz, String fzjg, Character dyslze,
 			BigDecimal yyspsy, Character zysfjz, Character yysfjz, String sqzjcxdh, String yjdz, String yjdh,
 			Character sfjyjb, String jyjbqk, String wtdlrxm, String wtdlrsfzmc, String wtdlrsfzmhm, String wtdlrlxdz,
-			String wtdlrlxdh, String sqfs, String sqrqzzp, String sqrqzp, String dlrqzzp, Character csbj) {
+			String wtdlrlxdh, String sqfs, String sqrqzzp, String sqrqzp, String dlrqzzp, Character csbj, Date cjsj) {
 		this.id = id;
 		this.dabh = dabh;
 		this.sg = sg;
 		this.zsl = zsl;
 		this.ysl = ysl;
 		this.bsl = bsl;
-		this.tl = tl;
-		this.sz = sz;
 		this.zxz = zxz;
 		this.yxz = yxz;
 		this.qgjb = qgjb;
@@ -107,6 +110,7 @@ public class DrivingExamination implements java.io.Serializable {
 		this.sqrqzp = sqrqzp;
 		this.dlrqzzp = dlrqzzp;
 		this.csbj = csbj;
+		this.cjsj = cjsj;
 	}
 
 	@EmbeddedId
@@ -165,24 +169,6 @@ public class DrivingExamination implements java.io.Serializable {
 
 	public void setBsl(Character bsl) {
 		this.bsl = bsl;
-	}
-
-	@Column(name = "TL", length = 1)
-	public Character getTl() {
-		return this.tl;
-	}
-
-	public void setTl(Character tl) {
-		this.tl = tl;
-	}
-
-	@Column(name = "SZ", length = 1)
-	public Character getSz() {
-		return this.sz;
-	}
-
-	public void setSz(Character sz) {
-		this.sz = sz;
 	}
 
 	@Column(name = "ZXZ", length = 1)
@@ -446,6 +432,56 @@ public class DrivingExamination implements java.io.Serializable {
 
 	public void setCsbj(Character csbj) {
 		this.csbj = csbj;
+	}
+
+	@Temporal(TemporalType.DATE)
+	@Column(name = "CJSJ", length = 7)
+	public Date getCjsj() {
+		return this.cjsj;
+	}
+
+	public void setCjsj(Date cjsj) {
+		this.cjsj = cjsj;
+	}
+	@Column(name = "TJBZP", length = 32)
+	public String getTjbzp() {
+		return tjbzp;
+	}
+
+	public void setTjbzp(String tjbzp) {
+		this.tjbzp = tjbzp;
+	}
+	@Column(name = "ZTL", length = 1)
+	public Character getZtl() {
+		return ztl;
+	}
+
+	public void setZtl(Character ztl) {
+		this.ztl = ztl;
+	}
+	@Column(name = "YTL", length = 1)
+	public Character getYtl() {
+		return ytl;
+	}
+
+	public void setYtl(Character ytl) {
+		this.ytl = ytl;
+	}
+	@Column(name = "ZSZ", length = 1)
+	public Character getZsz() {
+		return zsz;
+	}
+
+	public void setZsz(Character zsz) {
+		this.zsz = zsz;
+	}
+	@Column(name = "YSZ", length = 1)
+	public Character getYsz() {
+		return ysz;
+	}
+
+	public void setYsz(Character ysz) {
+		this.ysz = ysz;
 	}
 
 }
