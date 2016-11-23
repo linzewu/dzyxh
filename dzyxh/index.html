@@ -2,47 +2,147 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" type="text/css" href="/dzyxh/js/easyui/themes/gray/easyui.css">
-<link rel="stylesheet" type="text/css" href="/dzyxh/js/easyui/themes/color.css">
+<link rel="stylesheet" type="text/css"
+	href="/dzyxh/js/easyui/themes/gray/easyui.css">
+<link rel="stylesheet" type="text/css"
+	href="/dzyxh/js/easyui/themes/color.css">
 <link rel="stylesheet" type="text/css" href="/dzyxh/css/vhe_.css">
 <link rel="stylesheet" type="text/css" href="/dzyxh/css/base.css">
-<link rel="stylesheet" type="text/css" href="/dzyxh/js/easyui/themes/icon.css">
+<link rel="stylesheet" type="text/css"
+	href="/dzyxh/js/easyui/themes/icon.css">
 <script type="text/javascript" src="/dzyxh/js/easyui/jquery.min.js"></script>
 <script type="text/javascript" src="/dzyxh/js/json2.js"></script>
-<script type="text/javascript" src="/dzyxh/js/easyui/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="/dzyxh/js/easyui/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript"
+	src="/dzyxh/js/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript"
+	src="/dzyxh/js/easyui/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript" src="/dzyxh/js/my97/WdatePicker.js"></script>
-<script type="text/javascript" src="/dzyxh/js/easyui/datagrid-groupview.js"></script>
+<script type="text/javascript"
+	src="/dzyxh/js/easyui/datagrid-groupview.js"></script>
 <script type="text/javascript" src="/dzyxh/js/highcharts/highcharts.js"></script>
- <script type="text/javascript" src="/dzyxh/js/highcharts/highcharts-3d.js"></script>
- <script type="text/javascript" src="/dzyxh/js/common.js"></script>
+<script type="text/javascript"
+	src="/dzyxh/js/highcharts/highcharts-3d.js"></script>
+<script type="text/javascript" src="/dzyxh/js/common.js"></script>
 <script type="text/javascript" src="/dzyxh/js/dzyxh.js"></script>
 <script type="text/javascript" src="/dzyxh/js/extendValidate.js"></script>
 <script type="text/javascript" src="/dzyxh/bps/all.js"></script>
 <script type="text/javascript" src="/dzyxh/js/datas.js"></script>
-
+<script type="text/javascript" src="js/drag_map.js"></script>
+<script type="text/javascript" src="js/jquery.printPage.js"></script>
 <title>电子档案影像化管理系统</title>
+<style type="text/css">
+#Layer1 {
+	z-index: 100;
+	position: absolute;
+	top: 150px;
+	right: 30px
+}
+</style>
 </head>
 <body class="easyui-layout">
-	<div data-options="region:'north'" style="height:84px;border: 0;background-color: rgb(40,82,180);overflow-x: hidden; overflow-y: hidden;  ">
+
+	<div data-options="region:'north'"
+		style="height: 84px; border: 0; background-color: rgb(40, 82, 180); overflow-x: hidden; overflow-y: hidden;">
 		<img alt="" src="images/top_logo.jpg" style="border: 0">
 	</div>
-    <div data-options="region:'south'" style="height:30px;"></div>
-    <div data-options="region:'center',border: 0">
-    	<div class="easyui-tabs" data-options="fit:true,tabHeight:30">
-		    <div title="窗口采集" data-options="href:'page/window.html',onLoad:win.initEvents">
-		    </div>
-		    <div title="业务监督管理" data-options="href:'page/business.html',onLoad:business.initEvents">
-		    </div>
-		    <div title="库房管理"  data-options="href:'page/storage.html',onLoad:storage.initEvents">
-		    </div>
-		     <div title="系统管理"  data-options="href:'page/system.html',onLoad:system.initEvents">
-		    </div>
+	<div data-options="region:'south'" style="height: 30px;"></div>
+	<div data-options="region:'center',border: 0">
+		<div class="easyui-tabs" data-options="fit:true,tabHeight:30">
+			<div title="窗口采集"
+				data-options="href:'page/window.html',onLoad:win.initEvents">
+			</div>
+			<div title="业务监督管理"
+				data-options="href:'page/business.html',onLoad:business.initEvents">
+			</div>
+			<div title="库房管理"
+				data-options="href:'page/storage.html',onLoad:storage.initEvents">
+			</div>
+			<div title="系统管理"
+				data-options="href:'page/system.html',onLoad:system.initEvents">
+			</div>
 		</div>
 	</div>
-	<div id="comm_window" class="easyui-window" data-options="title:'comon window',closed:true" ></div>
-	<div class="easyui-window" id="imgWindow"  style="width: 680px;height: 400px" title="图像" data-options="closed:true">
-	<img alt="" src="" style="width: 100%;height: 100%;" id="bigImg">
-</div>
+	<div id="comm_window" class="easyui-window"
+		data-options="title:'comon window',closed:true"></div>
+	<div class="easyui-window" id="imgWindow"
+		style="width: 80%; height: 80%" title="图像" data-options="closed:true">
+		<div style="background-color: #e8e4e0;height: 100%">
+		<div id="Layer1">
+			<table cellspacing="2" cellpadding="0" border="0">
+				<tbody>
+					<tr>					
+						<td colspan="3" align="center"><input type="button" value="打印" onclick="pringImg();" style="width: 50px;height: 20px;cursor: pointer;"></td>					
+					</tr>
+					<tr>
+						<td colspan="3">&nbsp;</td>
+					</tr>
+					<tr>	
+						<td colspan="3" align="center"><input type="button" value="下载"  onclick="dowImg();" style="width: 50px;height: 20px;cursor: pointer;"></td>			
+					</tr>
+					<tr>
+						<td colspan="3">&nbsp;</td>				
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td><img title="向上" style="cursor: pointer;"
+							onClick="clickMove1('down');" height="20" src="images/up.gif"
+							width="20"></td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td><img title="向左" style="cursor: pointer"
+							onClick="clickMove1('right');" height="20" src="images/left.gif"
+							width="20"></td>
+						<td><img title="还原" style="cursor: pointer"
+							onClick="realsize();" height="20" src="images/zoom.gif"
+							width="20"></td>
+						<td><img title="向右" style="cursor: pointer"
+							onClick="clickMove1('left');" height="20" src="images/right.gif"
+							width="20"></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td><img title="向下" style="cursor: pointer"
+							onClick="clickMove1('up');" height="20" src="images/down.gif"
+							width="20"></td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td><img title="放大" style="cursor: pointer" onClick="bigit();"
+							height="20" src="images/zoom_in.gif" width="20"></td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td><img title="缩小" style="cursor: pointer" onClick="smallit();"
+							height="20" src="images/zoom_out.gif" width="20"></td>
+						<td>&nbsp;</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div id="hiddenPic"
+			style="z-index: 1; left: 50px; visibility: hidden; width: 0px; position: absolute; top: 100px; height: 0px">
+			<img
+				src=""
+				border="0" name="images2"  class="bigImg">
+		</div>
+		<div class="dragAble" id="block1"
+			onMouseOver="dragObj=block1; drag=1;"
+			style="z-index: 10; left: 10px; width: 0px; position: absolute; top: 150px; height: 0px"
+			onMouseOut="" drag="0">
+			<img onmousewheel="return onWheelZoom(this)" style="zoom: 0.7"
+				src="g" border="0"
+				name="images1" class="bigImg">
+		</div>
+		<a href="" id="printImg"></a>
+		</div>
+	</div>
 </body>
+<script type="text/javascript">
+$(function(){
+	$("#printImg").printPage();
+})
+</script>
 </html>

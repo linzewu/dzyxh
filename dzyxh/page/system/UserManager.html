@@ -86,7 +86,7 @@ function deleteUser(){
 function passwordReset(){
 	
 	var row = $("#userManager").datagrid("getSelected");
-	
+
 	if(!row){
 		$.messager.alert("提示","请选择重置密码的用户！","info");
 		return;

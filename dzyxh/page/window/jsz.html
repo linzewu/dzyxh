@@ -1,27 +1,94 @@
-<table id="pdgrid" class="easyui-datagrid"
-	data-options="data:jszdata,fitColumns:true,singleSelect:true,fit:true,toolbar:pdToolbar">
-	<thead> 
+<table id="drvBaseManager" class="easyui-datagrid"
+	data-options="url:'dbc/getDriBases',fitColumns:true,singleSelect:true,fit:true,toolbar:drvBaseManagerToolbar,pagination:true">
+	<thead>
 		<tr>
-			<th data-options="field:'dzpdh',width:10">电子排队号</th>
-			<th data-options="field:'ywlx',width:10">业务流水号</th>
-			<th data-options="field:'ywlsh',width:20">业务类型</th>
-			<th data-options="field:'xm',width:20">姓名</th>
-			<th data-options="field:'zjlx',width:30">证件类型</th>
-			<th data-options="field:'zjhm',width:10">证件号码</th>
+			<th data-options="field:'xm',width:10">姓名</th>
+			<th data-options="field:'sfzmhm',width:10">身份证明号码</th>
+			<th data-options="field:'xb',width:20" formatter="formatterXb">性别</th>
+			<th data-options="field:'qh',width:10">期号</th>
+			<th data-options="field:'jxdm',width:30" formatter="formatterJxdm">驾校</th>
+			<th data-options="field:'csrq',width:20">出生日期</th>
+			<th data-options="field:'sjhm',width:10">手机号码</th>
 		</tr>
 	</thead>
 </table>
+<div id="tb" style="padding: 2px 5px;">
+	<div>
+		<div id="drvBaseManagerToolbar">
+			<div>
+				<br />&ensp; <label>姓名：</label><input type="text"
+					style="width: 60px" name="xm" /> <label>身份证号：</label><input
+					type="text" style="width: 160px" name="sfzmhm" /> <label>驾校：</label><select
+					name="jxdm" style="width: 180px"></select>
+				<!--<label>性别：</label><select name="xb"></select> 
+		 <label>证件号码：</label><input type="text" class="easyui-textbox" /> -->
+				<br /> <br />&ensp; <label>期号：</label><input type="text"
+					style="width: 60px" name="qh" /> <label>从：</label><input
+					type="text" readonly="readonly" style="width: 100px"
+					onFocus="WdatePicker()" class="Wdate" name="cjsjks" />到<input
+					type="text" readonly="readonly" style="width: 100px"
+					onFocus="WdatePicker()" class="Wdate" name="cjsjjs" /> <a href="#"
+					class="easyui-linkbutton" data-options="iconCls:'icon-search'"
+					onclick="queryBase()">查询</a> <a href="#" class="easyui-linkbutton"
+					data-options="iconCls:'icon-edit'" onclick="minuteInfo()">档案明细</a>
+			</div>
 
-<div id="pdToolbar">
-	<div>
-		<label>流水号：</label><input type="text" class="easyui-textbox" />
-		<label>业务类型：</label><input type="text" class="easyui-combobox" data-options="data:ywlx,valueField:'id',textField:'text'" />
-		<label>证件类型：</label><input type="text" class="easyui-combobox" data-options="data:zjlx,valueField:'id',textField:'text'"  />
-		<label>证件号码：</label><input type="text" class="easyui-textbox" />
-	</div>
-	<div>&nbsp;</div>
-	<div>
-		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" >查询</a>
-		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="comm.openComWindow('/dzyxh/page/window/jszInfo.html',{title:'档案详细信息',fit:true,top:0,left:0})" >档案明细</a>
-	</div>
-</div>
+		</div>
+		</div>
+
+		</div>
+		<script>
+			comm.createBaseSelect("#drvBaseManagerToolbar select[name=jxdm]",
+					"jxdm", "请选择");
+			//comm.createBaseSelect("#drvBaseManagerToolbar select[name=xb]","9008","请选择");
+			function queryBase() {
+
+				var param = {};
+
+				var xm = $("#drvBaseManagerToolbar input[name=xm]").val();
+
+				var sfzmhm = $("#drvBaseManagerToolbar input[name=sfzmhm]")
+						.val();
+				var qh = $("#drvBaseManagerToolbar input[name=qh]").val();
+
+				var jxdm = $("#drvBaseManagerToolbar select[name=jxdm]").val();
+
+				var cjsjks = $("#drvBaseManagerToolbar input[name=cjsjks]")
+						.val();
+
+				var cjsjjs = $("#drvBaseManagerToolbar input[name=cjsjjs]")
+						.val();
+
+				param.xm = xm;
+				param.sfzmhm = sfzmhm;
+				param.qh = qh;
+				param.jxdm = jxdm;
+				param.cjsjks = cjsjks;
+				param.cjsjjs = cjsjjs;
+				$("#drvBaseManager").datagrid("reload", param);
+
+			}
+			function formatterXb(value, row, index) {
+				return comm.getParamNameByValue("xb", value);
+			}
+			function formatterJxdm(value, row, index) {
+				return comm.getParamNameByValue("jxdm", value);
+			}
+			function minuteInfo() {
+
+				var row = $("#drvBaseManager").datagrid("getSelected");
+
+				if (!row) {
+					$.messager.alert("提示", "请选择一行信息！", "info");
+					return;
+				} else {
+					comm.openComWindow('/dzyxh/page/window/jszInfo.html', {
+						title : '驾驶人信息',
+						fit : true,
+						top : 0,
+						left : 0
+					});
+				}
+
+			}
+		</script>
