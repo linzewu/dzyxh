@@ -26,7 +26,8 @@
 	z-index: 9999999;
 	position: absolute;
 	top: 150px;
-	right: 30px
+	right: 30px;
+	display: none;
 }
 </style>
 <div id="mask"></div>
@@ -396,8 +397,10 @@
 	function closeMask() {
 		var oMask = document.getElementById('mask');
 		var oImg = document.getElementById('img');
+		var layer1 = document.getElementById('Layer1');
 		oMask.style.display = 'none';
 		oImg.style.display = 'none';
+		layer1.style.display = 'none';
 	}
 	function init() {
 		var row = $("#drvBaseManager").datagrid("getSelected");
@@ -447,8 +450,10 @@
 	function openMask() {
 		var oMask = document.getElementById('mask');
 		var oImg = document.getElementById('img');
+		var layer1 = document.getElementById('Layer1');
 		oMask.style.display = 'block';
 		oImg.style.display = 'block';
+		layer1.style.display = 'block';
 		oMask.style.width = document.documentElement.clientWidth + 'px';
 		oMask.style.height = document.documentElement.clientHeight + 'px';
 		oImg.style.left = (document.documentElement.clientWidth - imgWidth) / 2
