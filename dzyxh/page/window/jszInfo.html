@@ -388,8 +388,19 @@
 		$('#comm_window').window('close'); // close a window
 	}
 	function selectBase() {
-		$("#select_window").window('open').window('refresh',
-				"/dzyxh/page/window/jszSelect.html"); // open a window
+		$.post("dbc/getDriBases",serializeObject($("#drvBaseSelectForm")), function(data, status) {
+			if (status == "success") {
+				if(data.total==0){
+					alert("没有找到符合条件的数据");
+				}else if(data.total==1){
+					initEditAttr(data.rows[0].sfzmhm);
+				}else{
+					$("#select_window").window('open').window('refresh',
+							"/dzyxh/page/window/jszSelect.html"); // open a window
+				}			
+			}
+		});
+		
 	}
 	function select_windowClose() {
 		$('#select_window').window('close'); // close a window
@@ -468,6 +479,18 @@
 		block1.style.left ="10px";
 		block1.style.top = imgTop*2+"px";
 
+	}
+	//将表单序列化
+	function serializeObject(form) {
+		var o = {};
+		$.each(form.serializeArray(), function(index) {
+			if (o[this['name']]) {
+				o[this['name']] = o[this['name']] + "," + this['value'];
+			} else {
+				o[this['name']] = this['value'];
+			}
+		})
+		return o;
 	}
 	init();
 	//openMask();
