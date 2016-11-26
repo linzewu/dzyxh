@@ -1,0 +1,48 @@
+<table id="drvBaseSelectManager" 
+	data-options="fitColumns:true,singleSelect:true,fit:true,pagination:true">
+	<thead>
+		<tr>
+			<th data-options="field:'xm',width:10">姓名</th>
+			<th data-options="field:'sfzmhm',width:30">身份证明号码</th>
+			<th data-options="field:'xb',width:20" formatter="formatterXb">性别</th>
+			<th data-options="field:'qh',width:10">期号</th>
+			<th data-options="field:'jxdm',width:30" formatter="formatterJxdm">驾校</th>
+			<th data-options="field:'op',width:30" formatter="formatterop">操作</th>
+		</tr>
+	</thead>
+</table>
+
+<script>
+	$(function() {
+		$('#drvBaseSelectManager').datagrid({
+			url : 'dbc/getDriBases',
+			queryParams : serializeObject($("#drvBaseSelectForm")),
+			onLoadSuccess :function(data){alert()}
+		});
+	});
+	//将表单序列化
+	function serializeObject(form) {
+		var o = {};
+		$.each(form.serializeArray(), function(index) {
+			if (o[this['name']]) {
+				o[this['name']] = o[this['name']] + "," + this['value'];
+			} else {
+				o[this['name']] = this['value'];
+			}
+		})
+		return o;
+	}
+	function formatterop(value, row, index){
+		return '<input type="button" value="选择"  onclick="selctInfo(\''+row.sfzmhm+'\');" style="width: 50px;height: 20px;cursor: pointer;">';
+	}
+	function selctInfo(sfzmhm){
+		initEditAttr(sfzmhm);
+		select_windowClose();
+	}
+	function formatterXb(value, row, index) {
+		return comm.getParamNameByValue("xb", value);
+	}
+	function formatterJxdm(value, row, index) {
+		return comm.getParamNameByValue("jxdm", value);
+	}
+</script>

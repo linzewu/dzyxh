@@ -1,58 +1,187 @@
+<style>
+#mask {
+	position: absolute;
+	left: 0;
+	top: 0;
+	background: #000;
+	opacity: 0.3;
+	filter: Alpha(opacity : 30);
+	display: none;
+	z-index: 99999;
+}
+
+#img {
+	position: absolute;
+	display: none;
+	z-index: 999999;
+}
+
+#img img {
+	/* 	width: 500px;
+	height: 400px; */
+	border: none;
+}
+
+#Layer1 {
+	z-index: 9999999;
+	position: absolute;
+	top: 150px;
+	right: 30px
+}
+</style>
+<div id="mask"></div>
+<div id="Layer1">
+	<table cellspacing="2" cellpadding="0" border="0">
+		<tbody>
+			<tr>
+				<td colspan="3" align="center"><input type="button" value="关闭"
+					onclick="closeMask();"
+					style="width: 50px; height: 20px; cursor: pointer;"></td>
+			</tr>
+			<tr>
+				<td colspan="3">&nbsp;</td>
+			</tr>
+			<tr>
+				<td colspan="3" align="center"><input type="button" value="打印"
+					onclick="pringImg();"
+					style="width: 50px; height: 20px; cursor: pointer;"></td>
+			</tr>
+			<tr>
+				<td colspan="3">&nbsp;</td>
+			</tr>
+			<tr>
+				<td colspan="3" align="center"><input type="button" value="下载"
+					onclick="dowImg();"
+					style="width: 50px; height: 20px; cursor: pointer;"></td>
+			</tr>
+			<tr>
+				<td colspan="3">&nbsp;</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td><img title="向上" style="cursor: pointer;"
+					onClick="clickMove1('down');" height="20" src="images/up.gif"
+					width="20"></td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td><img title="向左" style="cursor: pointer"
+					onClick="clickMove1('right');" height="20" src="images/left.gif"
+					width="20"></td>
+				<td><img title="还原" style="cursor: pointer"
+					onClick="realsize();" height="20" src="images/zoom.gif" width="20"></td>
+				<td><img title="向右" style="cursor: pointer"
+					onClick="clickMove1('left');" height="20" src="images/right.gif"
+					width="20"></td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td><img title="向下" style="cursor: pointer"
+					onClick="clickMove1('up');" height="20" src="images/down.gif"
+					width="20"></td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td><img title="放大" style="cursor: pointer" onClick="bigit();"
+					height="20" src="images/zoom_in.gif" width="20"></td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td><img title="缩小" style="cursor: pointer"
+					onClick="smallit();" height="20" src="images/zoom_out.gif"
+					width="20"></td>
+				<td>&nbsp;</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div id="img">
+	<div id="hiddenPic"
+		style="z-index: 1; left: 50px; visibility: hidden; width: 0px; position: absolute; top: 100px; height: 0px">
+		<img src="" border="0" name="images2" class="bigImg">
+	</div>
+	<div class="dragAble" id="block1" onMouseOver="dragObj=block1; drag=1;"
+		style="z-index: 10; left: 10px; width: 0px; position: absolute; top: 150px; height: 0px"
+		onMouseOut="" drag="0">
+		<img onmousewheel="return onWheelZoom(this)" style="zoom: 1" src="g"
+			border="0" name="images1" class="bigImg">
+	</div>
+	<a href="" id="printImg"></a>
+</div>
+
 <div class="easyui-layout" data-options="fit:true">
 	<div data-options="region:'center'"
 		style="padding: 5px; background: #eee;">
-		<!-- 	<fieldset class="base_fl">
-	 		<legend>查询条件</legend>
-		 	<table class="base_table" cellpadding="0"  cellspacing="0">
-		 		<tr>
-					<td class="info_title"><label for="date">业务流水号:</label></td>
-					<td class="info"><input class="easyui-textbox" /></td>
-					<td class="info_title"><label for="date">业务类型:</label></td>
-					<td class="info"><input class="easyui-combobox" data-options="data:ywlx,valueField:'id',textField:'text'" /></td>
-				</tr>
-				<tr>
+
+		<fieldset class="base_fl">
+			<legend>查询条件</legend>
+			<form id="drvBaseSelectForm">
+				<table class="base_table" id="drvBaseSelect"
+					style="min-width: 460px;" cellpadding="0" cellspacing="0">
+					<tr>
+						<td class="info_title"><label for="date">姓名:</label></td>
+						<td class="info"><input name="xm" /></td>
+						<td class="info_title"><label for="date">身份证号:</label></td>
+						<td class="info"><input name="sfzmhm" /></td>
+					</tr>
+					<!-- <tr>
 					<td class="info_title"><label for="date">证件名称:</label></td>
-					<td class="info"><input class="easyui-combobox" data-options="data:zjlx,valueField:'id',textField:'text'" /></td>
+					<td class="info"><select name="sfzmmc" style="width: 172px"></select></td>
 					<td class="info_title"><label for="date">证件号码:</label></td>
-					<td class="info"><input class="easyui-textbox" value="445121198801104766" /></td>
-				</tr>
-				<tr>
-					<td class="info_title"><label for="date">姓名:</label></td>
-					<td class="info"><input class="easyui-textbox" value="张三" /></td>
-					<td class="info_title"><label for="date">档案编号:</label></td>
-					<td class="info"><input class="easyui-textbox" /></td>
-				</tr>
-		 	</table>
-		 	<div style="text-align: right;"> 
-		 		<a href="#" class="easyui-linkbutton c6" style="width:80px;margin-top: 6px;">查询</a>
-		 		<a href="#" class="easyui-linkbutton c2" style="width:80px;margin-top: 6px;">退出</a>
-		 	</div>
-	 	</fieldset> -->
+					<td class="info"><input name="sfzmhm" /></td>
+				</tr> -->
+					<tr>
+						<td class="info_title"><label for="date">期号:</label></td>
+						<td class="info"><input name="qh" /></td>
+						<td class="info_title"><label for="date">驾校:</label></td>
+						<td class="info"><select name="jxdm" style="width: 172px"></select></td>
+					</tr>
+					<tr>
+						<td class="info_title"><label for="date">时间:</label></td>
+						<td class="info" colspan="3"><input type="text"
+							readonly="readonly" style="width: 100px" onFocus="WdatePicker()"
+							class="Wdate" name="cjsjks" />到<input type="text"
+							readonly="readonly" style="width: 100px" onFocus="WdatePicker()"
+							class="Wdate" name="cjsjjs" /></td>
+					</tr>
+				</table>
+			</form>
+			<div style="text-align: right;">
+				<a href="#" class="easyui-linkbutton c6"
+					style="width: 80px; margin-top: 6px;" onclick="selectBase();">查询</a>
+				<a href="#" class="easyui-linkbutton c2"
+					style="width: 80px; margin-top: 6px;" onclick="windowClose();">退出</a>
+			</div>
+		</fieldset>
 		<fieldset class="base_fl">
 			<legend>驾驶人信息</legend>
-			<table class="base_table" cellpadding="0" cellspacing="0">
+			<table class="base_table"
+				style="min-width: 460px; min-height: 380px; margin: 5px 5px 5px 5px"
+				cellpadding="0" cellspacing="0">
 				<tr>
-					<td class="info_title"><label >姓名:</label></td>
+					<td class="info_title"><label>姓名:</label></td>
 					<td class="info" id="xm"></td>
-					<td class="info_title"><label >性别:</label></td>
+					<td class="info_title"><label>性别:</label></td>
 					<td class="info" id="xb"></td>
 				</tr>
 				<tr>
-					<td class="info_title"><label >证件名称:</label></td>
+					<td class="info_title"><label>证件名称:</label></td>
 					<td class="info" id="sfzmmc"></td>
-					<td class="info_title"><label >证件号码:</label></td>
+					<td class="info_title"><label>证件号码:</label></td>
 					<td class="info" id="sfzmhm"></td>
 
 				</tr>
 				<tr>
-					<td class="info_title"><label >出生日期:</label></td>
+					<td class="info_title"><label>出生日期:</label></td>
 					<td class="info" id="csrq"></td>
-					<td class="info_title"><label >国籍:</label></td>
+					<td class="info_title"><label>国籍:</label></td>
 					<td class="info" id="gj"></td>
 				</tr>
 				<tr>
 
-					<td class="info_title"><label >联系电话:</label></td>
+					<td class="info_title"><label>联系电话:</label></td>
 					<td class="info" id="lxdh"></td>
 					<td class="info_title"><label>电子邮箱:</label></td>
 					<td class="info" id="dzyx"></td>
@@ -60,13 +189,13 @@
 				<tr>
 					<td class="info_title"><label>期号:</label></td>
 					<td class="info" id="qh"></td>
-					<td class="info_title"><label >驾校:</label></td>
+					<td class="info_title"><label>驾校:</label></td>
 					<td class="info" id="jxdm"></td>
 				</tr>
 				<tr>
-					<td class="info_title"><label >登记住所行政区划:</label></td>
+					<td class="info_title"><label>登记住所行政区划:</label></td>
 					<td class="info" id="djzsxzqh"></td>
-					<td class="info_title"><label >登记住所详细地址:</label></td>
+					<td class="info_title"><label>登记住所详细地址:</label></td>
 					<td class="info" id="djzsxxdz"></td>
 				</tr>
 				<tr>
@@ -76,13 +205,13 @@
 					<td class="info" id="lxzsxxdz"></td>
 				</tr>
 				<tr>
-					<td class="info_title"><label >邮政编码:</label></td>
+					<td class="info_title"><label>邮政编码:</label></td>
 					<td class="info" id="lxzsyzbm"></td>
 					<td class="info_title"><label>是否本地:</label></td>
 					<td class="info" id="sfbd"></td>
 				</tr>
 				<tr>
-					<td class="info_title" ><label>暂住证明:</label></td>
+					<td class="info_title"><label>暂住证明:</label></td>
 					<td class="info" id="zzzm"></td>
 					<td class="info_title"><label>更新时间:</label></td>
 					<td class="info" id="gxsj"></td>
@@ -90,155 +219,161 @@
 
 			</table>
 		</fieldset>
-
 	</div>
-	<div data-options="region:'east',title:'业务信息'" style="width: 60%;">
+	<div data-options="region:'east',title:''"
+		style="width: 60%; border: 0">
 		<div class="easyui-layout" data-options="fit:true">
-			<div data-options="region:'center'" style="padding: 5px;">
-				<div  id="businessInfo">		
-				</div>
-				<!-- <div data-options="region:'south'" style="height: 40px;text-align: center;">
-	 			 <a href="#" class="easyui-linkbutton c6" style="width:120px;margin-top: 6px;">拍照</a>
-	 		</div> -->
-	 	<!-- 	<div data-options="title:'驾驶人考试'">
-						<div class="products">
-							<ul>
-								<li><a href="#" class="item"> <img src="images/b1.jpg" />
-										<div>
-											<p>驾驶证</p>
-										</div>
-								</a></li>
-								<li><a href="#" class="item"> <img src="images/b2.jpg" />
-										<div>
-											<p>资料照片</p>
-										</div>
-								</a></li>
-								<li><a href="#" class="item"> <img src="images/b3.jpg" />
-										<div>
-											<p>资料照片</p>
-										</div>
-								</a></li>
-								<li><a href="#" class="item"> <img src="images/c5.jpg" />
-										<div>
-											<p>身份证</p>
-										</div>
-								</a></li>
-								<li><a href="#" class="item"> <img src="images/c6.jpg" />
-										<div>
-											<p>身份证</p>
-										</div>
-								</a></li>
-								<li><a href="#" class="item"> <img src="images/c6.jpg" />
-										<div>
-											<p>身份证</p>
-										</div>
-								</a></li>
-								<li><a href="#" class="item"> <img src="images/c6.jpg" />
-										<div>
-											<p>身份证</p>
-										</div>
-								</a></li>
-								<li><a href="#" class="item"> <img src="images/c6.jpg" />
-										<div>
-											<p>身份证</p>
-										</div>
-								</a></li>
-								<li><a href="#" class="item"> <img src="images/c6.jpg" />
-										<div>
-											<p>身份证</p>
-										</div>
-								</a></li>
-							</ul>
-						</div>
-					</div>
-				 -->
+			<div data-options="region:'center'" style="padding: 0px;"
+				id="businessInfoBase">
+				<div id="businessInfo"></div>
 			</div>
 		</div>
 	</div>
 </div>
+<div id="select_window" style="width: 60%; height: 40%"
+	class="easyui-window"
+	data-options="title:'选择驾驶人',modal:true,closed:true"></div>
 <script type="text/javascript">
+	comm.createBaseSelect("#drvBaseSelect select[name=jxdm]", "jxdm", "请选择");
+
 	//业务数据缓存
-	var  temp={},fulfilLoad={};
+	var temp = {}, fulfilLoad = {}, imgWidth = 0, imgHeight = 0,imgLeft=0,imgTop=0;
 
 	// 创建业务信息标签页
-	function addTabs(rows){
-		var tabs=$("#businessInfo");
-		$.each(rows,function(i,val){
-			var options="<div data-options=\"title:'"+val.ywlx+"'\"><div class='products'></div></div>";
+	function addTabs(rows) {
+		var businessInfoBase = $("#businessInfoBase");
+		businessInfoBase.html("");
+		var tabs = $("<div id=\"businessInfo\"></div>");
+		businessInfoBase.append(tabs);
+
+		temp = {}, fulfilLoad = {};
+		$.each(rows, function(i, val) {
+			var options = "<div data-options=\"title:'"
+					+ comm.getParamNameByValue("ywlx", val.ywlx)
+					+ "'\"><div class='products'></div></div>";
 			tabs.append(options);
-			if(!val.dabh){
-				val["dabh"]="";
+			if (!val.dabh) {
+				val["dabh"] = "";
 			}
-			if(!val.sqrq){
-				val["sqrq"]="";
+			if (!val.sqrq) {
+				val["sqrq"] = "";
 			}
-			if(!val.sqyq){
-				val["sqyq"]="";
+			if (!val.sqyq) {
+				val["sqyq"] = "";
 			}
-			temp[i]=val;
+			temp[i] = val;
 		});
 		//添加事件
-		$('#businessInfo').tabs({
-		    border:false,
-		    onSelect:function(title,index){
-		   /*  	alert(JSON.stringify(temp[index]) ); */
-				//加载过不在加载
-		    	if(!fulfilLoad[index]){	
-		    		//驾驶人信息
-		    		var data=temp[index],table=$('<div><fieldset class="base_fl"><legend>业务信息</legend><table class="base_table" cellpadding="0" cellspacing="0"><tr><td class="info_title"><label >业务类型:</label></td><td class="info" id="">'+comm.getParamNameByValue("ywlx", data.ywlx)+'</td><td class="info_title"><label >流水号:</label></td><td class="info" id="">'+data.lsh+'</td></tr>'+
-		    				'<tr><td class="info_title"><label >档案编号:</label></td><td class="info" id="">'+data.dabh+'</td><td class="info_title"><label >申请日期:</label></td><td class="info" id="">'+data.sqrq+'</td></tr>'+
-		    				'<tr><td class="info_title"><label >申请原因:</label></td><td class="info" id="" colspan="3">'+data.sqyq+'</td></tr>'
-		    				+'</table></fieldset></div>');
-		    		
-		    		//图片信息
-		    		var tab=$('<div class="products"><ul></ul></div>');	 
-		    		var params="";
-		    		if(data.lsh&&data.lsh.length>0){
-		    			//使用流水号查询
-		    			params+="lsh="+data.lsh;
-		    		}else{
-		    			//身份证、期号、驾校代码
-		    			if(data.id.sfzmhm){
-			    			params+="id.sfzmhm="+data.id.sfzmhm+"&";
-			    		}
-			    		if(data.id.qh){
-			    			params+="id.qh="+data.id.qh+"&";
-			    		}
-			    		if(data.id.jxdm){
-			    			params+="id.jxdm="+data.id.jxdm+"&";
-			    		}
-		    		}
-		    		tab.append("<li><a href=\"#\" class=\"item\"> <img src=\"apply/getApplyPic?"+params+"\" /><div><p>申请表</p></div></a></li>");
-		    		tab.append("<li><a href=\"#\" class=\"item\"> <img src=\"exa/getExaPic?"+params+"\" /><div><p>体检表</p></div></a></li>");	    		
-		    		var picIds=data.picIds;
-		    		$.each(picIds,function (i,val){
-		    			tab.append("<li><a href=\"#\" class=\"item\"> <img src=\"img/getDriBaseById?id="+val+"\" /><div><p>照片</p></div></a></li>");
-		    		});
-		    		table.append($('<fieldset class="base_fl"><legend>扫描件</legend></fieldset>').append(tab));
-		    		//获取当前选择页
-		    		 var current_tab = $('#businessInfo').tabs('getSelected');  
-		    		//更新面板数据
-		    		$('#businessInfo').tabs('update',{  
-		    		     tab:current_tab,  
-		    		     options : {  
-		    		          content : table
-		    		     }  
-		    		}); 
-		    		current_tab.panel('refresh');
-		    		//绑定图片单击事件
-		    		$(".products img").bind("click", function() {
-		    			//console.log($(this).attr("src"));
-		    			$(".bigImg").attr("src", $(this).attr("src"));
-		    			$("#imgWindow").window("open");
-		    		});
-		    		//设置页面已加载标志
-		    		fulfilLoad[index]=true;
-		    	}
-		    }
-		});
+		$('#businessInfo')
+				.tabs(
+						{
+							border : false,
+							onSelect : function(title, index) {
+								/*  	alert(JSON.stringify(temp[index]) ); */
+								//已加载不再加载
+								if (!fulfilLoad[index]) {
+									//驾驶人信息
+									var data = temp[index], table = $('<div><fieldset class="base_fl"><legend>业务信息</legend><table class="base_table" cellpadding="0" cellspacing="0"><tr><td class="info_title"><label >业务类型:</label></td><td class="info" id="">'
+											+ comm.getParamNameByValue("ywlx",
+													data.ywlx)
+											+ '</td><td class="info_title"><label >流水号:</label></td><td class="info" id="">'
+											+ data.lsh
+											+ '</td></tr>'
+											+ '<tr><td class="info_title"><label >档案编号:</label></td><td class="info" id="">'
+											+ data.dabh
+											+ '</td><td class="info_title"><label >申请日期:</label></td><td class="info" id="">'
+											+ data.sqrq
+											+ '</td></tr>'
+											+ '<tr><td class="info_title"><label >申请原因:</label></td><td class="info" id="" colspan="3">'
+											+ data.sqyq
+											+ '</td></tr>'
+											+ '</table></fieldset></div>');
+
+									//图片信息
+									var tab = $('<div class="products"><ul></ul></div>');
+									var params = "";
+									if (data.lsh && data.lsh.length > 0) {
+										//使用流水号查询
+										params += "lsh=" + data.lsh;
+									} else {
+										//身份证、期号、驾校代码
+										if (data.id.sfzmhm) {
+											params += "id.sfzmhm="
+													+ data.id.sfzmhm + "&";
+										}
+										if (data.id.qh) {
+											params += "id.qh=" + data.id.qh
+													+ "&";
+										}
+										if (data.id.jxdm) {
+											params += "id.jxdm=" + data.id.jxdm
+													+ "&";
+										}
+									}
+									tab
+											.append("<li><a href=\"#\" class=\"item\"> <img src=\"apply/getApplyPic?"
+													+ params
+													+ "\" /><div><p>申请表</p></div></a></li>");
+									tab
+											.append("<li><a href=\"#\" class=\"item\"> <img src=\"exa/getExaPic?"
+													+ params
+													+ "\" /><div><p>体检表</p></div></a></li>");
+									var picIds = data.picIds;
+									$
+											.each(
+													picIds,
+													function(i, val) {
+														tab
+																.append("<li><a href=\"#\" class=\"item\"> <img src=\"img/getDriBaseById?id="
+																		+ val
+																		+ "\" /><div><p>照片</p></div></a></li>");
+													});
+									table
+											.append($(
+													'<fieldset class="base_fl"><legend>档案图片</legend></fieldset>')
+													.append(tab));
+									//获取当前选择页
+									var current_tab = $('#businessInfo').tabs(
+											'getSelected');
+									//更新面板数据
+									$('#businessInfo').tabs('update', {
+										tab : current_tab,
+										options : {
+											content : table
+										}
+									});
+									current_tab.panel('refresh');
+									//绑定图片单击事件
+									$(".products img")
+											.bind(
+													"click",
+													function() {
+														//console.log($(this).attr("src"));
+														$(".bigImg")
+																.attr(
+																		"src",
+																		$(this)
+																				.attr(
+																						"src"))
+																.load(
+																		function() {
+																			imgWidth = this.width;
+																			imgHeight = this.height;
+																			imgLeft=$(this).offset().left;
+																			imgTop=$(this).offset().top;												
+																			//图片加载完成后预览
+																			openMask();
+																		});
+													});
+									//设置页面已加载标志
+									fulfilLoad[index] = true;
+								}
+							}
+						});
 	}
 	//加载业务信息标签页
-	function loadApply(sfzmhm){
+	function loadApply(sfzmhm) {
+		//	$("#businessInfo").html("");
 		$.post("apply/getApplyInfos", {
 			'id.sfzmhm' : sfzmhm
 		}, function(data, status) {
@@ -247,18 +382,43 @@
 			}
 		});
 	}
-
-	function initEditAttr() {
+	//关闭窗口
+	function windowClose() {
+		$('#comm_window').window('close'); // close a window
+	}
+	function selectBase() {
+		$("#select_window").window('open').window('refresh',
+				"/dzyxh/page/window/jszSelect.html"); // open a window
+	}
+	function select_windowClose() {
+		$('#select_window').window('close'); // close a window
+	}
+	function closeMask() {
+		var oMask = document.getElementById('mask');
+		var oImg = document.getElementById('img');
+		oMask.style.display = 'none';
+		oImg.style.display = 'none';
+	}
+	function init() {
 		var row = $("#drvBaseManager").datagrid("getSelected");
 		if (!row) {
 			$.messager.alert("提示", "请选择一行信息！", "info");
 			return;
 		} else {
+			initEditAttr(row.sfzmhm);
+		}
+	}
+	function initEditAttr(sfzmhm) {
+		if (!sfzmhm) {
+			$.messager.alert("提示", "请选择一行信息！", "info");
+			return;
+		} else {
 			$.post("dbc/getDriBaseById", {
-				sfzmhm : row.sfzmhm
+				"sfzmhm" : sfzmhm
 			}, function(data, status) {
 				if (status == "success") {
-					$("#sfzmhm").text(data.sfzmhm);
+					$("#sfzmhm").text(
+							comm.getParamNameByValue("sfzmhm", data.sfzmhm));
 					$("#sfzmmc").text(data.sfzmmc);
 					$("#xm").text(data.xm);
 					$("#xb").text(comm.getParamNameByValue("xb", data.xb));
@@ -271,18 +431,41 @@
 					$("#lxzsyzbm").text(data.lxzsyzbm);
 					$("#lxdh").text(data.lxdh);
 					$("#zzzm").text(data.zzzm);
-					$("#gxsj").text(data.gxsj);				
+					$("#gxsj").text(data.gxsj);
 					$("#sfbd").text(data.sfbd);
 					$("#sjhm").text(data.sjhm);
 					$("#dzyx").text(data.dzyx);
 					$("#qh").text(data.qh);
-					$("#jxdm").text(comm.getParamNameByValue("jxdm", data.jxdm));
+					$("#jxdm")
+							.text(comm.getParamNameByValue("jxdm", data.jxdm));
 					loadApply(data.sfzmhm);
 				}
 			});
 		}
 	}
-	initEditAttr();
+	//图片预览
+	function openMask() {
+		var oMask = document.getElementById('mask');
+		var oImg = document.getElementById('img');
+		oMask.style.display = 'block';
+		oImg.style.display = 'block';
+		oMask.style.width = document.documentElement.clientWidth + 'px';
+		oMask.style.height = document.documentElement.clientHeight + 'px';
+		oImg.style.left = (document.documentElement.clientWidth - imgWidth) / 2
+				+ 'px';
+		oImg.style.top = (document.documentElement.clientHeight - imgHeight)
+				/ 2 + 'px';
+	}
+	function realsize() {
+		images1.height = imgHeight;
+		images1.width = imgWidth;
+		images1.style.zoom=1;
+		block1.style.left ="10px";
+		block1.style.top = imgTop*2+"px";
+
+	}
+	init();
+	//openMask();
 </script>
 
 <style type="text/css">

@@ -509,7 +509,7 @@ public class DrivingApply implements java.io.Serializable {
 		this.sqrqzzp = sqrqzzp;
 	}
 
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	@DateTimeFormat( pattern = "yyyy-MM-dd HH:mm:ss" )
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "SQRQ", length = 7)

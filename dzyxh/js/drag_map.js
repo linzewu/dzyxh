@@ -70,10 +70,10 @@ function bigit() {
 	images1.width = width1 * 1.2;
 }
 function realsize() {
-	images1.height = images2.height;
+	/*images1.height = images2.height;
 	images1.width = images2.width;
 	block1.style.left = 0;
-	block1.style.top = 0;
+	block1.style.top = 0;*/
 
 }
 function featsize() {

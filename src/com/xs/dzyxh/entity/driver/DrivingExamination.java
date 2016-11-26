@@ -39,10 +39,10 @@ public class DrivingExamination implements java.io.Serializable {
 	private String xh;//序号
 	private Character tlsfjz;//听力是否校正
 	private String fzjg;
-	private Character dyslze;
-	private BigDecimal yyspsy;
-	private Character zysfjz;
-	private Character yysfjz;
+	private Character dyslze;//单眼视力障碍
+	private BigDecimal yyspsy;//优眼水平视野
+	private Character zysfjz;//左眼是否矫正
+	private Character yysfjz;//右眼是否矫正
 	private String sqzjcxdh;//申请/已具有的准驾车型代号
 	private String yjdz;//邮寄地址
 	private String yjdh;//邮寄电话

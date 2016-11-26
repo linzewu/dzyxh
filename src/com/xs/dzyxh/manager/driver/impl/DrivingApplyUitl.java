@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.aspose.words.License;
+import com.xs.common.BaseParamsUtil;
 import com.xs.dzyxh.entity.aspose.ImageData;
 import com.xs.dzyxh.entity.driimg.DrivingPhoto;
 import com.xs.dzyxh.entity.driver.DrivingApply;
@@ -110,7 +111,7 @@ public class DrivingApplyUitl {
 		}
 		Map<String, String> datas = new HashMap<String, String>();
 		datas.put("xm", formatString(base.getXm()));// 姓名
-		datas.put("xb", formatString(base.getXb()));// 性别
+		datas.put("xb", BaseParamsUtil.getBaseParamNameByType("xb", base.getXb()));// 性别
 		datas.put("csrq", dateFormat(base.getCsrq()));// 出生日期
 		datas.put("gj", formatString(base.getGj()));// 国籍
 		datas.put("lxdh", formatString(base.getLxdh()));// 联系电话
@@ -126,9 +127,19 @@ public class DrivingApplyUitl {
 		datas.put("sqzjcxdh",  formatString(examination.getSqzjcxdh()));//申请/已具有的准驾车型代号
 		datas.put("sg", formatString(examination.getSg()));// 身高
 
+		
 		datas.put("zsl", formatString(examination.getZsl()));// 左视力
-		datas.put("ysl", formatString(examination.getYsl()));// 右视力		
-	
+		datas.put("ysl", formatString(examination.getYsl()));// 右视力	
+		
+		datas.put("dyslzes", dg(examination.getDyslze(),"1"));// 单眼视力障碍
+		datas.put("dyslzef", dg(examination.getDyslze(),"0"));// 无单眼视力障碍
+		
+		datas.put("zysjz", dg(examination.getZysfjz(),"1"));// 左眼是矫正
+		datas.put("zyfjz", dg(examination.getZysfjz(),"0"));// 左眼否矫正
+		
+		datas.put("yssjz", dg(examination.getYysfjz(),"1"));// 右眼是矫正
+		datas.put("yyfjz", dg(examination.getYysfjz(),"0"));// 右眼否矫正
+		
 		datas.put("ztl", formatString(examination.getZtl()));// 左听力
 		datas.put("ytl", formatString(examination.getYtl()));// 右听力
 		datas.put("zsz", formatString(examination.getZsz()));// 左上肢
@@ -181,7 +192,7 @@ public class DrivingApplyUitl {
 		}
 		Map<String, String> datas = new HashMap<String, String>();
 		datas.put("xm", formatString(base.getXm()));// 姓名
-		datas.put("xb", formatString(base.getXb()));// 性别
+		datas.put("xb", BaseParamsUtil.getBaseParamNameByType("xb", base.getXb()));// 性别
 		datas.put("csrq", dateFormat(base.getCsrq()));// 出生日期
 		datas.put("gj", formatString(base.getGj()));// 国籍
 		datas.put("lxdh", formatString(base.getLxdh()));// 联系电话

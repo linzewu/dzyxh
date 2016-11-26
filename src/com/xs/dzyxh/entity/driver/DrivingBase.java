@@ -242,7 +242,7 @@ public class DrivingBase implements java.io.Serializable {
 	public void setZzzm(String zzzm) {
 		this.zzzm = zzzm;
 	}
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	@DateTimeFormat( pattern = "yyyy-MM-dd HH:mm:ss" )
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "GXSJ", length = 7)
@@ -326,7 +326,7 @@ public class DrivingBase implements java.io.Serializable {
 		this.jxdm = jxdm;
 	}
 	
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	@DateTimeFormat( pattern = "yyyy-MM-dd HH:mm:ss" )
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "CJSJ", length = 7)
