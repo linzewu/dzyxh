@@ -360,8 +360,8 @@
 																		function() {
 																			imgWidth = this.width;
 																			imgHeight = this.height;
-																			imgLeft=$(this).offset().left;
-																			imgTop=$(this).offset().top;												
+																			imgLeft=block1.style.left;
+																			imgTop=block1.style.top;	
 																			//图片加载完成后预览
 																			openMask();
 																		});
@@ -412,6 +412,7 @@
 		oMask.style.display = 'none';
 		oImg.style.display = 'none';
 		layer1.style.display = 'none';
+		realsize() ;
 	}
 	function init() {
 		var row = $("#drvBaseManager").datagrid("getSelected");
@@ -476,8 +477,8 @@
 		images1.height = imgHeight;
 		images1.width = imgWidth;
 		images1.style.zoom=1;
-		block1.style.left ="10px";
-		block1.style.top = imgTop*2+"px";
+		block1.style.left =imgLeft;
+		block1.style.top = imgTop;
 
 	}
 	//将表单序列化
