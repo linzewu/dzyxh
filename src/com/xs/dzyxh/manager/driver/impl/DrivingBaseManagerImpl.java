@@ -16,12 +16,14 @@ import org.springframework.stereotype.Service;
 import com.xs.common.Common;
 import com.xs.dzyxh.entity.driver.DrivingBase;
 import com.xs.dzyxh.manager.driver.IDrivingBaseManager;
+
 @Service("driverManager")
 public class DrivingBaseManagerImpl implements IDrivingBaseManager {
 	@Resource(name = "driverHibernateTemplate")
 	private HibernateTemplate hibernateTemplate;
+
 	@Override
-	public List<DrivingBase> getDrivingBases(final DrivingBase base,final Integer page,final Integer rows) {
+	public List<DrivingBase> getDrivingBases(final DrivingBase base, final Integer page, final Integer rows) {
 		return hibernateTemplate.execute(new HibernateCallback<List<DrivingBase>>() {
 			@Override
 			public List<DrivingBase> doInHibernate(Session session) throws HibernateException {
@@ -29,52 +31,51 @@ public class DrivingBaseManagerImpl implements IDrivingBaseManager {
 
 				List params = new ArrayList();
 				if (base != null) {
-					//查询姓名
+					// 查询姓名
 					if (Common.isNotEmpty(base.getXm())) {
 						sql.append(" and  xm like ?");
 						params.add("%" + base.getXm() + "%");
 					}
-					//查询身份证
+					// 查询身份证
 					if (Common.isNotEmpty(base.getSfzmhm())) {
 						sql.append(" and  sfzmhm like ?");
 						params.add("%" + base.getSfzmhm() + "%");
 					}
-					//查询性别
+					// 查询性别
 					if (Common.isNotEmpty(base.getXb())) {
 						sql.append(" and  xb = ?");
 						params.add(base.getXb());
 					}
-					//查询期号
+					// 查询期号
 					if (Common.isNotEmpty(base.getQh())) {
 						sql.append(" and  qh like ?");
 						params.add("%" + base.getQh() + "%");
 					}
-					//查询驾校
+					// 查询驾校
 					if (Common.isNotEmpty(base.getJxdm())) {
 						sql.append(" and  jxdm = ?");
 						params.add(base.getJxdm());
 					}
-					//查询创建开始时间
-					if (base.getCjsjks()!=null) {
+					// 查询创建开始时间
+					if (base.getCjsjks() != null) {
 						sql.append(" and  cjsj >= ?");
 						params.add(base.getCjsjks());
 					}
-					//查询创建结束时间
-					if (base.getCjsjjs()!=null) {
-						sql.append(" and  cjsj <"
-								+ " ?");
-						//结束时间增加一天
+					// 查询创建结束时间
+					if (base.getCjsjjs() != null) {
+						sql.append(" and  cjsj <" + " ?");
+						// 结束时间增加一天
 						Calendar cal = Calendar.getInstance();
 						cal.setTime(base.getCjsjjs());
-						cal.add(Calendar.DATE,1);
+						cal.add(Calendar.DATE, 1);
 						params.add(cal.getTime());
 					}
 				}
 				Query query = session.createQuery(sql.toString());
-
-				query.setFirstResult((page - 1) * rows);
-				query.setMaxResults(rows);
-
+				if (page != null && rows != null) {
+					query.setFirstResult((page - 1) * rows);
+					query.setMaxResults(rows);
+				}
 				int i = 0;
 				for (Object param : params) {
 					query.setParameter(i, param);
@@ -86,8 +87,9 @@ public class DrivingBaseManagerImpl implements IDrivingBaseManager {
 			}
 		});
 	}
+
 	@Override
-	public Integer getUserCount( final DrivingBase base) {
+	public Integer getUserCount(final DrivingBase base) {
 		return hibernateTemplate.execute(new HibernateCallback<Integer>() {
 			@Override
 			public Integer doInHibernate(Session session) throws HibernateException {
@@ -95,44 +97,43 @@ public class DrivingBaseManagerImpl implements IDrivingBaseManager {
 
 				List params = new ArrayList();
 				if (base != null) {
-					//查询姓名
+					// 查询姓名
 					if (Common.isNotEmpty(base.getXm())) {
 						sql.append(" and  xm like ?");
 						params.add("%" + base.getXm() + "%");
 					}
-					//查询身份证
+					// 查询身份证
 					if (Common.isNotEmpty(base.getSfzmhm())) {
 						sql.append(" and  sfzmhm like ?");
 						params.add("%" + base.getSfzmhm() + "%");
 					}
-					//查询性别
+					// 查询性别
 					if (Common.isNotEmpty(base.getXb())) {
 						sql.append(" and  xb = ?");
 						params.add(base.getXb());
 					}
-					//查询期号
+					// 查询期号
 					if (Common.isNotEmpty(base.getQh())) {
 						sql.append(" and  qh like ?");
 						params.add("%" + base.getQh() + "%");
 					}
-					//查询驾校
+					// 查询驾校
 					if (Common.isNotEmpty(base.getJxdm())) {
 						sql.append(" and  jxdm = ?");
 						params.add(base.getJxdm());
 					}
-					//查询创建开始时间
-					if (base.getCjsjks()!=null) {
+					// 查询创建开始时间
+					if (base.getCjsjks() != null) {
 						sql.append(" and  cjsj >= ?");
 						params.add(base.getCjsjks());
 					}
-					//查询创建结束时间
-					if (base.getCjsjjs()!=null) {
-						sql.append(" and  cjsj <"
-								+ " ?");
-						//结束时间增加一天
+					// 查询创建结束时间
+					if (base.getCjsjjs() != null) {
+						sql.append(" and  cjsj <" + " ?");
+						// 结束时间增加一天
 						Calendar cal = Calendar.getInstance();
 						cal.setTime(base.getCjsjjs());
-						cal.add(Calendar.DATE,1);
+						cal.add(Calendar.DATE, 1);
 						params.add(cal.getTime());
 					}
 				}
@@ -147,6 +148,7 @@ public class DrivingBaseManagerImpl implements IDrivingBaseManager {
 			}
 		});
 	}
+
 	@Override
 	public DrivingBase getDrivingBaseById(final DrivingBase base) {
 		return hibernateTemplate.execute(new HibernateCallback<DrivingBase>() {
@@ -157,14 +159,14 @@ public class DrivingBaseManagerImpl implements IDrivingBaseManager {
 
 				List params = new ArrayList();
 				if (base != null) {
-					//查询身份证
+					// 查询身份证
 					if (Common.isNotEmpty(base.getSfzmhm())) {
 						sql.append(" and  sfzmhm = ?");
 						params.add(base.getSfzmhm());
-					}else{
+					} else {
 						return null;
 					}
-				}else{
+				} else {
 					return null;
 				}
 				Query query = session.createQuery(sql.toString());
@@ -174,7 +176,7 @@ public class DrivingBaseManagerImpl implements IDrivingBaseManager {
 					i++;
 				}
 				List<DrivingBase> bases = (List<DrivingBase>) query.list();
-				if(bases.size()>0){
+				if (bases.size() > 0) {
 					return bases.get(0);
 				}
 				return null;
