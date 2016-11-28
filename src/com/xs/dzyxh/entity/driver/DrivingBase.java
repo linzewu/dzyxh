@@ -46,6 +46,8 @@ public class DrivingBase implements java.io.Serializable {
 	private Date cjsj;// 创建时间
 	private Date cjsjks;
 	private Date cjsjjs;
+	/*private Date kssj;
+	private Date jssj;*/
 	public DrivingBase() {
 	}
 
@@ -357,5 +359,21 @@ public class DrivingBase implements java.io.Serializable {
 	public void setCjsjjs(Date cjsjjs) {
 		this.cjsjjs = cjsjjs;
 	}
+
+/*	public Date getKssj() {
+		return kssj;
+	}
+
+	public void setKssj(Date kssj) {
+		this.kssj = kssj;
+	}
+
+	public Date getJssj() {
+		return jssj;
+	}
+
+	public void setJssj(Date jssj) {
+		this.jssj = jssj;
+	}*/
 	
 }

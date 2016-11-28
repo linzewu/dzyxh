@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.xs.common.Annotation.FunctionAnnotation;
 import com.xs.dzyxh.entity.driver.DrivingBase;
 import com.xs.dzyxh.entity.driver.DrivingExamination;
-import com.xs.dzyxh.manager.driimg.IDrivingPhotoManager;
 import com.xs.dzyxh.manager.driver.IDrivingBaseManager;
 import com.xs.dzyxh.manager.driver.IDrivingExaminationManager;
+import com.xs.dzyxh.manager.driverimg.IDrivingPhotoManager;
 
 @Controller
 @RequestMapping(value = "/exa")

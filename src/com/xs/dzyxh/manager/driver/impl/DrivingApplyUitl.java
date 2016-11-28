@@ -133,11 +133,11 @@ public class DrivingApplyUitl {
 		
 		datas.put("dyslzes", dg(examination.getDyslze(),"1"));// 单眼视力障碍
 		datas.put("dyslzef", dg(examination.getDyslze(),"0"));// 无单眼视力障碍
-		
+		datas.put("yyspsy", formatString(examination.getYyspsy()));// 优眼视野水平
 		datas.put("zysjz", dg(examination.getZysfjz(),"1"));// 左眼是矫正
 		datas.put("zyfjz", dg(examination.getZysfjz(),"0"));// 左眼否矫正
 		
-		datas.put("yssjz", dg(examination.getYysfjz(),"1"));// 右眼是矫正
+		datas.put("yysjz", dg(examination.getYysfjz(),"1"));// 右眼是矫正
 		datas.put("yyfjz", dg(examination.getYysfjz(),"0"));// 右眼否矫正
 		
 		datas.put("ztl", formatString(examination.getZtl()));// 左听力

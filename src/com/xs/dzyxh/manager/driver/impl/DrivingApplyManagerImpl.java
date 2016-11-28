@@ -20,14 +20,15 @@ import com.xs.dzyxh.entity.aspose.ImageData;
 import com.xs.dzyxh.entity.driimg.DrivingPhoto;
 import com.xs.dzyxh.entity.driver.DrivingApply;
 import com.xs.dzyxh.entity.driver.DrivingBase;
-import com.xs.dzyxh.manager.driimg.IDrivingPhotoManager;
+import com.xs.dzyxh.manager.base.IBaseManager;
 import com.xs.dzyxh.manager.driver.IDrivingApplyManager;
+import com.xs.dzyxh.manager.driverimg.IDrivingPhotoManager;
 import com.xs.dzyxh.manager.img.IAsposeManager;
 import com.xs.dzyxh.manager.img.IBarCodeManager;
 import com.xs.dzyxh.manager.img.impl.AsposeManagerImpl;
 import com.xs.dzyxh.manager.img.impl.BarCodeManagerImpl;
 @Service("driverApplyManager")
-public class DrivingApplyManagerImpl implements IDrivingApplyManager {
+public class DrivingApplyManagerImpl implements IDrivingApplyManager,IBaseManager<DrivingApply> {
 	@Resource(name = "driverHibernateTemplate")
 	private HibernateTemplate hibernateTemplate;
 	
@@ -158,6 +159,12 @@ public class DrivingApplyManagerImpl implements IDrivingApplyManager {
 				return null;
 			}
 		});
+	}
+
+	@Override
+	public boolean saveOrUpdate(DrivingApply t) {
+		hibernateTemplate.saveOrUpdate(t);
+		return true;
 	}
 	
 }

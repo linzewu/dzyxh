@@ -1,4 +1,4 @@
-package com.xs.dzyxh.manager.driimg.impl;
+package com.xs.dzyxh.manager.driverimg.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,16 +14,17 @@ import org.springframework.stereotype.Service;
 
 import com.xs.common.Common;
 import com.xs.dzyxh.entity.driimg.DrivingPhoto;
-import com.xs.dzyxh.manager.driimg.IDrivingPhotoManager;
+import com.xs.dzyxh.manager.base.IBaseManager;
+import com.xs.dzyxh.manager.driverimg.IDrivingPhotoManager;
 
 @Service("driimgManager")
-public class DrivingPhotoManagerImpl implements IDrivingPhotoManager {
+public class DrivingPhotoManagerImpl implements IDrivingPhotoManager,IBaseManager<DrivingPhoto> {
 	@Resource(name = "driimgHibernateTemplate")
 	private HibernateTemplate hibernateTemplate;
 
 	public DrivingPhoto getDrivingPhotoById(final DrivingPhoto dri) {
 		return hibernateTemplate.execute(new HibernateCallback<DrivingPhoto>() {
-
+			
 			@Override
 			public DrivingPhoto doInHibernate(Session session) throws HibernateException {
 				StringBuffer sql = new StringBuffer("From DrivingPhoto where 1=1");
@@ -150,6 +151,11 @@ public class DrivingPhotoManagerImpl implements IDrivingPhotoManager {
 				return dirimgs;
 			}
 		});
+	}
+	@Override
+	public boolean saveOrUpdate(DrivingPhoto dir) {
+		hibernateTemplate.save(dir);
+		return false;
 	}
 
 }

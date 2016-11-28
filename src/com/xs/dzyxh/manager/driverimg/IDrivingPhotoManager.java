@@ -1,4 +1,4 @@
-package com.xs.dzyxh.manager.driimg;
+package com.xs.dzyxh.manager.driverimg;
 
 import java.util.List;
 

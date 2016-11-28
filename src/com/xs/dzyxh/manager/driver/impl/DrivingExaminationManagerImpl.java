@@ -18,15 +18,17 @@ import com.aspose.words.HorizontalAlignment;
 import com.xs.common.Common;
 import com.xs.dzyxh.entity.aspose.ImageData;
 import com.xs.dzyxh.entity.driimg.DrivingPhoto;
+import com.xs.dzyxh.entity.driver.DrivingApply;
 import com.xs.dzyxh.entity.driver.DrivingBase;
 import com.xs.dzyxh.entity.driver.DrivingExamination;
-import com.xs.dzyxh.manager.driimg.IDrivingPhotoManager;
+import com.xs.dzyxh.manager.base.IBaseManager;
 import com.xs.dzyxh.manager.driver.IDrivingExaminationManager;
+import com.xs.dzyxh.manager.driverimg.IDrivingPhotoManager;
 import com.xs.dzyxh.manager.img.IAsposeManager;
 import com.xs.dzyxh.manager.img.IBarCodeManager;
 
 @Service("drivingExamination")
-public class DrivingExaminationManagerImpl implements IDrivingExaminationManager {
+public class DrivingExaminationManagerImpl implements IDrivingExaminationManager,IBaseManager<DrivingApply> {
 	@Resource(name = "driverHibernateTemplate")
 	private HibernateTemplate hibernateTemplate;
 
@@ -118,5 +120,11 @@ public class DrivingExaminationManagerImpl implements IDrivingExaminationManager
 				return null;
 			}
 		});
+	}
+
+	@Override
+	public boolean saveOrUpdate(DrivingApply t) {
+		this.hibernateTemplate.saveOrUpdate(t);
+		return true;
 	}
 }
