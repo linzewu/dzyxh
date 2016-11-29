@@ -2,17 +2,23 @@ var win = {
 		menus : [
 		{
 			"icon" : "/dzyxh/images/car_48.png",
+			"title" : "体检信息",
+			href : "/dzyxh/page/window/tjbxx.html",
+			target : "#windowContex"
+		},
+		/*{
+			"icon" : "/dzyxh/images/car_48.png",
 			"title" : "机动车业务",
 			href : "/dzyxh/page/window/carManager.html",
 			target : "#windowContex"
-		}, {
+		},*/ {
 			"icon" : "/dzyxh/images/fxp_48.png",
 			"title" : "驾驶人业务",
 			href : "/dzyxh/page/window/jsz.html",
 			target : "#windowContex"
 		},{
 			"icon" : "/dzyxh/images/pd_48.png",
-			"title" : "图像采集设备",
+			"title" : "窗口设备",
 			href : "/dzyxh/page/window/pd.html",
 			target : "#windowContex"
 		}],

@@ -132,17 +132,17 @@ public class DataScanJob {
 	 */
 
 	@Resource(name = "sysBaseManager")
-	private IBaseManager<Object> sysBaseManager;
+	private IBaseManager sysBaseManager;
 	@Resource(name = "driverImgBaseManager")
-	private IBaseManager<Object> driimgBaseManager;
+	private IBaseManager driimgBaseManager;
 	@Resource(name = "driverBaseManager")
-	private IBaseManager<Object> driverBaseManager;
+	private IBaseManager driverBaseManager;
 
 	/*
 	 * @Resource(name="dataQueryManager") private IDataQueryManager
 	 * dataQueryManager;
 	 */
-	@Scheduled(fixedDelay = 1000)
+//	@Scheduled(fixedDelay = 1000)
 	public void readData() {
 		logger.info("定时扫描任务开始！");
 		ScanJobLog joblog = new ScanJobLog();
@@ -217,7 +217,7 @@ public class DataScanJob {
 				try {
 					template.saveOrUpdate(obj);
 				} catch (DataAccessException e) {
-					// TODO: handle exception
+					e.printStackTrace();
 				}
 
 			}
@@ -225,17 +225,17 @@ public class DataScanJob {
 		return count;
 	}
 
-	@Scheduled(fixedDelay = 1000 * 60 * 10)
+	//@Scheduled(fixedDelay = 1000 * 60 * 10)
 	public void writerDrivingBaseJob() throws Exception {
 		createDate(DrivingBase.class, ScanDataLog.SJLX_BASE, "驾驶人基础数据");
 	}
 
-	@Scheduled(fixedDelay = 1000 * 60 * 10)
+//	@Scheduled(fixedDelay = 1000 * 60 * 10)
 	public void writerDrivingApplyJob() throws Exception {
 		createDate(DrivingApply.class, ScanDataLog.SJLX_BASE, "驾驶人申请表数据");
 	}
 
-	@Scheduled(fixedDelay = 1000 * 60 * 10)
+	//@Scheduled(fixedDelay = 1000 * 60 * 10)
 	public void writerDrivingExaminationJob() throws Exception {
 		createDate(DrivingApply.class, ScanDataLog.SJLX_BASE, "驾驶人体检表数据");
 	}

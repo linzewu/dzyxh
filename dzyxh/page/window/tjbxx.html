@@ -1,0 +1,137 @@
+<table class="easyui-datagrid" id="driverExaminationsGrid"
+	data-options="url:'exa/getDriExaminations',pageSize:50,pageList:[50,100,200],pagination:true,singleSelect:true,toolbar:'#tb3'"
+	width="100%">
+	<thead data-options="frozen:true">
+		<tr>
+			<th data-options="field:'xh',width:60">序号</th>
+			<th data-options="field:'jxdm',width:120">姓名</th>
+			<th data-options="field:'sfzmhm',width:140">证件号码</th>
+			<th
+				data-options="field:'xb',width:60,formatter:function(value){return comm.getParamNameByValue('xb',value)}">性别</th>
+			<th data-options="field:'csrq',width:140">出生日期</th>
+			<th data-options="field:'gj',width:80">国籍</th>
+		</tr>
+	</thead>
+	<thead>
+		<tr>
+
+			<th data-options="field:'tjrq',width:80">体检日期</th>
+			<th data-options="field:'tjyymc',width:160">体检医院名称</th>
+			<th data-options="field:'sqzjcxdh',width:180">申请/已具有的准驾车型代号</th>
+			<th data-options="field:'sg',width:100">身高</th>
+			<th data-options="field:'zsl',width:80">左视力</th>
+			<th data-options="field:'ysl',width:80">右视力</th>
+			<th data-options="field:'bsl',width:80">辨色力</th>
+			<th data-options="field:'zetl',width:80">左耳听力</th>
+			<th data-options="field:'yetl',width:80">右耳听力</th>
+			<th data-options="field:'zsz',width:80">左上肢</th>
+			<th data-options="field:'ysz',width:80">右上肢</th>
+			<th data-options="field:'zxz',width:80">左下肢</th>
+			<th data-options="field:'yxz',width:80">右下肢</th>
+			<th data-options="field:'qgjb',width:80">躯干颈部</th>
+			<th
+				data-options="field:'tlsfjz',width:140,formatter:function(value){return comm.getParamNameByValue('xb',value)}">听力是否校正</th>
+			<th data-options="field:'fzjg',width:80">发证机构</th>
+			<th
+				data-options="field:'dyslze',width:80,formatter:function(value){return comm.getParamNameByValue('xb',value)}">单眼视力障碍</th>
+			<th data-options="field:'yyspsy',width:140">优眼水平视野</th>
+			<th
+				data-options="field:'zysfjz',width:140,formatter:function(value){return comm.getParamNameByValue('xb',value)}">左眼是否矫正</th>
+			<th
+				data-options="field:'yysfjz',width:140,formatter:function(value){return comm.getParamNameByValue('xb',value)}">右眼是否矫正</th>
+
+			<th
+				data-options="field:'sfjyjb',width:140,formatter:function(value){return comm.getParamNameByValue('xb',value)}">是否具有疾病</th>
+			<th
+				data-options="field:'jyjbqk',width:140,formatter:function(value){return comm.getParamNameByValue('xb',value)}">具有疾病或情况</th>
+
+			<th data-options="field:'yjdz',width:200">邮寄地址</th>
+			<th data-options="field:'yjdh',width:120">邮寄电话</th>
+
+			<th data-options="field:'wtdlrsfzmc',width:140">委托代理人身份名称</th>
+			<th data-options="field:'wtdlrsfzmhm',width:160">委托代理人身份号码</th>
+
+			<th data-options="field:'wtdlrlxdz',width:200">委托代理人联系地址</th>
+			<th data-options="field:'wtdlrlxdh',width:140">委托代理人联系电话</th>
+
+			<th data-options="field:'sqfs',width:120">申请方式</th>
+			<th data-options="field:'sqrqzzp',width:120">申请人签字</th>
+
+			<th data-options="field:'sqrqzp',width:120">医生签字</th>
+			<th data-options="field:'dlrqzzp',width:120">代理人签字</th>
+
+			<th data-options="field:'dabh',width:120">档案编号</th>
+			<!--  <th data-options="field:'lsh',width:120">流水号</th> -->
+		</tr>
+	</thead>
+</table>
+<div id="tb3" style="padding: 2px 5px;">
+	<div>
+		身份证明号码: <input class="" style="width: 160px" name="sfzmhm">
+		<!--    期号: <input class="" style="width:60px" name="qh">
+     驾校: 
+  <select class=""  style="width:180px" name="jxdm">
+  </select> -->
+
+		<!--   传输标记：
+  <select class=""  style="width:80px" name="csbj">
+  </select> -->
+		从: <input style="width: 100px" readonly="readonly"
+			onFocus="WdatePicker()" class="Wdate" name="kssj"> 到: <input
+			style="width: 100px" readonly="readonly" onFocus="WdatePicker()"
+			class="Wdate" name="jssj"> <a href="#"
+			class="easyui-linkbutton" iconCls="icon-search"
+			onclick="queryPhysical()">查询</a> <a href="#"
+			class="easyui-linkbutton" data-options="iconCls:'icon-edit'"
+			onclick="minuteInfo()">预览</a>
+	</div>
+</div>
+
+<script type="text/javascript">
+	function minuteInfo() {
+		var row = $("#driverExaminationsGrid").datagrid("getSelected");
+
+		if (!row) {
+			$.messager.alert("提示", "请选择一行信息！", "info");
+			return;
+		} else {
+			//图片预览
+			onClickPic("exa/getExaPic?id="+row.id);
+		}
+
+	}
+
+	function queryPhysical() {
+		var param = {};
+
+		var sfzmhm = $("#tb3 input[name=sfzmhm]").val();
+		var qh = $("#tb3 input[name=qh]").val();
+		var jxdm = $("#tb3 select[name=jxdm]").val();
+
+		var csbj = $("#tb3 select[name=csbj]").val();
+		var kssj = $("#tb3 input[name=kssj]").val();
+		var jssj = $("#tb3 input[name=jssj]").val();
+
+		if (sfzmhm) {
+			param['id.sfzmhm'] = sfzmhm;
+		}
+		if (qh) {
+			param['id.qh'] = qh;
+		}
+		if (jxdm) {
+			param['id.jxdm'] = jxdm;
+		}
+		if (csbj) {
+			param.csbj = csbj;
+		}
+		if (kssj) {
+			param.kssj = kssj;
+		}
+
+		if (jssj) {
+			param.jssj = jssj;
+		}
+		console.log(param)
+		$("#driverExaminationsGrid").datagrid("reload", param);
+	}
+</script>

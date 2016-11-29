@@ -6,7 +6,7 @@ move = 0
 var ie = document.all;
 var nn6 = document.getElementById && !document.all;
 var isdrag = false;
-var y, x;
+var y, x, imgWidth = 0, imgHeight = 0, imgLeft = 0, imgTop = 0;
 var oDragObj;
 
 function moveMouse(e) {
@@ -69,13 +69,7 @@ function bigit() {
 	images1.height = height1 * 1.2;
 	images1.width = width1 * 1.2;
 }
-function realsize() {
-	/*images1.height = images2.height;
-	images1.width = images2.width;
-	block1.style.left = 0;
-	block1.style.top = 0;*/
 
-}
 function featsize() {
 	var width1 = images2.width;
 	var height1 = images2.height;
@@ -113,4 +107,53 @@ function dowImg() {
 function pringImg(){
 	$("#printImg").attr("href","apply/printImg?url="+$(".bigImg").attr("src"));
 	$("#printImg").click();
+}
+function onClickPic(src){
+	$(".bigImg").attr("src",src)
+	.load(
+			function() {
+				imgWidth = this.width;
+				imgHeight = this.height;
+				imgLeft = block1.style.left;
+				imgTop = block1.style.top;
+				//图片加载完成后预览
+				openMask();
+	});
+}
+function closeMask() {
+	var oMask = document.getElementById('mask');
+	var oImg = document.getElementById('img');
+	var layer1 = document.getElementById('Layer1');
+	oMask.style.display = 'none';
+	oImg.style.display = 'none';
+	layer1.style.display = 'none';
+	realsize();
+}
+//图片预览
+function openMask() {
+	var oMask = document.getElementById('mask');
+	var oImg = document.getElementById('img');
+	var layer1 = document.getElementById('Layer1');
+	oMask.style.display = 'block';
+	oImg.style.display = 'block';
+	layer1.style.display = 'block';
+	oMask.style.width = document.documentElement.clientWidth + 'px';
+	oMask.style.height = document.documentElement.clientHeight + 'px';
+	//图片居中
+	oImg.style.left = (document.documentElement.clientWidth - imgWidth) / 2
+			+ 'px';
+	oImg.style.top = (document.documentElement.clientHeight - imgHeight)
+			/ 2 + 'px';
+}
+/**
+ * 重置图片位置大小
+ * @returns
+ */
+function realsize() {
+	images1.height = imgHeight;
+	images1.width = imgWidth;
+	images1.style.zoom = 1;
+	block1.style.left = imgLeft;
+	block1.style.top = imgTop;
+
 }

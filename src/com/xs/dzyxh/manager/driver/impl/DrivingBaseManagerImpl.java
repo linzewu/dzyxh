@@ -20,7 +20,7 @@ import com.xs.dzyxh.manager.driver.IDrivingBaseManager;
 @Service("driverManager")
 public class DrivingBaseManagerImpl implements IDrivingBaseManager {
 	@Resource(name = "driverHibernateTemplate")
-	private HibernateTemplate hibernateTemplate;
+	public HibernateTemplate hibernateTemplate;
 
 	@Override
 	public List<DrivingBase> getDrivingBases(final DrivingBase base, final Integer page, final Integer rows) {

@@ -105,18 +105,18 @@ public class DrivingApplyUitl {
 		return imgs;
 	}
 	
-	public static Map<String, String> convertTjbData(DrivingBase base, DrivingExamination examination) {
-		if (base == null || examination == null) {
+	public static Map<String, String> convertTjbData( DrivingExamination examination) {
+		if ( examination == null) {
 			return null;
 		}
 		Map<String, String> datas = new HashMap<String, String>();
-		datas.put("xm", formatString(base.getXm()));// 姓名
-		datas.put("xb", BaseParamsUtil.getBaseParamNameByType("xb", base.getXb()));// 性别
-		datas.put("csrq", dateFormat(base.getCsrq()));// 出生日期
-		datas.put("gj", formatString(base.getGj()));// 国籍
-		datas.put("lxdh", formatString(base.getLxdh()));// 联系电话
+		datas.put("xm", formatString(examination.getXm()));// 姓名
+		datas.put("xb", BaseParamsUtil.getBaseParamNameByType("xb", examination.getXb()));// 性别
+		datas.put("csrq", dateFormat(examination.getCsrq()));// 出生日期
+		datas.put("gj", formatString(examination.getGj()));// 国籍
+		datas.put("lxdh", formatString(examination.getLxdh()));// 联系电话
 		// datas.put("lsh", apply.getLsh());
-		datas.put("sfzmhm", examination.getId().getSfzmhm());// 身份证
+		datas.put("sfzmhm", examination.getSfzmhm());// 身份证
 		// datas.put("qh", apply.getId().getQh());
 		// datas.put("jxdm", apply.getId().getJxdm());
 		//datas.put("zzzm", formatString(examination.getZzzm()));
@@ -140,8 +140,8 @@ public class DrivingApplyUitl {
 		datas.put("yysjz", dg(examination.getYysfjz(),"1"));// 右眼是矫正
 		datas.put("yyfjz", dg(examination.getYysfjz(),"0"));// 右眼否矫正
 		
-		datas.put("ztl", formatString(examination.getZtl()));// 左听力
-		datas.put("ytl", formatString(examination.getYtl()));// 右听力
+		datas.put("ztl", formatString(examination.getZetl()));// 左听力
+		datas.put("ytl", formatString(examination.getYetl()));// 右听力
 		datas.put("zsz", formatString(examination.getZsz()));// 左上肢
 		datas.put("ysz", formatString(examination.getYsz()));// 右上肢
 		datas.put("zxz", formatString(examination.getZxz()));// 左下肢
