@@ -22,41 +22,44 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name = "TM_DRIVING_PHOTO", schema = "ARC_DRIVER_IMG")
 public class DrivingPhoto implements java.io.Serializable {
-	private String id;//主键
-	private String sfzmhm;//身份证明号码
-	private String lsh;//流水号
-	private byte[] zp;//照片
-	private String zpzl;//照片类型
-	private Date cjsj;//创建时间
-	private Date gxsj;//更新时间
-	private String cjyh;//创建用户
-	private String gxyh;//更新用户
-	private String jyw;//校验位
-	private String csbj;//传输标记， 是否交换到公安网
+	private String id;// 主键
+	private String sfzmhm;// 身份证明号码
+	private String lsh;// 流水号
+	private byte[] zp;// 照片
+	private String zpzl;// 照片类型
+	private Date cjsj;// 创建时间
+	private Date gxsj;// 更新时间
+	private String cjyh;// 创建用户
+	private String gxyh;// 更新用户
+	private String jyw;// 校验位
+	private String csbj;// 传输标记， 是否交换到公安网
 	private String qh;// 期号
 	private String jxdm;// 驾校代码,代码表外键
+
 	public DrivingPhoto() {
 	}
 
 	public DrivingPhoto(String id, String sfzmhm, String lsh, byte[] zp, String zpzl, Date cjsj, Date gxsj, String cjyh,
-			String gxyh, String jyw, String csbj) {
-		this.id=id;
-		this.sfzmhm=sfzmhm;
-		this.lsh=lsh;
-		this.zp=zp;
-		this.zpzl=zpzl;
-		this.cjsj=cjsj;
-		this.gxsj=gxsj;
-		this.cjyh=cjyh;
-		this.gxyh=gxyh;
-		this.jyw=jyw;
-		this.csbj=csbj;
+			String gxyh, String jyw, String csbj,String qh,String jxdm) {
+		this.id = id;
+		this.sfzmhm = sfzmhm;
+		this.lsh = lsh;
+		this.zp = zp;
+		this.zpzl = zpzl;
+		this.cjsj = cjsj;
+		this.gxsj = gxsj;
+		this.cjyh = cjyh;
+		this.gxyh = gxyh;
+		this.jyw = jyw;
+		this.csbj = csbj;
+		this.qh=qh;
+		this.jxdm=jxdm;
 	}
-	
+
 	@Id
-	@GenericGenerator(name = "idGenerator", strategy = "identity")
-	@GeneratedValue(generator = "idGenerator")
-	@Column(name="id")
+	@GenericGenerator(name = "uuid", strategy = "uuid")
+	@GeneratedValue(generator = "uuid")
+	@Column(name = "id")
 	public String getId() {
 		return id;
 	}
@@ -64,7 +67,7 @@ public class DrivingPhoto implements java.io.Serializable {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+
 	@Column(name = "SFZMHM", length = 22)
 	public String getSfzmhm() {
 		return sfzmhm;
@@ -73,6 +76,7 @@ public class DrivingPhoto implements java.io.Serializable {
 	public void setSfzmhm(String sfzmhm) {
 		this.sfzmhm = sfzmhm;
 	}
+
 	@Column(name = "LSH", length = 32)
 	public String getLsh() {
 		return lsh;
@@ -81,9 +85,10 @@ public class DrivingPhoto implements java.io.Serializable {
 	public void setLsh(String lsh) {
 		this.lsh = lsh;
 	}
-    @Lob   
-    @Basic(fetch=FetchType.LAZY)   
-    @Column(name="ZP", columnDefinition="BLOB", nullable=true)  
+
+	@Lob
+	@Basic(fetch = FetchType.LAZY)
+	@Column(name = "ZP", columnDefinition = "BLOB", nullable = true)
 	public byte[] getZp() {
 		return zp;
 	}
@@ -91,6 +96,7 @@ public class DrivingPhoto implements java.io.Serializable {
 	public void setZp(byte[] zp) {
 		this.zp = zp;
 	}
+
 	@Column(name = "ZPZL", length = 4)
 	public String getZpzl() {
 		return zpzl;
@@ -99,6 +105,7 @@ public class DrivingPhoto implements java.io.Serializable {
 	public void setZpzl(String zpzl) {
 		this.zpzl = zpzl;
 	}
+
 	@Temporal(TemporalType.DATE)
 	@Column(name = "CJSJ", length = 7)
 	public Date getCjsj() {
@@ -108,6 +115,7 @@ public class DrivingPhoto implements java.io.Serializable {
 	public void setCjsj(Date cjsj) {
 		this.cjsj = cjsj;
 	}
+
 	@Temporal(TemporalType.DATE)
 	@Column(name = "GXSJ", length = 7)
 	public Date getGxsj() {
@@ -117,6 +125,7 @@ public class DrivingPhoto implements java.io.Serializable {
 	public void setGxsj(Date gxsj) {
 		this.gxsj = gxsj;
 	}
+
 	@Column(name = "CJYH", length = 20)
 	public String getCjyh() {
 		return cjyh;
@@ -125,6 +134,7 @@ public class DrivingPhoto implements java.io.Serializable {
 	public void setCjyh(String cjyh) {
 		this.cjyh = cjyh;
 	}
+
 	@Column(name = "GXYH", length = 20)
 	public String getGxyh() {
 		return gxyh;
@@ -133,6 +143,7 @@ public class DrivingPhoto implements java.io.Serializable {
 	public void setGxyh(String gxyh) {
 		this.gxyh = gxyh;
 	}
+
 	@Column(name = "JYW", length = 255)
 	public String getJyw() {
 		return jyw;
@@ -141,6 +152,7 @@ public class DrivingPhoto implements java.io.Serializable {
 	public void setJyw(String jyw) {
 		this.jyw = jyw;
 	}
+
 	@Column(name = "CSBJ", length = 2)
 	public String getCsbj() {
 		return csbj;
@@ -152,7 +164,7 @@ public class DrivingPhoto implements java.io.Serializable {
 
 	@Column(name = "QH", length = 10)
 	public String getQh() {
-		if(qh==null){
+		if (qh == null) {
 			return "";
 		}
 		return qh;
@@ -164,7 +176,7 @@ public class DrivingPhoto implements java.io.Serializable {
 
 	@Column(name = "JXDM", length = 2)
 	public String getJxdm() {
-		if(jxdm==null){
+		if (jxdm == null) {
 			return "";
 		}
 		return jxdm;
@@ -173,5 +185,5 @@ public class DrivingPhoto implements java.io.Serializable {
 	public void setJxdm(String jxdm) {
 		this.jxdm = jxdm;
 	}
-	
+
 }

@@ -16,8 +16,9 @@ import org.springframework.context.annotation.Scope;
 public class ScanJobLog {
 	
 	@Id
-	@GenericGenerator(name = "idGenerator", strategy = "identity")
-	@GeneratedValue(generator = "idGenerator")
+	@Column(length=32)
+	@GenericGenerator(name = "uuid", strategy = "uuid")
+	@GeneratedValue(generator = "uuid")
 	private Long id;
 	
 	@Column

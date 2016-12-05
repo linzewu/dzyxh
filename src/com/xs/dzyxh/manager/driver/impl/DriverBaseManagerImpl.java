@@ -2,10 +2,11 @@ package com.xs.dzyxh.manager.driver.impl;
 
 import javax.annotation.Resource;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Service;
 
-import com.xs.dzyxh.manager.base.IBaseManager;
+import com.xs.dzyxh.manager.driver.IBaseManager;
 @Service("driverBaseManager")
 public class DriverBaseManagerImpl implements IBaseManager<Object>{
 
@@ -13,7 +14,7 @@ public class DriverBaseManagerImpl implements IBaseManager<Object>{
 	private HibernateTemplate hibernateTemplate;
 
 	@Override
-	public boolean saveOrUpdate(Object t) {
+	public boolean saveOrUpdate(Object t) throws DataAccessException{
 		hibernateTemplate.saveOrUpdate(t);
 		return true;
 	}

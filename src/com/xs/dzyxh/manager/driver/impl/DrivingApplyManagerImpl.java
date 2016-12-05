@@ -2,6 +2,7 @@ package com.xs.dzyxh.manager.driver.impl;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -20,13 +21,11 @@ import com.xs.dzyxh.entity.aspose.ImageData;
 import com.xs.dzyxh.entity.driimg.DrivingPhoto;
 import com.xs.dzyxh.entity.driver.DrivingApply;
 import com.xs.dzyxh.entity.driver.DrivingBase;
-import com.xs.dzyxh.manager.base.IBaseManager;
+import com.xs.dzyxh.manager.driver.IBaseManager;
 import com.xs.dzyxh.manager.driver.IDrivingApplyManager;
 import com.xs.dzyxh.manager.driverimg.IDrivingPhotoManager;
 import com.xs.dzyxh.manager.img.IAsposeManager;
 import com.xs.dzyxh.manager.img.IBarCodeManager;
-import com.xs.dzyxh.manager.img.impl.AsposeManagerImpl;
-import com.xs.dzyxh.manager.img.impl.BarCodeManagerImpl;
 @Service("driverApplyManager")
 public class DrivingApplyManagerImpl implements IDrivingApplyManager,IBaseManager<DrivingApply> {
 	@Resource(name = "driverHibernateTemplate")
@@ -45,7 +44,7 @@ public class DrivingApplyManagerImpl implements IDrivingApplyManager,IBaseManage
 	
 		if(base!=null){
 			//得到填充的数据
-			Map<String,String> datas=DrivingApplyUitl.convertData(base, apply);			
+			//Map<String,String> datas=DrivingApplyUitl.convertData(base, apply);			
 			DrivingPhoto driving=new DrivingPhoto();
 			//有流水号则使用流水号查询
 			if(apply.getLsh()!=null){
@@ -56,7 +55,16 @@ public class DrivingApplyManagerImpl implements IDrivingApplyManager,IBaseManage
 				driving.setQh(apply.getId().getQh());
 				driving.setJxdm(apply.getId().getJxdm());
 			}
-			List<DrivingPhoto> photos=drivingPhotoManager.getDrivingPhotos(driving, null,null);
+			List<DrivingPhoto> photos=drivingPhotoManager.getDrivingPhotos(driving, null,null);		
+			return  getApplyImgToByte( base, apply,photos);
+		}
+		return null;
+	}
+	public byte[] getApplyImgToByte(DrivingBase base,DrivingApply apply,Collection<DrivingPhoto> photos) throws Exception{
+
+		if(base!=null){
+			//得到填充的数据
+			Map<String,String> datas=DrivingApplyUitl.convertData(base, apply);			
 			List<ImageData> imgs=DrivingApplyUitl.convertSqbImgData(photos);
 			if(apply.getLsh()!=null){
 				try {
@@ -72,7 +80,6 @@ public class DrivingApplyManagerImpl implements IDrivingApplyManager,IBaseManage
 		}
 		return null;
 	}
-
 	@Override
 	public List<DrivingApply> getDrivingApplys(final DrivingApply base,final Integer page, final Integer rows) {
 		return hibernateTemplate.execute(new HibernateCallback<List<DrivingApply>>() {

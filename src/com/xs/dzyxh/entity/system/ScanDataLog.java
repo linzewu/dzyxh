@@ -26,10 +26,10 @@ public class ScanDataLog implements Serializable{
 	public final static String SJLX_DRIVINGPHOTO="04";
 	
 	@Id
-	@Column
-	@GenericGenerator(name = "idGenerator", strategy = "identity")
-	@GeneratedValue(generator = "idGenerator")
-	private Long id;
+	@Column(length=32)
+	@GenericGenerator(name = "uuid", strategy = "uuid")
+	@GeneratedValue(generator = "uuid")
+	private String id;
 	
 	@Column(length=20)
 	private String sfzmhm;
@@ -44,15 +44,15 @@ public class ScanDataLog implements Serializable{
 	private String sjlx;
 	
 	private Integer clzt;
-	
+	@Column(length=4000)
 	private String cwxx;
-	
+	@Column
 	private Date clsj;
 	
 	@Column
 	private Date cjsj;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
@@ -73,7 +73,7 @@ public class ScanDataLog implements Serializable{
 		return cjsj;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

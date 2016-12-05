@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -22,18 +23,23 @@ import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xs.common.DesSecurityUtil;
+import com.xs.common.FormatUtil;
 import com.xs.dzyxh.entity.driimg.DrivingPhoto;
 import com.xs.dzyxh.entity.driver.DrivingApply;
+import com.xs.dzyxh.entity.driver.DrivingApplyId;
 import com.xs.dzyxh.entity.driver.DrivingBase;
 import com.xs.dzyxh.entity.driver.DrivingExamination;
 import com.xs.dzyxh.entity.system.ScanDataLog;
 import com.xs.dzyxh.entity.system.ScanJobLog;
-import com.xs.dzyxh.manager.base.IBaseManager;
+import com.xs.dzyxh.manager.driverimg.IDrivingPhotoManager;
+import com.xs.dzyxh.manager.sys.IScanDataLogManager;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONNull;
 import net.sf.json.JSONObject;
+import sun.misc.BASE64Decoder;
 
 @Service("dataScanJob")
 public class DataScanJob {
@@ -41,18 +47,19 @@ public class DataScanJob {
 	static Logger logger = Logger.getLogger(DataScanJob.class);
 
 	// @Value("${scan.data.out}")
-	String outPath = "G:\\data";
+	String outPath = "G:\\data\\out";
 
 	// @Value("${scan.data.in}")
-	String inPath = "G:\\data";
+	String inPath = "G:\\data\\in";
+	// @Value("${scan.data.error}")
+	String errorPath = "G:\\data\\error";
 	File outFile = null;
 	File inFile = null;
 
 	// 获得指定文件的byte数组
-	public static byte[] getBytes(String filePath) {
+	public static byte[] getBytes(File file) {
 		byte[] buffer = null;
 		try {
-			File file = new File(filePath);
 			FileInputStream fis = new FileInputStream(file);
 			ByteArrayOutputStream bos = new ByteArrayOutputStream(1000);
 			byte[] b = new byte[1000];
@@ -78,93 +85,62 @@ public class DataScanJob {
 		String[] filelist = d.outFile.list();
 		for (int i = 0; i < filelist.length; i++) {
 			if (filelist[i].lastIndexOf(".data") > 0) {
-				System.out.println(filelist[i]);
-				byte[] data = getBytes(d.outPath + "\\" + filelist[i]);
-
-				JSONObject jsonObject = new JSONObject();
-				jsonObject = jsonObject.fromObject(DesSecurityUtil.decrypt(new String(data)));
-
-				List m = ObjectMapperUtil.mapper.readValue(jsonObject.getString("data"),
-						d.getTypeReferenceForType(jsonObject.getString("sjlx")));
-				// DrivingBasemapper.readValue(p.toString(),new
-				// TypeReference<DrivingBase>() {} );
-				System.out.println(m.get(0));
+				// System.out.println(filelist[i]);
+				byte[] data = getBytes(new File(d.outPath + "\\" + filelist[i]));
+				// Character c=Character.valueOf(Integer.valueOf("1"));
+				d.transformationData(new String(data));
 			}
 		}
 
-		/*
-		 * ScanDataLog l=new ScanDataLog(); l.setClsj(new
-		 * Date(System.currentTimeMillis())); l.setJxdm("01"); l.setClzt(1);
-		 * l.setSfzmhm("123456789"); l.setQh("1015"); Map<String,Object>
-		 * dataMap=new HashMap<String,Object>(); List<ScanDataLog> ls=new
-		 * ArrayList<ScanDataLog>(); ls.add(l);
-		 * 
-		 * l.setClsj(new Date(System.currentTimeMillis())); l.setJxdm("01");
-		 * l.setClzt(0); l.setSfzmhm("123456788"); l.setQh("1016"); ls.add(l);
-		 * dataMap.put("sjlx", "01"); dataMap.put("data", ls); ObjectMapper
-		 * mapper = new ObjectMapper();
-		 * mapper.setSerializationInclusion(Include.NON_NULL); String
-		 * json=mapper.writeValueAsString(dataMap); System.out.println(json);
-		 */
 	}
 
 	@PostConstruct
 	public void init() {
 		outFile = new File(outPath);
-		if (!outFile.exists()) {
+		if (!outFile.exists() && !outFile.isDirectory()) {
 			outFile.mkdirs();
 		}
 		inFile = new File(inPath);
-		if (!inFile.exists()) {
+		if (!inFile.exists() && !inFile.isDirectory()) {
 			inFile.mkdirs();
 		}
 
 	}
 
-	@Resource(name = "sysHibernateTemplate")
-	private HibernateTemplate hibernateTemplate;
-	/*
-	 * @Resource(name = "driimgHibernateTemplate") private HibernateTemplate
-	 * driimgHibernateTemplate;
-	 * 
-	 * @Resource(name = "driverHibernateTemplate") private HibernateTemplate
-	 * driverHibernateTemplate;
-	 */
-
-	@Resource(name = "sysBaseManager")
-	private IBaseManager sysBaseManager;
-	@Resource(name = "driverImgBaseManager")
-	private IBaseManager driimgBaseManager;
-	@Resource(name = "driverBaseManager")
-	private IBaseManager driverBaseManager;
+	@Resource(name = "dataScanJobManagerImpl")
+	private IDataScanJobManager dataScanJobManager;
+	@Resource(name = "scanDataLogManager")
+	private IScanDataLogManager scanDataLogManager;
+	
+	BASE64Decoder decoder = new BASE64Decoder();
 
 	/*
 	 * @Resource(name="dataQueryManager") private IDataQueryManager
 	 * dataQueryManager;
 	 */
-//	@Scheduled(fixedDelay = 1000)
+	@Scheduled(fixedDelay = 1000)
 	public void readData() {
 		logger.info("定时扫描任务开始！");
-		ScanJobLog joblog = new ScanJobLog();
-		joblog.setKssj(new Date());
+		//ScanJobLog joblog = new ScanJobLog();
+		//joblog.setKssj(new Date());
 		String[] filelist = inFile.list();
 		for (int i = 0; i < filelist.length; i++) {
 			if (filelist[i].lastIndexOf(".data") > 0) {
-				System.out.println(filelist[i]);
-				byte[] data = getBytes(inPath + "\\" + filelist[i]);
+				File file = new File(inPath + "\\" + filelist[i]);
+				byte[] data = getBytes(file);
 
-				JSONObject jsonObject = new JSONObject();
 				try {
-					jsonObject = jsonObject.fromObject(DesSecurityUtil.decrypt(new String(data)));
-					String sjlx = jsonObject.getString("sjlx");
-					List datas = ObjectMapperUtil.mapper.readValue(jsonObject.getString("data"),
-							getTypeReferenceForType(sjlx));
-					saveDatas(datas, sjlx);
+					this.transformationData(new String(data));
+					//file.delete();
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					File errorfile = new File(
+							errorPath + "\\" + FormatUtil.date.format(new Date(System.currentTimeMillis())));
+					if (!errorfile.exists() && !errorfile.isDirectory()) {
+						errorfile.mkdirs();
+					}
+					DataScanJobUtil.cutFile(file, errorfile);
+					//e.printStackTrace();
 				}
-
 				// DrivingBasemapper.readValue(p.toString(),new
 				// TypeReference<DrivingBase>() {} );
 				// System.out.println(m.get(0).getXm());
@@ -172,111 +148,172 @@ public class DataScanJob {
 		}
 	}
 
-	TypeReference getTypeReferenceForType(String type) throws Exception {
-		switch (type) {
-		case ScanDataLog.SJLX_BASE:
-			return new TypeReference<List<DrivingBase>>() {
-			};
-		case ScanDataLog.SJLX_APPLY:
-			return new TypeReference<List<DrivingApply>>() {
-			};
-		case ScanDataLog.SJLX_EXAMINATION:
-			return new TypeReference<List<DrivingExamination>>() {
-			};
-		case ScanDataLog.SJLX_DRIVINGPHOTO:
-			return new TypeReference<List<DrivingPhoto>>() {
-			};
-		default:
-			throw new Exception("未知的数据类型：" + type);
+	public void transformationData(String data) throws Exception {
+		if (data == null) {
+			return ;
 		}
-	}
-
-	private IBaseManager getIBaseManagerForType(String type) throws Exception {
-		switch (type) {
-		case ScanDataLog.SJLX_BASE:
-		case ScanDataLog.SJLX_APPLY:
-		case ScanDataLog.SJLX_EXAMINATION:
-			return this.driverBaseManager;
-		case ScanDataLog.SJLX_DRIVINGPHOTO:
-			return this.driimgBaseManager;
-		default:
-			throw new Exception("未知的数据类型：" + type);
-		}
-	}
-
-	private Integer saveDatas(List datas, String sjlx) {
-		int count = 0;
-		IBaseManager template = null;
+		ScanDataLog dataLog=new ScanDataLog();
 		try {
-			template = this.getIBaseManagerForType(sjlx);
-		} catch (Exception e) {
+			JSONObject jsonObject = JSONObject.fromObject(new String(data));
+			DrivingBase dribase = new DrivingBase();
+			DrivingApply apply = new DrivingApply();
+			DrivingExamination examination = new DrivingExamination();
+			Map<String, DrivingPhoto> imgs = new HashMap<String, DrivingPhoto>();
+			if (jsonObject.containsKey("DRV_TEMP_MID")) {
+				JSONObject base = jsonObject.getJSONObject("DRV_TEMP_MID");
+				dribase.setHmcd(getCharValue("HMCD", base));// 号码长度标志
+				dribase.setLxzsxzqh(getStringValue("LXZSXZQH", base));// 联系住所行政区划
+				dribase.setLxzsxxdz(getStringValue("LXZSXXDZ", base));// 联系住所详细地址
+				dribase.setQh(getStringValue("QH", base));// 期号
+				dribase.setJxdm(getStringValue("JXDM", base));// 期号
+				dribase.setZzzm(getStringValue("ZZZM", base));// 暂住证明
+				dribase.setGj(getStringValue("GJ", base));// 国际
+				dribase.setXb(getStringValue("XB", base));// 性别
+				dribase.setSfzmhm(getStringValue("SFZMHM", base));// 身份证明号码
+				dribase.setLxdh(getStringValue("LXDH", base));// 联系电话
+				dribase.setCsrq(getDateValue("CSRQ", base));// 出生日期
+				dribase.setDjzsxzqh(getStringValue("DJZSXZQH", base));// 登记住所行政区划
+				dribase.setXm(getStringValue("XM", base));// 姓名
+				dribase.setDjzsxxdz(getStringValue("DJZSXXDZ", base));// 登记住所详细地址
+				dribase.setSfzmmc(getCharValue("SFZMMC", base));// 身份证明名称
+				dribase.setLxzsyzbm(getStringValue("LXZSYZBM", base));// 邮政编码
 
-		}
-		if (datas != null) {
-			for (Object obj : datas) {
-				try {
-					template.saveOrUpdate(obj);
-				} catch (DataAccessException e) {
-					e.printStackTrace();
+				examination.setZsz(getCharValue("ZSZ", base));
+				examination.setYsz(getCharValue("YSZ", base));
+				examination.setZsl(getBigDecimalValue("ZSL", base));
+				examination.setYsl(getBigDecimalValue("YSL", base));
+				examination.setZysfjz(getCharValue("ZYSFJZ", base));
+				examination.setSfjyjb(getCharValue("SFJYJB", base));
+				examination.setZetl(getCharValue("ZETL", base));
+				examination.setSfjyjb(getCharValue("SFJYJB", base));
+				examination.setTjrq(getDateValue("TJRQ", base));
+				examination.setSg(getBigDecimalValue("SG", base));
+				examination.setBsl(getCharValue("BSL", base));
+				examination.setZxz(getCharValue("ZXZ", base));
+				examination.setYxz(getCharValue("YXZ", base));
+				examination.setQgjb(getCharValue("QGJB", base));
+				examination.setYetl(getCharValue("YETL", base));
+				examination.setJyjbqk(getStringValue("JYJBQK", base));
+				examination.setYysfjz(getCharValue("YYSFJZ", base));
+				examination.setTlsfjz(getCharValue("TLSFJZ", base));
+				examination.setSfzmhm(dribase.getSfzmhm());
+				examination.setTjyymc(getStringValue("TJYYMC", base));
+				examination.setXm(dribase.getXm());
+				examination.setXb(examination.getXb());
+				examination.setGj(dribase.getGj());
+				examination.setCsrq(dribase.getCsrq());
+				examination.setLxdh(dribase.getLxdh());
+
+				apply.setJxmc(getStringValue("JXMC", base));
+				apply.setSqzjcxdh(getStringValue("ZKCX", base));
+				apply.setLy(getCharValue("LY", base));
+				apply.setDyslze(getCharValue("DYSLZE", base));
+				apply.setYyspsy(getBigDecimalValue("YYSPSY", base));
+				apply.setSg(examination.getSg());
+				apply.setId(new DrivingApplyId());
+				apply.getId().setQh(dribase.getQh());
+				apply.getId().setJxdm(dribase.getJxdm());
+				apply.getId().setSfzmhm(dribase.getSfzmhm());
+				apply.setBsl(examination.getBsl());
+				apply.setZxz(examination.getZxz());
+				apply.setYxz(examination.getYxz());
+				apply.setQgjb(examination.getQgjb());
+				apply.setTjyymc(examination.getTjyymc());
+
+			}
+			if (jsonObject.containsKey("TJ_PHOTOS")) {
+				JSONArray imgsJson = jsonObject.getJSONArray("TJ_PHOTOS");
+				int count = imgsJson.size();
+				for (int i = 0; i < count; i++) {
+					JSONObject imgJson = imgsJson.getJSONObject(i);
+					Date tjsj = getDateValue("TJSJ", imgJson);
+					DrivingPhoto photoXyqm = new DrivingPhoto(null, dribase.getSfzmhm(), null,
+							getBytesValue("PHOTO_XYQM", imgJson), "10", tjsj, null, null, null, null, null,
+							dribase.getQh(), dribase.getJxdm());
+					DrivingPhoto photoSfz = new DrivingPhoto(null, dribase.getSfzmhm(), null,
+							getBytesValue("PHOTO_SFZ", imgJson), "03", tjsj, null, null, null, null, null,
+							dribase.getQh(), dribase.getJxdm());
+					DrivingPhoto photoXy = new DrivingPhoto(null, dribase.getSfzmhm(), null,
+							getBytesValue("PHOTO_XY", imgJson), "14", tjsj, null, null, null, null, null,
+							dribase.getQh(), dribase.getJxdm());
+					DrivingPhoto photoYsqm = new DrivingPhoto(null, dribase.getSfzmhm(), null,
+							getBytesValue("PHOTO_YSQM", imgJson), "11", tjsj, null, null, null, null, null,
+							dribase.getQh(), dribase.getJxdm());
+					imgs.put("10", photoXyqm);
+					imgs.put("03", photoSfz);
+					imgs.put("14", photoXy);
+					imgs.put("11", photoYsqm);
 				}
-
 			}
-		}
-		return count;
-	}
-
-	//@Scheduled(fixedDelay = 1000 * 60 * 10)
-	public void writerDrivingBaseJob() throws Exception {
-		createDate(DrivingBase.class, ScanDataLog.SJLX_BASE, "驾驶人基础数据");
-	}
-
-//	@Scheduled(fixedDelay = 1000 * 60 * 10)
-	public void writerDrivingApplyJob() throws Exception {
-		createDate(DrivingApply.class, ScanDataLog.SJLX_BASE, "驾驶人申请表数据");
-	}
-
-	//@Scheduled(fixedDelay = 1000 * 60 * 10)
-	public void writerDrivingExaminationJob() throws Exception {
-		createDate(DrivingApply.class, ScanDataLog.SJLX_BASE, "驾驶人体检表数据");
-	}
-
-	private void createDate(Class c, String sjlx, String title) throws Exception {
-
-		logger.info(title + "交换定时任务开始！");
-		ScanJobLog joblog = new ScanJobLog();
-		try {
-			joblog.setKssj(new Date());
-			DetachedCriteria dc = DetachedCriteria.forClass(c);
-			// dc.add(Restrictions.eq("csbj", DataSign.CSBJ_WCS));
-			List<DrivingBase> datas = (List<DrivingBase>) hibernateTemplate.findByCriteria(dc, 0, 100);
-
-			if (datas != null && !datas.isEmpty()) {
-				// dataQueryManager.createScanDatalogs(datas);
-				Map<String, Object> dataMap = new HashMap<String, Object>();
-
-				ObjectMapper mapper = new ObjectMapper();
-				dataMap.put("sjlx", sjlx);
-				dataMap.put("data", datas);
-				String strData = mapper.writeValueAsString(dataMap);
-				String encData = DesSecurityUtil.encrypt(strData);
-				createStrFile(encData);
+			if (jsonObject.containsKey("ZW_INFO_DATA")) {
+				JSONArray imgsJson = jsonObject.getJSONArray("ZW_INFO_DATA");
+				int count = imgsJson.size();
+				for (int i = 0; i < count; i++) {
+					JSONObject imgJson = imgsJson.getJSONObject(i);
+					String subKey = getStringValue("SUB_KEY", imgJson);
+					subKey = subKey.equals("L1") ? "07" : "08";
+					DrivingPhoto photo = new DrivingPhoto(null, dribase.getSfzmhm(), null,
+							getBytesValue("INFO", imgJson), subKey, getDateValue("CREATE_TIME", imgJson),
+							getDateValue("MODIFY_TIME", imgJson), null, null, null, null, dribase.getQh(),
+							dribase.getJxdm());
+					imgs.put(subKey, photo);
+				}
 			}
-			joblog.setRwlx(sjlx);
-			joblog.setSjl(datas.size());
-			joblog.setJssj(new Date());
+			dataLog.setSfzmhm(dribase.getSfzmhm());
+			dataLog.setQh(dribase.getQh());
+			dataLog.setJxdm(dribase.getJxdm());
+			dataLog.setClzt(202);
+			dataLog.setCjsj(new Date(System.currentTimeMillis()));
+			dataScanJobManager.saveAll(dribase, apply, examination, imgs);
 		} catch (Exception e) {
-			joblog.setYcxx(e.getMessage());
-			joblog.setJssj(new Date());
-			throw e;
-		} finally {
-			// this.dataQueryManager.createScanJobLog(joblog);
-			logger.info(title + "交换定时任务结束！");
+			dataLog.setClzt(404);
+			dataLog.setCwxx(e.getMessage());
+			throw new Exception(e.getMessage());
+		}finally{
+			String strData =  DataScanJobUtil.mapper.writeValueAsString(dataLog);
+			createStrFile(strData);
+			scanDataLogManager.save(dataLog);
 		}
-
 	}
+
+	private byte[] getBytesValue(String key, JSONObject obj) throws IOException {
+		if (obj.containsKey(key)) {
+			return decoder.decodeBuffer(obj.getString(key));
+		}
+		return null;
+	}
+
+	private String getStringValue(String key, JSONObject obj) throws IOException {
+		if (obj.containsKey(key) && !(obj.get(key) instanceof JSONNull)) {
+			return obj.getString(key);
+		}
+		return null;
+	}
+
+	private Character getCharValue(String key, JSONObject obj) throws IOException {
+		if (obj.containsKey(key) && obj.getString(key) != null) {
+			return obj.getString(key).charAt(0);
+		}
+		return null;
+	}
+
+	private BigDecimal getBigDecimalValue(String key, JSONObject obj) throws IOException {
+		if (obj.containsKey(key) && obj.getString(key) != null) {
+			return new BigDecimal(obj.getString(key));
+		}
+		return null;
+	}
+
+	private Date getDateValue(String key, JSONObject obj) throws IOException {
+		if (obj.containsKey(key) && obj.getString(key) != null) {
+			return new Date(obj.getLong(key));
+		}
+		return null;
+	}
+
 
 	private void createStrFile(String str) throws IOException {
-
+		System.out.println("dddaaa");
 		FileOutputStream fos = null;
 		try {
 			String fileName = UUID.randomUUID() + ".data";

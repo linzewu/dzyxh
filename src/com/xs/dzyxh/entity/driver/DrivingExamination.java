@@ -9,12 +9,14 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -87,8 +89,63 @@ public class DrivingExamination implements java.io.Serializable {
 	
 	private String lxdh;
 	
+	private String sqrqmId;//申请人签名
+	private String ysqmId;//医生签名
+	private String dlrqmId;//代理人签名
+	private String yyyzId;//医院印章
+	private String xyId;//学员照片
+	private String sqbtpId;
 	
-	
+	@Column(name = "SQBTPID", length = 32)
+	public String getSqbtpId() {
+		return sqbtpId;
+	}
+
+	public void setSqbtpId(String sqbtpId) {
+		this.sqbtpId = sqbtpId;
+	}
+
+	@Column(name = "SQRQMID", length = 32)
+	public String getSqrqmId() {
+		return sqrqmId;
+	}
+
+	public void setSqrqmId(String sqrqmId) {
+		this.sqrqmId = sqrqmId;
+	}
+	@Column(name = "YSQMID", length = 32)
+	public String getYsqmId() {
+		return ysqmId;
+	}
+
+	public void setYsqmId(String ysqmId) {
+		this.ysqmId = ysqmId;
+	}
+	@Column(name = "DLRQMID", length = 32)
+	public String getDlrqmId() {
+		return dlrqmId;
+	}
+
+	public void setDlrqmId(String dlrqmId) {
+		this.dlrqmId = dlrqmId;
+	}
+	@Column(name = "YYYZID", length = 32)
+	public String getYyyzId() {
+		return yyyzId;
+	}
+
+	public void setYyyzId(String yyyzId) {
+		this.yyyzId = yyyzId;
+	}
+	@Column(name = "XYID", length = 32)
+	public String getXyId() {
+		return xyId;
+	}
+
+	public void setXyId(String xyId) {
+		this.xyId = xyId;
+	}
+
 	@Column(name = "XM", length = 30)
 	public String getXm() {
 		return xm;
@@ -144,6 +201,8 @@ public class DrivingExamination implements java.io.Serializable {
 	}
 
 	@Id
+	@GenericGenerator(name = "uuid", strategy = "uuid")
+	@GeneratedValue(generator = "uuid")
 	@Column(name="ID")
 	public String getId() {
 		return id;

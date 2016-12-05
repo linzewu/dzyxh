@@ -5,17 +5,13 @@ import javax.annotation.Resource;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Service;
 
-import com.xs.dzyxh.manager.driver.IBaseManager;
-
-@Service("sysBaseManager")
-public class SysBaseManagerImpl implements IBaseManager<Object> {
+import com.xs.dzyxh.entity.system.ScanDataLog;
+import com.xs.dzyxh.manager.sys.IScanDataLogManager;
+@Service("scanDataLogManager")
+public class ScanDataLogManagerImpl implements IScanDataLogManager {
 	@Resource(name = "sysHibernateTemplate")
 	private HibernateTemplate hibernateTemplate;
-
-	@Override
-	public boolean saveOrUpdate(Object t) {
-		hibernateTemplate.saveOrUpdate(t);
-		return true;
+	public void save(ScanDataLog data){
+		hibernateTemplate.save(data);
 	}
-
-}
+}	

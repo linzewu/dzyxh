@@ -14,11 +14,11 @@ import org.springframework.stereotype.Service;
 
 import com.xs.common.Common;
 import com.xs.dzyxh.entity.driimg.DrivingPhoto;
-import com.xs.dzyxh.manager.base.IBaseManager;
+import com.xs.dzyxh.manager.driver.IBaseManager;
 import com.xs.dzyxh.manager.driverimg.IDrivingPhotoManager;
 
 @Service("driimgManager")
-public class DrivingPhotoManagerImpl implements IDrivingPhotoManager,IBaseManager<DrivingPhoto> {
+public class DrivingPhotoManagerImpl implements IDrivingPhotoManager {
 	@Resource(name = "driimgHibernateTemplate")
 	private HibernateTemplate hibernateTemplate;
 
@@ -154,7 +154,7 @@ public class DrivingPhotoManagerImpl implements IDrivingPhotoManager,IBaseManage
 	}
 	@Override
 	public boolean saveOrUpdate(DrivingPhoto dir) {
-		hibernateTemplate.save(dir);
+		hibernateTemplate.saveOrUpdate(dir);
 		return false;
 	}
 

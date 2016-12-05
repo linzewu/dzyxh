@@ -2,8 +2,8 @@ package com.xs.dzyxh.manager.driver.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +11,7 @@ import java.util.Map;
 
 import com.aspose.words.License;
 import com.xs.common.BaseParamsUtil;
+import com.xs.common.FormatUtil;
 import com.xs.dzyxh.entity.aspose.ImageData;
 import com.xs.dzyxh.entity.driimg.DrivingPhoto;
 import com.xs.dzyxh.entity.driver.DrivingApply;
@@ -18,7 +19,7 @@ import com.xs.dzyxh.entity.driver.DrivingBase;
 import com.xs.dzyxh.entity.driver.DrivingExamination;
 
 public class DrivingApplyUitl {
-	static SimpleDateFormat date = new SimpleDateFormat("yyyy年MM月dd日");
+	
 	public static InputStream is;
 	public static InputStream license ;
 	static {
@@ -38,7 +39,7 @@ public class DrivingApplyUitl {
 		if (data == null) {
 			return "  年      月      日";
 		}
-		return date.format(data);
+		return FormatUtil.date.format(data);
 	}
 
 	public static String dg(Object value, String code) {
@@ -49,7 +50,7 @@ public class DrivingApplyUitl {
 		}
 	}
 
-	public static List<ImageData> convertSqbImgData(List<DrivingPhoto> photos) {
+	public static List<ImageData> convertSqbImgData(Collection<DrivingPhoto> photos) {
 		List<ImageData> imgs = new ArrayList<ImageData>();
 		if (photos != null) {
 			for (DrivingPhoto p : photos) {
@@ -78,7 +79,7 @@ public class DrivingApplyUitl {
 		return imgs;
 	}
 	
-	public static List<ImageData> convertTjbImgData(List<DrivingPhoto> photos) {
+	public static List<ImageData> convertTjbImgData(Collection<DrivingPhoto> photos) {
 		List<ImageData> imgs = new ArrayList<ImageData>();
 		if (photos != null) {
 			for (DrivingPhoto p : photos) {

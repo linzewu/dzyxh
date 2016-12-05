@@ -5,7 +5,7 @@ import javax.annotation.Resource;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Service;
 
-import com.xs.dzyxh.manager.base.IBaseManager;
+import com.xs.dzyxh.manager.driver.IBaseManager;
 @Service("driverImgBaseManager")
 public class DriverImgBaseManagerImpl implements IBaseManager<Object>{
 	@Resource(name = "driimgHibernateTemplate")

@@ -3,6 +3,7 @@ package com.xs.dzyxh.manager.driver.impl;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +23,7 @@ import com.xs.dzyxh.entity.driimg.DrivingPhoto;
 import com.xs.dzyxh.entity.driver.DrivingApply;
 import com.xs.dzyxh.entity.driver.DrivingBase;
 import com.xs.dzyxh.entity.driver.DrivingExamination;
-import com.xs.dzyxh.manager.base.IBaseManager;
+import com.xs.dzyxh.manager.driver.IBaseManager;
 import com.xs.dzyxh.manager.driver.IDrivingExaminationManager;
 import com.xs.dzyxh.manager.driverimg.IDrivingPhotoManager;
 import com.xs.dzyxh.manager.img.IAsposeManager;
@@ -43,21 +44,23 @@ public class DrivingExaminationManagerImpl implements IDrivingExaminationManager
 	private IAsposeManager asposeManager;
 
 	public byte[] getExaminationImgToByte( DrivingExamination examinat) throws Exception {
+		if (examinat != null) {
+			DrivingPhoto driving = new DrivingPhoto();
+			driving.setSfzmhm(examinat.getSfzmhm());
+			//需要增加条件
+			List<DrivingPhoto> photos = drivingPhotoManager.getDrivingPhotos(driving, null, null);
+
+			return getExaminationImgToByte(  examinat, photos);
+		}
+		return null;
+	}
+	public byte[] getExaminationImgToByte( DrivingExamination examinat,Collection<DrivingPhoto> photos) throws Exception {
 
 		if (examinat != null) {
 			// 得到填充的数据
 			Map<String, String> datas = DrivingApplyUitl.convertTjbData( examinat);
-			DrivingPhoto driving = new DrivingPhoto();
-			// 有流水号则使用流水号查询
-			/*if (examinat.getLsh() != null) {
-				driving.setLsh(examinat.getLsh());
-			} else if (examinat.getId() != null) {
-				// 使用身份证、期号、驾校代码查询图片
-				driving.setSfzmhm(examinat.getId().getSfzmhm());
-				driving.setQh(examinat.getId().getQh());
-				driving.setJxdm(examinat.getId().getJxdm());
-			}*/
-			List<DrivingPhoto> photos = drivingPhotoManager.getDrivingPhotos(driving, null, null);
+			//DrivingPhoto driving = new DrivingPhoto();
+			//List<DrivingPhoto> photos = drivingPhotoManager.getDrivingPhotos(driving, null, null);
 			List<ImageData> imgs = DrivingApplyUitl.convertTjbImgData(photos);
 			if (examinat.getLsh() != null) {
 				try {
@@ -76,7 +79,6 @@ public class DrivingExaminationManagerImpl implements IDrivingExaminationManager
 		}
 		return null;
 	}
-
 	public DrivingExamination getDrivingExamination(final DrivingExamination dir) {
 		List<DrivingExamination> results = getDrivingExaminations(dir, null, null);
 		if (results.size() > 0) {

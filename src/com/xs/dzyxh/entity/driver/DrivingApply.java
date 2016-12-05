@@ -35,7 +35,7 @@ public class DrivingApply implements java.io.Serializable {
 	private String xzqh;// 行政区划
 	private String zzzm;// 暂住证明号码
 	private String dabh;// 档案编号
-	private Short sg;// 身高
+	private BigDecimal sg;// 身高
 	private BigDecimal zsl;// 左视力
 	private BigDecimal ysl;// 右视力
 	private Character bsl;// 辨色力
@@ -82,6 +82,10 @@ public class DrivingApply implements java.io.Serializable {
 	private String zkzmbh;// 准考证明编号
 	private Character csbj;
 	private String jdcjszsqbzp;// 机动车驾驶证申请表,照片表外键
+	private String sfzzpId;//身份证照片ID
+	private String zw1zpId;//指纹1照片ID
+	private String zw2zpId;//指纹2照片ID
+	private String jbrqzzpId;//经办人照片ID
 	List<String> picIds;
 	public DrivingApply() {
 	}
@@ -90,7 +94,7 @@ public class DrivingApply implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public DrivingApply(DrivingApplyId id, String lsh, Character ly, String xzqh, String zzzm, String dabh, Short sg,
+	public DrivingApply(DrivingApplyId id, String lsh, Character ly, String xzqh, String zzzm, String dabh, BigDecimal sg,
 			BigDecimal zsl, BigDecimal ysl, Character bsl, Character zxz, Character yxz,
 			Character qgjb, Date tjrq, String tjyymc, String by1, String by2, Character bj1, Character bj2,
 			Character dyslze, BigDecimal yyspsy, String wwlsh, String yjdz, String ywlx, String sqzjcxdh,
@@ -208,16 +212,16 @@ public class DrivingApply implements java.io.Serializable {
 		this.dabh = dabh;
 	}
 
-	@Column(name = "SG", precision = 3, scale = 0)
-	public Short getSg() {
+	@Column(name = "SG"/*, precision = 3, scale = 0*/)
+	public BigDecimal getSg() {
 		return this.sg;
 	}
 
-	public void setSg(Short sg) {
+	public void setSg(BigDecimal sg) {
 		this.sg = sg;
 	}
 
-	@Column(name = "ZSL", precision = 3, scale = 1)
+	@Column(name = "ZSL"/*, precision = 3, scale = 1*/)
 	public BigDecimal getZsl() {
 		return this.zsl;
 	}
@@ -226,7 +230,7 @@ public class DrivingApply implements java.io.Serializable {
 		this.zsl = zsl;
 	}
 
-	@Column(name = "YSL", precision = 3, scale = 1)
+	@Column(name = "YSL"/*, precision = 3, scale = 1*/)
 	public BigDecimal getYsl() {
 		return this.ysl;
 	}
@@ -353,7 +357,7 @@ public class DrivingApply implements java.io.Serializable {
 		this.dyslze = dyslze;
 	}
 
-	@Column(name = "YYSPSY", precision = 3, scale = 1)
+	@Column(name = "YYSPSY"/*, precision = 3, scale = 1*/)
 	public BigDecimal getYyspsy() {
 		return this.yyspsy;
 	}
@@ -646,6 +650,40 @@ public class DrivingApply implements java.io.Serializable {
 
 	public void setYsz(Character ysz) {
 		this.ysz = ysz;
+	}
+
+	@Column(name = "SFZZPID", length = 32)
+	public String getSfzzpId() {
+		return sfzzpId;
+	}
+
+	public void setSfzzpId(String sfzzpId) {
+		this.sfzzpId = sfzzpId;
+	}
+
+	@Column(name = "ZW1ZPID", length = 32)
+	public String getZw1zpId() {
+		return zw1zpId;
+	}
+
+	public void setZw1zpId(String zw1zpId) {
+		this.zw1zpId = zw1zpId;
+	}
+	@Column(name = "ZW2ZPID", length = 32)
+	public String getZw2zpId() {
+		return zw2zpId;
+	}
+
+	public void setZw2zpId(String zw2zpId) {
+		this.zw2zpId = zw2zpId;
+	}
+	@Column(name = "JBRQZZPID", length = 32)
+	public String getJbrqzzpId() {
+		return jbrqzzpId;
+	}
+
+	public void setJbrqzzpId(String jbrqzzpId) {
+		this.jbrqzzpId = jbrqzzpId;
 	}
 
 }

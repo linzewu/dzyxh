@@ -78,7 +78,6 @@
 	<!-- ===========================sys 数据源配置完成===================================  -->
 	
 	
-	
 	<!-- 驾驶人 driver 数据源配置 -->
 	<!-- 数据库连接池c3p0配置 -->
 	<bean id="driverDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
@@ -123,6 +122,7 @@
 			<tx:method name="edit*" propagation="REQUIRED" />
 			<tx:method name="remove*" propagation="REQUIRED" />
 			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="saveAll" propagation="REQUIRED" />
 			<tx:method name="update*" propagation="REQUIRED" />
 			<tx:method name="delete*" propagation="REQUIRED" />
 			<tx:method name="reset*" propagation="REQUIRED" />
@@ -134,7 +134,7 @@
 	<aop:config expose-proxy="true">
 		<!-- 只对业务逻辑层实施事务 -->
 		<aop:pointcut id="drivertxPointcut"
-			expression="execution(* com.xs.dzyxh.manager.driver.*.*(..))" />
+			expression="execution(* com.xs.dzyxh.manager.driver.*.*(..))||execution(* com.xs.dzyxh.manager.job.IDataScanJobManager.*(..))" />
 		<aop:advisor pointcut-ref="drivertxPointcut" advice-ref="driverTxAdvice" />
 	</aop:config>
 	<!-- 驾驶人 driver 数据源配置完成 -->
@@ -184,6 +184,7 @@
 			<tx:method name="edit*" propagation="REQUIRED" />
 			<tx:method name="remove*" propagation="REQUIRED" />
 			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="saveAll" propagation="REQUIRED" />
 			<tx:method name="update*" propagation="REQUIRED" />
 			<tx:method name="delete*" propagation="REQUIRED" />
 			<tx:method name="reset*" propagation="REQUIRED" />
@@ -195,7 +196,7 @@
 	<aop:config expose-proxy="true">
 		<!-- 只对业务逻辑层实施事务 -->
 		<aop:pointcut id="driimgtxPointcut"
-			expression="execution(* com.xs.dzyxh.manager.driverimg.*.*(..))" />
+			expression="execution(* com.xs.dzyxh.manager.driverimg.*.*(..))||execution(* com.xs.dzyxh.manager.job.IDataScanJobManager.*(..))" />
 		<aop:advisor pointcut-ref="driimgtxPointcut" advice-ref="driimgTxAdvice" />
 	</aop:config>
 	<!-- 驾驶人 driver 数据源配置完成 -->
