@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -17,14 +16,10 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
-import org.hibernate.criterion.DetachedCriteria;
-import org.springframework.dao.DataAccessException;
-import org.springframework.orm.hibernate4.HibernateTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.xs.common.DesSecurityUtil;
 import com.xs.common.FormatUtil;
 import com.xs.dzyxh.entity.driimg.DrivingPhoto;
 import com.xs.dzyxh.entity.driver.DrivingApply;
@@ -32,8 +27,6 @@ import com.xs.dzyxh.entity.driver.DrivingApplyId;
 import com.xs.dzyxh.entity.driver.DrivingBase;
 import com.xs.dzyxh.entity.driver.DrivingExamination;
 import com.xs.dzyxh.entity.system.ScanDataLog;
-import com.xs.dzyxh.entity.system.ScanJobLog;
-import com.xs.dzyxh.manager.driverimg.IDrivingPhotoManager;
 import com.xs.dzyxh.manager.sys.IScanDataLogManager;
 
 import net.sf.json.JSONArray;
@@ -46,13 +39,13 @@ public class DataScanJob {
 
 	static Logger logger = Logger.getLogger(DataScanJob.class);
 
-	// @Value("${scan.data.out}")
-	String outPath = "G:\\data\\out";
+	@Value("${scan.data.out}")
+	String outPath = "D:\\data\\out";
 
-	// @Value("${scan.data.in}")
-	String inPath = "G:\\data\\in";
-	// @Value("${scan.data.error}")
-	String errorPath = "G:\\data\\error";
+	@Value("${scan.data.in}")
+	String inPath = "D:\\data\\in";
+	@Value("${scan.data.error}")
+	String errorPath = "D:\\data\\error";
 	File outFile = null;
 	File inFile = null;
 
