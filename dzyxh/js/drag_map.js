@@ -1,8 +1,7 @@
 drag = 0
 move = 0
 
-// ��ק����
-// �μ���http://blog.sina.com.cn/u/4702ecbe010007pe
+
 var ie = document.all;
 var nn6 = document.getElementById && !document.all;
 var isdrag = false;
@@ -128,6 +127,7 @@ function closeMask() {
 	oImg.style.display = 'none';
 	layer1.style.display = 'none';
 	realsize();
+	
 }
 //图片预览
 function openMask() {
@@ -150,10 +150,19 @@ function openMask() {
  * @returns
  */
 function realsize() {
-	images1.height = imgHeight;
-	images1.width = imgWidth;
+/*	images1.height = imgHeight;
+	images1.width = imgWidth;*/
 	images1.style.zoom = 1;
 	block1.style.left = imgLeft;
 	block1.style.top = imgTop;
 
 }
+(function ($) {
+	$(document).ready(function () {
+		/** Coding Here */
+	}).keydown(function (e) {
+		if (e.which === 27) {
+			closeMask();
+		}
+	});
+})(jQuery);

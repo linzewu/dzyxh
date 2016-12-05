@@ -57,7 +57,7 @@ public class DataScanJobManagerImpl implements IDataScanJobManager {
 				drivingExaminationManager.getExaminationImgToByte(examination, imgs.values()), "01", new Date(System.currentTimeMillis()),null, null, null, null, null, base.getQh(),
 				base.getJxdm());
 		driimgHibernateTemplate.saveOrUpdate(photo2);
-		examination.setSqbtpId(getPhotoId(imgs,photo2.getId()));//体检表合成照片
+		examination.setSqbtpId(photo2.getId());//体检表合成照片
 		driverHibernateTemplate.saveOrUpdate(apply);
 		driverHibernateTemplate.saveOrUpdate(examination);
 

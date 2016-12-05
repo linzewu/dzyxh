@@ -166,8 +166,8 @@
 													function(i, val) {
 														var params = "id="+val.id;
 														tab
-																.append("<li><a href=\"#\" class=\"item\"> <img src=\"exa/getExaPic?"
-																		+ params
+																.append("<li><a href=\"#\" class=\"item\"> <img src=\"img/getDriBaseById?id="
+																		+ val.sqbtpId
 																		+ "\" /><div><p>"+val.cjsj+"</p></div></a></li>");
 													});
 									table
@@ -251,8 +251,8 @@
 										}
 									}
 									tab
-											.append("<li><a href=\"#\" class=\"item\"> <img src=\"apply/getApplyPic?"
-													+ params
+											.append("<li><a href=\"#\" class=\"item\"> <img src=\"img/getDriBaseById?id="
+													+ data.jdcjszsqbzp
 													+ "\" /><div><p>申请表</p></div></a></li>");
 									/* 	tab
 												.append("<li><a href=\"#\" class=\"item\"> <img src=\"exa/getExaPic?"
