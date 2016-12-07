@@ -148,13 +148,12 @@
 								if (data.rows.length == 0) {
 									var tab = $('<div class="products" align="center">无体检数据</div>');
 									table
-									.append($(
-											'<fieldset class="base_fl"><legend>体检图片</legend></fieldset>')
-											.append(tab));
+											.append($(
+													'<fieldset class="base_fl"><legend>体检图片</legend></fieldset>')
+													.append(tab));
 								} else {
 									//图片信息
 									var tab = $('<div class="products"><ul></ul></div>');
-									
 
 									/* 	tab
 												.append("<li><a href=\"#\" class=\"item\"> <img src=\"exa/getExaPic?"
@@ -164,16 +163,27 @@
 											.each(
 													data.rows,
 													function(i, val) {
-														var params = "id="+val.id;
+														var params = "id="
+																+ val.id;
 														tab
 																.append("<li><a href=\"#\" class=\"item\"> <img src=\"img/getDriBaseById?id="
 																		+ val.sqbtpId
-																		+ "\" /><div><p>"+val.cjsj+"</p></div></a></li>");
+																		+ "\" /><div><p>"
+																		+ val.tjrq
+																		+ "</p></div></a></li>");
 													});
 									table
 											.append($(
 													'<fieldset class="base_fl"><legend>体检图片</legend></fieldset>')
 													.append(tab));
+									//绑定图片单击事件
+									$(".products img")
+											.bind(
+													"click",
+													function() {
+														onClickPic($(this)
+																.attr("src"));
+													});
 								}
 							}
 						});
@@ -289,8 +299,7 @@
 													"click",
 													function() {
 														onClickPic($(this)
-																.attr(
-																"src"));										
+																.attr("src"));
 													});
 									//设置页面已加载标志
 									fulfilLoad[index - 1] = true;
@@ -383,7 +392,7 @@
 			});
 		}
 	}
-	
+
 	//将表单序列化
 	function serializeObject(form) {
 		var o = {};

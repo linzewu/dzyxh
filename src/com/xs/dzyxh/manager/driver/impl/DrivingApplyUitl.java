@@ -114,7 +114,7 @@ public class DrivingApplyUitl {
 		datas.put("xm", formatString(examination.getXm()));// 姓名
 		datas.put("xb", BaseParamsUtil.getBaseParamNameByType("xb", examination.getXb()));// 性别
 		datas.put("csrq", dateFormat(examination.getCsrq()));// 出生日期
-		datas.put("gj", formatString(examination.getGj()));// 国籍
+		datas.put("gj", BaseParamsUtil.getBaseParamNameByType("gj", examination.getGj()));// 国籍
 		datas.put("lxdh", formatString(examination.getLxdh()));// 联系电话
 		// datas.put("lsh", apply.getLsh());
 		datas.put("sfzmhm", examination.getSfzmhm());// 身份证
@@ -195,7 +195,7 @@ public class DrivingApplyUitl {
 		datas.put("xm", formatString(base.getXm()));// 姓名
 		datas.put("xb", BaseParamsUtil.getBaseParamNameByType("xb", base.getXb()));// 性别
 		datas.put("csrq", dateFormat(base.getCsrq()));// 出生日期
-		datas.put("gj", formatString(base.getGj()));// 国籍
+		datas.put("gj",BaseParamsUtil.getBaseParamNameByType("gj", formatString(base.getGj())) );// 国籍
 		datas.put("lxdh", formatString(base.getLxdh()));// 联系电话
 		// datas.put("lsh", apply.getLsh());
 		datas.put("sfzmhm", apply.getId().getSfzmhm());// 身份证

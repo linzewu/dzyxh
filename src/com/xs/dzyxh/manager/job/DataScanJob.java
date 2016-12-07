@@ -1,11 +1,13 @@
 package com.xs.dzyxh.manager.job;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
@@ -64,13 +66,35 @@ public class DataScanJob {
 			bos.close();
 			buffer = bos.toByteArray();
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		return buffer;
 	}
-
+	public static String readFile(File file)  
+	{     
+	    String fileContent = "";     
+	    try   
+	    {       
+    
+	        if(file.isFile()&&file.exists())  
+	        {       
+	            InputStreamReader read = new InputStreamReader(new FileInputStream(file),"gbk");       
+	            BufferedReader reader=new BufferedReader(read);       
+	            String line;       
+	            while ((line = reader.readLine()) != null)   
+	            {        
+	                fileContent += line;       
+	            }         
+	            read.close();      
+	        }     
+	    } catch (Exception e)   
+	    {         
+	        e.printStackTrace();     
+	    }     
+	    return fileContent;   
+	}   
 	public static void main(String[] arg) throws Exception {
 		DataScanJob d = new DataScanJob();
 		d.init();
@@ -79,9 +103,9 @@ public class DataScanJob {
 		for (int i = 0; i < filelist.length; i++) {
 			if (filelist[i].lastIndexOf(".data") > 0) {
 				// System.out.println(filelist[i]);
-				byte[] data = getBytes(new File(d.outPath + "\\" + filelist[i]));
+				//byte[] data = getBytes(new File(d.outPath + "\\" + filelist[i]));
 				// Character c=Character.valueOf(Integer.valueOf("1"));
-				d.transformationData(new String(data));
+				d.transformationData(readFile(new File(d.outPath + "\\" + filelist[i])));
 			}
 		}
 
@@ -113,30 +137,24 @@ public class DataScanJob {
 	 */
 	@Scheduled(fixedDelay = 1000)
 	public void readData() {
-		logger.info("定时扫描任务开始！");
-		//ScanJobLog joblog = new ScanJobLog();
-		//joblog.setKssj(new Date());
 		String[] filelist = inFile.list();
 		for (int i = 0; i < filelist.length; i++) {
 			if (filelist[i].lastIndexOf(".data") > 0) {
 				File file = new File(inPath + "\\" + filelist[i]);
-				byte[] data = getBytes(file);
+				//byte[] data = getBytes(file);
 
 				try {
-					this.transformationData(new String(data));
-					//file.delete();
+					this.transformationData(readFile(file));
+					file.delete();
 				} catch (Exception e) {
 					File errorfile = new File(
 							errorPath + "\\" + FormatUtil.date.format(new Date(System.currentTimeMillis())));
 					if (!errorfile.exists() && !errorfile.isDirectory()) {
 						errorfile.mkdirs();
 					}
+					//数据文件剪切到错误文件夹
 					DataScanJobUtil.cutFile(file, errorfile);
-					//e.printStackTrace();
 				}
-				// DrivingBasemapper.readValue(p.toString(),new
-				// TypeReference<DrivingBase>() {} );
-				// System.out.println(m.get(0).getXm());
 			}
 		}
 	}
@@ -192,7 +210,7 @@ public class DataScanJob {
 				examination.setSfzmhm(dribase.getSfzmhm());
 				examination.setTjyymc(getStringValue("TJYYMC", base));
 				examination.setXm(dribase.getXm());
-				examination.setXb(examination.getXb());
+				examination.setXb(dribase.getXb());
 				examination.setGj(dribase.getGj());
 				examination.setCsrq(dribase.getCsrq());
 				examination.setLxdh(dribase.getLxdh());
@@ -255,12 +273,12 @@ public class DataScanJob {
 			dataLog.setSfzmhm(dribase.getSfzmhm());
 			dataLog.setQh(dribase.getQh());
 			dataLog.setJxdm(dribase.getJxdm());
-			dataLog.setClzt(202);
+			dataLog.setClzt(200);
 			dataLog.setCjsj(new Date(System.currentTimeMillis()));
 			dataScanJobManager.saveAll(dribase, apply, examination, imgs);
 		} catch (Exception e) {
-			dataLog.setClzt(404);
-			dataLog.setCwxx(e.getMessage());
+			dataLog.setClzt(500);
+			dataLog.setCwxx(e.getCause().getClass()  +":"+e.getLocalizedMessage());
 			throw new Exception(e.getMessage());
 		}finally{
 			String strData =  DataScanJobUtil.mapper.writeValueAsString(dataLog);
@@ -291,7 +309,7 @@ public class DataScanJob {
 	}
 
 	private BigDecimal getBigDecimalValue(String key, JSONObject obj) throws IOException {
-		if (obj.containsKey(key) && obj.getString(key) != null) {
+		if (obj.containsKey(key) && !(obj.get(key) instanceof JSONNull)) {
 			return new BigDecimal(obj.getString(key));
 		}
 		return null;
@@ -306,7 +324,6 @@ public class DataScanJob {
 
 
 	private void createStrFile(String str) throws IOException {
-		System.out.println("dddaaa");
 		FileOutputStream fos = null;
 		try {
 			String fileName = UUID.randomUUID() + ".data";

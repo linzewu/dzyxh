@@ -330,7 +330,7 @@ public class DrivingExamination implements java.io.Serializable {
 		this.tjrq = tjrq;
 	}
 
-	@Column(name = "TJYYMC", length = 20)
+	@Column(name = "TJYYMC", length = 80)
 	public String getTjyymc() {
 		return this.tjyymc;
 	}
