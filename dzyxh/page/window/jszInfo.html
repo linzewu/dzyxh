@@ -208,6 +208,9 @@
 			if (!val.sqyq) {
 				val["sqyq"] = "";
 			}
+			if(!val.lsh){
+				val["lsh"] = "";
+			}
 			temp[i] = val;
 		});
 		//添加事件
@@ -374,7 +377,10 @@
 					$("#lxzsyzbm").text(data.lxzsyzbm);
 					$("#lxdh").text(data.lxdh);
 					$("#zzzm").text(data.zzzm);
-					$("#gxsj").text(data.gxsj);
+					if(data.gxsj!="null"){
+						$("#gxsj").text(data.gxsj);
+					}
+				
 					$("#sfbd").text(data.sfbd);
 					$("#sjhm").text(data.sjhm);
 					$("#dzyx").text(data.dzyx);
