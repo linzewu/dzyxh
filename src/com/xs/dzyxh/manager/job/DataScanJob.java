@@ -220,6 +220,7 @@ public class DataScanJob {
 				apply.setLy(getCharValue("LY", base));
 				apply.setDyslze(getCharValue("DYSLZE", base));
 				apply.setYyspsy(getBigDecimalValue("YYSPSY", base));
+				apply.setYwlx(getStringValue("YWLX", base));
 				apply.setSg(examination.getSg());
 				apply.setId(new DrivingApplyId());
 				apply.getId().setQh(dribase.getQh());
