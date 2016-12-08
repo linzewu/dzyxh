@@ -1,11 +1,13 @@
 package com.xs.dzyxh.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -14,13 +16,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xs.common.Constant;
 import com.xs.common.ResultHandler;
 import com.xs.common.Annotation.FunctionAnnotation;
 import com.xs.common.Annotation.ModuleAnnotation;
 import com.xs.dzyxh.entity.system.Power;
 import com.xs.dzyxh.entity.system.Role;
+import com.xs.dzyxh.entity.system.User;
 import com.xs.dzyxh.manager.sys.IRoleManager;
+
+import net.sf.json.JSONArray;
 
 @Controller
 @RequestMapping(value = "/role")
@@ -44,7 +51,31 @@ public class RoleController {
 		Role role = roleManager.getRole(jsmc);
 		return role;
 	}
-
+	@FunctionAnnotation(name = "权限菜单")
+	@RequestMapping(value = "menu.js", produces = "application/javascript; charset=utf-8")
+	public @ResponseBody String getRoleMenu(HttpServletRequest request) throws JsonProcessingException{
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute(Constant.ConstantKey.USER_SESSIO_NKEY);
+		ServletContext sc = request.getSession().getServletContext();
+		List<Power> powers = (List<Power>) sc.getAttribute("powers");
+		String js=user.getJs();
+		String roleqx=null;
+		if(js!=null){
+			Role role=roleManager.getRoleById(Integer.valueOf(js));
+			if(role!=null){
+				roleqx=role.getJsqx();
+			}
+		}
+		Map<String,String> menus=new HashMap<String,String>();
+		roleManager.addMenuToMap(menus, roleqx);
+		if(user.getQx()!=null){
+			JSONArray jss=JSONArray.fromObject(user.getQx());
+			roleManager.addMenuToMap(menus, jss.toArray());
+		}
+		ObjectMapper objectMapper = new ObjectMapper();
+		return " var menus=" + objectMapper.writeValueAsString(roleManager.transformationPowers(menus, powers));
+	}
+	
 	@FunctionAnnotation(name = "权限列表查询")
 	@RequestMapping(value = "getPowers", method = RequestMethod.POST)
 	public @ResponseBody List<Power> getPowers(HttpServletRequest request) {

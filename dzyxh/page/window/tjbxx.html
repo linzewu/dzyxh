@@ -3,13 +3,13 @@
 	width="100%">
 	<thead data-options="frozen:true">
 		<tr>
-			<th data-options="field:'xh',width:60">序号</th>
-			<th data-options="field:'jxdm',width:120">姓名</th>
+<!-- 			<th data-options="field:'xh',width:60">序号</th> -->
+			<th data-options="field:'xm',width:120">姓名</th>
 			<th data-options="field:'sfzmhm',width:140">证件号码</th>
 			<th
 				data-options="field:'xb',width:60,formatter:function(value){return comm.getParamNameByValue('xb',value)}">性别</th>
 			<th data-options="field:'csrq',width:140">出生日期</th>
-			<th data-options="field:'gj',width:80">国籍</th>
+			<th data-options="field:'gj',width:80,formatter:function(value){return comm.getParamNameByValue('gj',value)}">国籍</th>
 		</tr>
 	</thead>
 	<thead>

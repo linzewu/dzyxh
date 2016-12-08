@@ -1,7 +1,9 @@
 package com.xs.dzyxh.manager.sys;
 
 import java.util.List;
+import java.util.Map;
 
+import com.xs.dzyxh.entity.system.Power;
 import com.xs.dzyxh.entity.system.Role;
 
 public interface IRoleManager {
@@ -19,5 +21,8 @@ public interface IRoleManager {
 	public void delete(Integer id) throws Exception;
 	
 	public Role getSystemRole();
-
+	public Role getRoleById(Integer id);
+	public void addMenuToMap(Map<String, String> menus, String ids);
+	public void addMenuToMap(Map<String, String> menus, Object[] ms);
+	public Map<String,List<Power>> transformationPowers(Map<String,String> menus,List<Power> powers);
 }
