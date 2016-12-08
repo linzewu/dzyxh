@@ -33,7 +33,7 @@ public class DrivingPhotoController {
 			return;
 		}
 		OutputStream out = null;
-		response.setContentType("image/gif");
+		response.setContentType("image/png");
 		try {
 			out = response.getOutputStream();
 			out.write(data.getZp());

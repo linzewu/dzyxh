@@ -279,7 +279,7 @@
 														tab
 																.append("<li><a href=\"#\" class=\"item\"> <img src=\"img/getDriBaseById?id="
 																		+ val
-																		+ "\" /><div><p>照片</p></div></a></li>");
+																		+ "\" /><div><p>图片</p></div></a></li>");
 													});
 									table
 											.append($(
@@ -369,7 +369,7 @@
 					$("#xm").text(data.xm);
 					$("#xb").text(comm.getParamNameByValue("xb", data.xb));
 					$("#csrq").text(data.csrq);
-					$("#gj").text(data.gj);
+					$("#gj").text(comm.getParamNameByValue("gj", data.gj));
 					$("#djzsxzqh").text(data.djzsxzqh);
 					$("#djzsxxdz").text(data.djzsxxdz);
 					$("#lxzsxzqh").text(data.lxzsxzqh);
@@ -377,11 +377,11 @@
 					$("#lxzsyzbm").text(data.lxzsyzbm);
 					$("#lxdh").text(data.lxdh);
 					$("#zzzm").text(data.zzzm);
-					if(data.gxsj!="null"){
+					if(data.gxsj!=null){
 						$("#gxsj").text(data.gxsj);
 					}
 				
-					$("#sfbd").text(data.sfbd);
+					$("#sfbd").text(comm.getParamNameByValue("sfbd", data.sfbd));
 					$("#sjhm").text(data.sjhm);
 					$("#dzyx").text(data.dzyx);
 					$("#qh").text(data.qh);

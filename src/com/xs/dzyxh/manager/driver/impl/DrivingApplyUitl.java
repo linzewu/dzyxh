@@ -141,12 +141,12 @@ public class DrivingApplyUitl {
 		datas.put("yysjz", dg(examination.getYysfjz(),"1"));// 右眼是矫正
 		datas.put("yyfjz", dg(examination.getYysfjz(),"0"));// 右眼否矫正
 		
-		datas.put("ztl", formatString(examination.getZetl()));// 左听力
-		datas.put("ytl", formatString(examination.getYetl()));// 右听力
-		datas.put("zsz", formatString(examination.getZsz()));// 左上肢
-		datas.put("ysz", formatString(examination.getYsz()));// 右上肢
-		datas.put("zxz", formatString(examination.getZxz()));// 左下肢
-		datas.put("yxz", formatString(examination.getYxz()));// 右下肢
+		datas.put("ztl", formatString(examination.getZetl()).equals("1")?"正常":"不正常");// 左听力
+		datas.put("ytl", formatString(examination.getYetl()).equals("1")?"正常":"不正常");// 右听力
+		datas.put("zsz", formatString(examination.getZsz()).equals("1")?"活动能力正常":"活动能力不正常");// 左上肢
+		datas.put("ysz", formatString(examination.getYsz()).equals("1")?"活动能力正常":"活动能力不正常");// 右上肢
+		datas.put("zxz", formatString(examination.getZxz()).equals("1")?"活动能力正常":"活动能力不正常");// 左下肢
+		datas.put("yxz", formatString(examination.getYxz()).equals("1")?"活动能力正常":"活动能力不正常");// 右下肢
 		
 		datas.put("bsly", dg(examination.getBsl(),"1"));// 辨视力-色盲
 		datas.put("bslw", dg(examination.getBsl(),"0"));// 辨视力-无色盲

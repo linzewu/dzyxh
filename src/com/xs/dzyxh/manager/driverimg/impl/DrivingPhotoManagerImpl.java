@@ -121,7 +121,7 @@ public class DrivingPhotoManagerImpl implements IDrivingPhotoManager {
 					}
 					// 查询期号
 					if (Common.isNotEmpty(dir.getQh())) {
-						sql.append(" and  sfzmhm = ?");
+						sql.append(" and  qh = ?");
 						params.add(dir.getQh());
 					}
 					// 查询驾校
