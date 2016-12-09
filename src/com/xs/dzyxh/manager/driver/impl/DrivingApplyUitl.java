@@ -57,17 +57,17 @@ public class DrivingApplyUitl {
 				String zl = p.getZpzl();
 				ImageData img = null;
 				if ("04".equals(zl)) {
-					img = new ImageData("txtp", new ByteArrayInputStream(p.getZp()), 152, 196);
+					img = new ImageData("txtp", new ByteArrayInputStream(p.getZp()), 152, 196,0);
 				} else if ("05".equals(zl)) {
-					img = new ImageData("sqrqz", new ByteArrayInputStream(p.getZp()), 110, 26);
+					img = new ImageData("sqrqz", new ByteArrayInputStream(p.getZp()), 110, 26,0);
 				} else if ("06".equals(zl)) {
-					img = new ImageData("dlrqz", new ByteArrayInputStream(p.getZp()), 110, 26);
+					img = new ImageData("dlrqz", new ByteArrayInputStream(p.getZp()), 110, 26,0);
 				} else if ("07".equals(zl)) {
-					img = new ImageData("zw1", new ByteArrayInputStream(p.getZp()), 80, 95);
+					img = new ImageData("zw1", new ByteArrayInputStream(p.getZp()), 80, 95,1);
 				} else if ("08".equals(zl)) {
-					img = new ImageData("zw2", new ByteArrayInputStream(p.getZp()), 80, 95);
+					img = new ImageData("zw2", new ByteArrayInputStream(p.getZp()), 80, 95,1);
 				} else if ("09".equals(zl)) {
-					img = new ImageData("jbrqz", new ByteArrayInputStream(p.getZp()), 110, 24);
+					img = new ImageData("jbrqz", new ByteArrayInputStream(p.getZp()), 110, 24,0);
 				}else{
 					continue;
 				}
@@ -86,15 +86,15 @@ public class DrivingApplyUitl {
 				String zl = p.getZpzl();
 				ImageData img = null;
 				if ("04".equals(zl)) {
-					img = new ImageData("txtp", new ByteArrayInputStream(p.getZp()), 152, 196);
+					img = new ImageData("txtp", new ByteArrayInputStream(p.getZp()), 152, 196,0);
 				} else if ("10".equals(zl)) {
-					img = new ImageData("sqrqz", new ByteArrayInputStream(p.getZp()), 110, 26);
+					img = new ImageData("sqrqz", new ByteArrayInputStream(p.getZp()), 110, 26,0);
 				} else if ("11".equals(zl)) {
-					img = new ImageData("tjqsqz", new ByteArrayInputStream(p.getZp()), 110, 26);
+					img = new ImageData("tjqsqz", new ByteArrayInputStream(p.getZp()), 110, 26,0);
 				} else if ("12".equals(zl)) {
-					img = new ImageData("dlrqz", new ByteArrayInputStream(p.getZp()), 110, 26);
+					img = new ImageData("dlrqz", new ByteArrayInputStream(p.getZp()), 110, 26,0);
 				} else if ("13".equals(zl)) {
-					img = new ImageData("yyyz", new ByteArrayInputStream(p.getZp()), 120, 120);
+					img = new ImageData("yyyz", new ByteArrayInputStream(p.getZp()), 120, 120,0);
 				} else{
 					continue;
 				}

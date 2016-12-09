@@ -10,21 +10,25 @@ public class ImageData extends AsposeBase{
 	public ImageData(String name, InputStream value) {
 		super(name, value);
 	}
-	public ImageData(String name, InputStream value,Integer width,Integer height) {
+	public ImageData(String name, InputStream value,Integer width,Integer height,Integer insertType) {
 		super(name, value);
 		this.width=width;
 		this.height=height;
+		this.insertType=insertType;
 	}
-	public ImageData(String name, InputStream value,Integer width,Integer height,int align) {
+	public ImageData(String name, InputStream value,Integer width,Integer height,Integer insertType,int align) {
 		super(name, value);
 		this.width=width;
 		this.height=height;
 		this.align=align;
+		this.insertType=insertType;
 	}
 	private Integer width;
 	private Integer height;
 	private int align=HorizontalAlignment.CENTER;
 	private  int imageType=SaveFormat.JPEG;
+	private Integer insertType=0;
+
 	public Integer getWidth() {
 		return width;
 	}
@@ -52,5 +56,11 @@ public class ImageData extends AsposeBase{
 	public void setAlign(int align) {
 		this.align = align;
 	}
-	
+	public Integer getInsertType() {
+		return insertType;
+	}
+	public void setInsertType(Integer insertType) {
+		this.insertType = insertType;
+	}
+
 }

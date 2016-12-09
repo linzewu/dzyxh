@@ -68,7 +68,7 @@ public class DrivingApplyManagerImpl implements IDrivingApplyManager,IBaseManage
 			List<ImageData> imgs=DrivingApplyUitl.convertSqbImgData(photos);
 			if(apply.getLsh()!=null){
 				try {
-					imgs.add(new ImageData("ewm", barCodeManager.createBarCode(apply.getLsh()), 135, 40,HorizontalAlignment.RIGHT));
+					imgs.add(new ImageData("ewm", barCodeManager.createBarCode(apply.getLsh()), 135, 40,0,HorizontalAlignment.RIGHT));
 				} catch (Exception e) {
 					// 条形码生成错误，跳过
 					//e.printStackTrace();
