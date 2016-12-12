@@ -2,13 +2,13 @@
 	<div data-options="region:'center'" id="winList">
 		<div class="easyui-tabs" data-options="fit:true" id="win-tabs">
 			<div data-options="title:'窗口设备列表'">
-				<table id="winManager"
-					data-options="url:'win/getWins',singleSelect:true,toolbar:winManagerToolbar,pagination:true">
+				<table id="winManager" class="easyui-datagrid"
+					data-options="url:'win/getWins',singleSelect:true,toolbar:winManagerToolbar,pagination:true,rownumbers:true">
 					<thead>
 						<tr>
-							<th data-options="field:'name'" style="width: 200px;">窗口设备名称</th>
-							<th data-options="field:'ip'" style="width: 100px;">ip</th>
-							<th data-options="field:'status'" style="width: 100px;">状态</th>
+							<th data-options="field:'name'" style="width: 300px;">窗口设备名称</th>
+							<th data-options="field:'ip'" style="width: 200px;">ip</th>
+							<th data-options="field:'status',formatter:function(value){return comm.getParamNameByValue('cksbzt',value)}" style="width: 200px;">状态</th>
 						</tr>
 					</thead>
 				</table>
@@ -39,15 +39,19 @@
 </div>
 
 <script type="text/javascript">
+	$(function(){
+		comm.createBaseSelect("#winManagerToolbar select[name=status]", "cksbzt",
+		"请选择");
+	})
 	function deleteUser() {
 
-		var row = $("#userManager").datagrid("getSelected");
+		var row = $("#winManager").datagrid("getSelected");
 
 		if (!row) {
-			$.messager.alert("提示", "请选择删除的用户！", "info");
+			$.messager.alert("提示", "请选择删除的窗口设备！", "info");
 			return;
 		} else {
-			$.messager.confirm("确认", "您是否确认删除该用户？", function(r) {
+			$.messager.confirm("确认", "您是否确认删除该窗口设备？", function(r) {
 
 				if (r) {
 					$.messager.progress({
@@ -56,19 +60,19 @@
 					});
 
 					$.post(
-							"user/delete",
+							"win/delete",
 							row,
 							function(data) {
 								if (data.state == 1) {
-									$.messager.alert("提示", "用户删除成功！", "info",
+									$.messager.alert("提示", "窗口设备删除成功！", "info",
 											function() {
-												$("#userManager").datagrid(
+												$("#winManager").datagrid(
 														"reload");
 											});
 								} else {
 									$.messager.alert("提示", data.message,
 											"error", function() {
-												$("#userManager").datagrid(
+												$("#winManager").datagrid(
 														"reload");
 											});
 								}
@@ -83,89 +87,25 @@
 		}
 
 	}
-
-	function passwordReset() {
-
-		var row = $("#userManager").datagrid("getSelected");
-
-		if (!row) {
-			$.messager.alert("提示", "请选择重置密码的用户！", "info");
-			return;
-		} else {
-			$.messager.confirm("确认", "您是否确认重置该用户密码？", function(r) {
-
-				if (r) {
-					$.messager.progress({
-						"title" : "提示",
-						"msg" : "处理中..."
-					});
-
-					$.post(
-							"user/passwordReset",
-							row,
-							function(data) {
-								if (data.state == 1) {
-									$.messager.alert("提示", "密码重置成功！", "info",
-											function() {
-												$("#userManager").datagrid(
-														"reload");
-											});
-								} else {
-									$.messager.alert("提示", data.message,
-											"error", function() {
-												$("#userManager").datagrid(
-														"reload");
-											});
-								}
-							}).error(function() {
-						$.messager.alert("错误", "系统错误，请联系管理员！", "error");
-					}).complete(function() {
-						$.messager.progress("close");
-					});
-				}
-
-			})
-		}
-
-	}
-
-	function deptFormatter(value, row, index) {
-		return $("#dept-list").tree("find", value).text;
-	}
-
 	function queryUser() {
 
 		var param = {};
 
-		var yhm = $("#userManagerToolbar input[name=yhm]").val();
+		var name = $("#winManagerToolbar input[name=name]").val();
 
-		var yhxm = $("#userManagerToolbar input[name=yhxm]").val();
+		var ip = $("#winManagerToolbar input[name=ip]").val();
 
-		var sfzh = $("#userManagerToolbar input[name=sfzh]").val();
-
-		var son = $("#userManagerToolbar input[name=son]").is(':checked');
-
-		if (son) {
-			param.seq = 1;
-		}
-
-		param.yhm = yhm;
-
-		param.yhxm = yhxm;
-
-		param.sfzh = sfzh;
-
-		var node = $("#dept-list").tree("getSelected");
-
-		param.bmdm = node.id;
-
+		var status = $("#winManagerToolbar select[name=status]").val();
+		param.name = name;
+		param.ip = ip;
+		param.status = status;
 		$("#winManager").datagrid("reload", param);
 
 	}
 
-	$(function() {
+	/* $(function() {
 		loadTree();
-	});
+	}); */
 
 	function depts2Node(data) {
 		var roots = [];
@@ -204,13 +144,13 @@
 		});
 		$.post("dept/getDepts", function(data) {
 			var nodes = depts2Node(data);
-/* 
-			$("#dept-list").tree({
-				data : nodes,
-				onClick : function() {
-					queryUser();
-				}
-			}); */
+			/* 
+			 $("#dept-list").tree({
+			 data : nodes,
+			 onClick : function() {
+			 queryUser();
+			 }
+			 }); */
 
 			$("#winManager").datagrid({
 				queryParams : {

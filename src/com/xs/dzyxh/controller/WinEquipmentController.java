@@ -52,7 +52,7 @@ public class WinEquipmentController {
 	}
 
 	@FunctionAnnotation(name = "删除窗口设备")
-	@RequestMapping(value = "deleteWin", method = RequestMethod.POST)
+	@RequestMapping(value = "delete", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> delete(WinEquipment win) {
 		winEquipmentManager.deleteWinEquipment(win);
 		return ResultHandler.toSuccessJSON("窗口设备删除成功");

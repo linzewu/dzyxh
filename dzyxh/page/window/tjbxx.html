@@ -1,5 +1,5 @@
 <table class="easyui-datagrid" id="driverExaminationsGrid"
-	data-options="url:'exa/getDriExaminations',pageSize:50,pageList:[50,100,200],pagination:true,singleSelect:true,toolbar:'#tb3'"
+	data-options="url:'exa/getDriExaminations',pageSize:50,pageList:[50,100,200],pagination:true,singleSelect:true,toolbar:'#tb3',rownumbers:true"
 	width="100%">
 	<thead data-options="frozen:true">
 		<tr>
@@ -22,12 +22,12 @@
 			<th data-options="field:'zsl',width:80">左视力</th>
 			<th data-options="field:'ysl',width:80">右视力</th>
 			<th data-options="field:'bsl',width:80">辨色力</th>
-			<th data-options="field:'zetl',width:80">左耳听力</th>
-			<th data-options="field:'yetl',width:80">右耳听力</th>
-			<th data-options="field:'zsz',width:80">左上肢</th>
-			<th data-options="field:'ysz',width:80">右上肢</th>
-			<th data-options="field:'zxz',width:80">左下肢</th>
-			<th data-options="field:'yxz',width:80">右下肢</th>
+			<th data-options="field:'zetl',width:80,formatter:function(value){return comm.getParamNameByValue('sfhg',value)}">左耳听力</th>
+			<th data-options="field:'yetl',width:80,formatter:function(value){return comm.getParamNameByValue('sfhg',value)}">右耳听力</th>
+			<th data-options="field:'zsz',width:80,formatter:function(value){return comm.getParamNameByValue('sfhg',value)}">左上肢</th>
+			<th data-options="field:'ysz',width:80,formatter:function(value){return comm.getParamNameByValue('sfhg',value)}">右上肢</th>
+			<th data-options="field:'zxz',width:80,formatter:function(value){return comm.getParamNameByValue('sfhg',value)}">左下肢</th>
+			<th data-options="field:'yxz',width:80,formatter:function(value){return comm.getParamNameByValue('sfhg',value)}">右下肢</th>
 			<th data-options="field:'qgjb',width:80">躯干颈部</th>
 			<th
 				data-options="field:'tlsfjz',width:140,formatter:function(value){return comm.getParamNameByValue('syf',value)}">听力是否校正</th>

@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xs.common.ComputerInfoUtil;
 import com.xs.common.Constant;
 import com.xs.common.ResultHandler;
+import com.xs.common.Annotation.FunctionAnnotation;
 import com.xs.common.Annotation.ModuleAnnotation;
 import com.xs.dzyxh.entity.system.BaseParams;
 import com.xs.dzyxh.manager.sys.IBaseParamsManager;
@@ -53,7 +54,7 @@ public class BaseParamsController {
 
 		return ResultHandler.toMyJSON(1, requestContext.getMessage(Constant.ConstantKey.SUCCESS), bps);
 	}
-
+	@FunctionAnnotation(name = "系统参数查询查询")
 	@RequestMapping(value = "getComputerInfo")
 	public @ResponseBody Map getComputer(HttpServletRequest request) {
 		Map map = ComputerInfoUtil.getComputerInfo();
@@ -65,13 +66,13 @@ public class BaseParamsController {
 		Map map = ComputerInfoUtil.getComputerInfo();
 		return ResultHandler.toMyJSON(Constant.ConstantState.STATE_SUCCESS, Constant.ConstantMessage.SUCCESS, map);
 	}
-
+	@FunctionAnnotation(name = "保存系统参数")
 	@RequestMapping(value = "save", method = RequestMethod.POST)
 	public @ResponseBody Map save(BaseParams baseParams) {
 		baseParams = this.baseParamsManager.save(baseParams);
 		return ResultHandler.toMyJSON(Constant.ConstantState.STATE_SUCCESS, "保存成功",baseParams);
 	}
-
+	@FunctionAnnotation(name = "删除系统参数")
 	@RequestMapping(value = "delete", method = RequestMethod.POST)
 	public @ResponseBody Map delete(@RequestParam Integer id) {
 		this.baseParamsManager.delete(id);
@@ -83,7 +84,7 @@ public class BaseParamsController {
 		Map data = this.baseParamsManager.getBaseParams(pageInfo,param);
 		return data;
 	}
-	
+	@FunctionAnnotation(name = "刷新系统参数")
 	@RequestMapping(value = "refresh")
 	public @ResponseBody Map refresh(HttpServletRequest request) {
 		ServletContext servletContext = request.getSession().getServletContext();
