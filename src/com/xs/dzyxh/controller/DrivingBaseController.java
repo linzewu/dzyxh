@@ -11,13 +11,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.xs.common.Constant;
 import com.xs.common.ResultHandler;
 import com.xs.common.Annotation.FunctionAnnotation;
+import com.xs.common.Annotation.ModuleAnnotation;
 import com.xs.dzyxh.entity.driver.DrivingBase;
-import com.xs.dzyxh.manager.driver.IDrivingBaseManager;
+import com.xs.dzyxh.manager.window.IDrivingBaseManager;
 
 @Controller
 @RequestMapping(value = "/dbc")
+@ModuleAnnotation(modeName = Constant.ConstantDZYXH.MODE_NAME_WINDOW, appName = Constant.ConstantDZYXH.APP_NAME_DRIVING,icoUrl="/dzyxh/images/fxp_48.png",href="/dzyxh/page/window/jsz.html",modeIndex=1,appIndex=2)
 public class DrivingBaseController {
 	@Resource(name = "driverManager")
 	private IDrivingBaseManager drivingBaseManager;

@@ -12,9 +12,9 @@ import com.xs.dzyxh.entity.driimg.DrivingPhoto;
 import com.xs.dzyxh.entity.driver.DrivingApply;
 import com.xs.dzyxh.entity.driver.DrivingBase;
 import com.xs.dzyxh.entity.driver.DrivingExamination;
-import com.xs.dzyxh.manager.driver.IDrivingApplyManager;
-import com.xs.dzyxh.manager.driver.IDrivingExaminationManager;
 import com.xs.dzyxh.manager.job.IDataScanJobManager;
+import com.xs.dzyxh.manager.window.IDrivingApplyManager;
+import com.xs.dzyxh.manager.window.IDrivingExaminationManager;
 @Service("dataScanJobManagerImpl")
 public class DataScanJobManagerImpl implements IDataScanJobManager {
 	@Resource(name = "driverApplyManager")

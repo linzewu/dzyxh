@@ -1,0 +1,216 @@
+<form id="winInfoForm" method="post"> 
+<div class="easyui-layout" fit=true style="min-height: 480px;min-width: 800px;">
+	  <div data-options="region:'center'" style="padding:5px" >
+	  	<div class="easyui-tabs"  data-options="fit:true" id="win-info-tab" >
+			<div data-options="title:'窗口设备信息'" >
+				<table class="base_table" cellspacing="0" cellpadding="0"> 
+					<tr><td class="info_title">窗口设备名称：</td>
+						<td class="info"><input name="name" >			
+						</td>
+						<td class="info_title">ip：</td>
+						<td class="info"><input name="ip" > </td>
+					</tr>
+				</table>
+			</div>		
+		</div>
+	  </div>
+	  <div data-options="region:'south'" style="height:100px;width: 100%;">
+	  		<div style="text-align: center;" >
+			   <a href="#" id="winSave" style="width:80px" >qqqqqqqq</a>
+			   <a href="#" id="winClose" style="width:80px" >dddd</a>
+			</div>
+			<input type="hidden" name="id" >
+			<input type="hidden" name="status" >
+	  </div>
+</div>
+</form>
+
+<script type="text/javascript">
+
+/* $(function(){
+	initEditAttr();
+}); */
+
+
+function setCurrentDeptNode(){
+	
+	var node = $("#dept-list").tree("getSelected");
+	if(node){
+		$("#userInfoForm input[name='bmdm']").val(node.id);
+		$("#userInfoForm input[name='bmmc']").val(node.text);
+	}
+}
+
+function createPowerList(type){
+	if(type==0){
+		$("#power-list").datagrid({
+			url:'role/getRoles',
+			height:'250',
+			width:'400',
+			selectOnCheck:false,
+			onLoadSuccess:setPower,
+		    columns:[[
+				{field:'ck',checkbox:true},
+		        {field:'jsmc',title:'角色名称',width:150}
+		    ]]
+		});
+	}
+	
+	if(type==1){
+		$("#power-list").datagrid({
+			url:'role/getPowers',
+			height:250,
+			width:'400',
+			selectOnCheck:false,
+			onLoadSuccess:setPower,
+		    columns:[[
+				{field:'ck',checkbox:true},
+		        {field:'module',title:'模块',width:100},
+		        {field:'app',title:'菜单',width:100},
+		        {field:'function',title:'功能',width:100}
+		    ]]
+		});
+	}
+}
+
+function initEditAttr(rows){
+	
+	var title =  $("#user-tabs").tabs("getSelected").panel("options").title;;
+	
+	if(title=="添加用户"){
+		setCurrentDeptNode();
+		createPowerList(0);
+		$("#userSave").linkbutton({
+			text:'保存',
+			onClick:function(){
+				saveUser('user/saveUser',function(){
+					$.messager.confirm("提示","保存成功,是否继续新增用户？",function(r){
+						if(r){
+							$("#userInfoForm").form("clear");
+							$("#userInfoForm input[name=qxms]:eq(0)").click()
+							setCurrentDeptNode();
+							$("#user-info-tab").tabs("select",0);
+						}else{
+							$("#user-tabs").tabs("close",1);
+						}
+						
+						$("#userManager").datagrid("reload");
+					});
+				});
+			}
+		});
+	}
+	
+	if(title=="编辑用户"){
+		var row = $("#userManager").datagrid("getSelected");
+		if(row){
+			$("#userInfoForm").form("load",row);
+			
+			$("#userInfoForm input[name=bmmc]").val($("#dept-list").tree("find",row.bmdm).text);
+			createPowerList(row.qxms);
+			
+			$("#userSave").linkbutton({
+				text:'保存',
+				onClick:function(){
+					saveUser('user/saveUser',function(){
+						$.messager.confirm("提示","保存成功,是否关闭编辑页面？",function(r){
+							if(r){
+								$("#user-tabs").tabs("close",1);
+							}
+							$("#userManager").datagrid("reload");
+						});
+					});
+				}
+			});
+			
+		}
+	}
+	
+	$("#userClose").linkbutton({
+		text:"关闭",
+		onClick:function(){
+			$("#user-tabs").tabs("close",$("#user-tabs").tabs("getSelected").panel("options").title);
+		}
+	});
+}
+
+function setPower(data){
+	
+	var rows=data.rows;
+	
+	var powers =[];
+	
+	var js=$("#userInfoForm input[name=js]").val();
+	var qx=$("#userInfoForm input[name=qx]").val();
+	
+	var qxms=$("#userInfoForm input[name=qxms]:checked").val();
+	
+	if(qxms==0){
+		powers = $.parseJSON(js);
+	}else{
+		powers = $.parseJSON(qx);
+	}
+	$.each(powers,function(i,n){
+		$.each(rows,function(j,k){
+			if(qxms==0&&k.id==n){
+				$("#power-list").datagrid("checkRow",j);
+				return false;
+			}
+			if(qxms==1&&k.key==n){
+				$("#power-list").datagrid("checkRow",j);
+				return false;
+			}
+		});
+	})
+}
+
+
+function saveUser(url,callback){
+	
+	var flag = $("#userInfoForm").form("validate");
+	if(!flag){
+		return;
+	}
+	var rows = $("#power-list").datagrid("getChecked");
+	
+	if(!rows||rows.length==0){
+		$.messager.alert("提示","请对当前用户进行授权！","info",function(){
+			$("#user-info-tab").tabs("select",1);
+		});
+		return false;
+	}else{
+		var qxms=$("#userInfoForm input[name=qxms]:checked").val();
+		var qx={qxms:qxms};
+		var data=[];
+		$.each(rows,function(i,n){
+			if(qxms==0){
+				data.push(n.id);
+			}
+			if(qxms==1){
+				data.push(n.key);
+			}
+		});
+		if(qxms==0){
+			$("#userInfoForm input[name=js]").val(JSON.stringify(data));
+			$("#userInfoForm input[name=qx]").val('');
+		}
+		if(qxms==1){
+			$("#userInfoForm input[name=qx]").val(JSON.stringify(data));
+			$("#userInfoForm input[name=js]").val('');
+		}
+		
+	}
+	
+	$.messager.progress({
+		title:"提示",
+		msg:"数据保存中..."
+	});
+	
+	$.post(url,$("#userInfoForm").serializeJson(),callback).error(function(){
+		$.messager.alert("错误","保存错误","error");
+	}).complete(function() {
+		$.messager.progress("close");
+	});
+}
+
+</script>

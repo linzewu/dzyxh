@@ -13,6 +13,4 @@ public @interface FunctionAnnotation {
 	public String[] name();
 	
 	public String[] buttonName() default "";
-	
-
 }

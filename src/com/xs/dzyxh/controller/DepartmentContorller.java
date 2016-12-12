@@ -20,7 +20,7 @@ import com.xs.dzyxh.manager.sys.impl.DepartmentManagerImpl;
 
 @Controller
 @RequestMapping(value = "/dept")
-@ModuleAnnotation(modeName = Constant.ConstantDZYXH.MODE_NAME_SYSTEM, appName = Constant.ConstantDZYXH.APP_NAME_DEPT)
+@ModuleAnnotation(modeName = Constant.ConstantDZYXH.MODE_NAME_SYSTEM, appName = Constant.ConstantDZYXH.APP_NAME_DEPT,href="/dzyxh/page/system/department.html",icoUrl="/dzyxh/images/Organization_48.png",modeIndex=4,appIndex=4)
 public class DepartmentContorller {
 
 	@Resource(name = "departmentManager")

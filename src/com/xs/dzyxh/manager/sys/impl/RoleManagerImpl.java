@@ -2,9 +2,12 @@ package com.xs.dzyxh.manager.sys.impl;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.annotation.Resource;
 
@@ -17,6 +20,7 @@ import org.springframework.orm.hibernate4.HibernateCallback;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Service;
 
+import com.xs.dzyxh.entity.system.ModulePower;
 import com.xs.dzyxh.entity.system.Power;
 import com.xs.dzyxh.entity.system.Role;
 import com.xs.dzyxh.manager.sys.IRoleManager;
@@ -194,7 +198,7 @@ public class RoleManagerImpl implements IRoleManager {
 				String id = jss.getString(i);
 				Role role = this.getRoleById(Integer.valueOf(id));
 				if (role != null && role.getJsqx() != null) {
-					addMenuToMap(menus,  role.getJsqx().split(";"));
+					addMenuToMap(menus, role.getJsqx().split(","));
 				}
 			}
 		}
@@ -202,27 +206,31 @@ public class RoleManagerImpl implements IRoleManager {
 
 	public void addMenuToMap(Map<String, String> menus, Object[] ms) {
 		for (Object m : ms) {
-			String rs[] = m.toString().split(",");
-			for (String r : rs) {
-				menus.put(r,r);
-			}
+			menus.put(m.toString(), m.toString());	
 		}
 	}
-	public Map<String,List<Power>> transformationPowers(Map<String,String> menus,List<Power> powers){
-		Map<String,List<Power>> m=new HashMap<String,List<Power>>();
-		for(String mune:menus.values()){
-			for(Power p:powers){
-				if(mune.equals(p.getKey())){
-					if(m.containsKey(p.getModule())){
-						m.get(p.getModule()).add(p);
-					}else{
-						List<Power> l=new ArrayList<Power>();
-						l.add(p);
-						m.put(p.getModule(), l);
-					}
+
+	public List<Power> transformationPowers(Map<String, String> menus, List<Power> powers){
+		List<Power> ps=new ArrayList<Power>();
+		for(Power p:powers){
+			if(menus.containsKey(p.getKey())){
+				ps.add(p);
+			}
+		}
+		return ps;
+	}
+	
+	public  Map<String,ModulePower> transformationModules(Map<String, String> menus, List<ModulePower> modules) {
+		 Map<String,ModulePower>  temp = new HashMap<String,ModulePower>();
+		for (String mune : menus.values()) {
+			for (ModulePower p : modules) {
+				if (p.isExitMenu(mune)) {
+					temp.put(p.getModule()+"_"+p.getApp(), p);
+					break;
 				}
 			}
 		}
-		return m;
+		return temp;
 	}
+
 }

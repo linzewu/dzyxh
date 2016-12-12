@@ -12,7 +12,14 @@ public @interface ModuleAnnotation {
 	public String modeName();
 	
 	public String appName();
-
+	
+	public String icoUrl();
+	
+	public int modeIndex();
+	
+	public int appIndex();
+	
+	public String href();
 }
 
 

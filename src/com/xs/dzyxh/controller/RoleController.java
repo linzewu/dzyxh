@@ -22,6 +22,7 @@ import com.xs.common.Constant;
 import com.xs.common.ResultHandler;
 import com.xs.common.Annotation.FunctionAnnotation;
 import com.xs.common.Annotation.ModuleAnnotation;
+import com.xs.dzyxh.entity.system.ModulePower;
 import com.xs.dzyxh.entity.system.Power;
 import com.xs.dzyxh.entity.system.Role;
 import com.xs.dzyxh.entity.system.User;
@@ -31,7 +32,7 @@ import net.sf.json.JSONArray;
 
 @Controller
 @RequestMapping(value = "/role")
-@ModuleAnnotation(modeName = Constant.ConstantDZYXH.MODE_NAME_SYSTEM, appName = Constant.ConstantDZYXH.APP_NAME_ROLE)
+@ModuleAnnotation(modeName = Constant.ConstantDZYXH.MODE_NAME_SYSTEM, appName = Constant.ConstantDZYXH.APP_NAME_ROLE,href="/dzyxh/page/system/RoleManager.html",icoUrl="/dzyxh/images/group_48.png",modeIndex=4,appIndex=3)
 public class RoleController {
 
 	@Resource(name = "roleManager")
@@ -52,12 +53,13 @@ public class RoleController {
 		return role;
 	}
 	@FunctionAnnotation(name = "权限菜单")
-	@RequestMapping(value = "menu.js", produces = "application/javascript; charset=utf-8")
+	@RequestMapping(value = "menu.json", method = RequestMethod.POST)
 	public @ResponseBody String getRoleMenu(HttpServletRequest request) throws JsonProcessingException{
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute(Constant.ConstantKey.USER_SESSIO_NKEY);
 		ServletContext sc = request.getSession().getServletContext();
-		List<Power> powers = (List<Power>) sc.getAttribute("powers");
+		List<ModulePower> modules = (List<ModulePower>) sc.getAttribute("modules");
+		List<Power> powers =(List<Power>)sc.getAttribute("powers");
 		String js=user.getJs();
 		String roleqx=null;
 		if(js!=null){
@@ -73,7 +75,7 @@ public class RoleController {
 			roleManager.addMenuToMap(menus, jss.toArray());
 		}
 		ObjectMapper objectMapper = new ObjectMapper();
-		return " var menus=" + objectMapper.writeValueAsString(roleManager.transformationPowers(menus, powers));
+		return  objectMapper.writeValueAsString(roleManager.transformationModules(menus, modules));
 	}
 	
 	@FunctionAnnotation(name = "权限列表查询")

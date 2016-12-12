@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.xs.common.Annotation.FunctionAnnotation;
 import com.xs.common.Annotation.ModuleAnnotation;
 import com.xs.dzyxh.entity.system.Department;
+import com.xs.dzyxh.entity.system.ModulePower;
 import com.xs.dzyxh.entity.system.Power;
 import com.xs.dzyxh.entity.system.Role;
 import com.xs.dzyxh.entity.system.User;
@@ -50,12 +51,17 @@ public class InitServerCommonUtil {
 	@Resource(name = "userManager")
 	private IUserManager userManager;
 
-	public List<Power> initPower(String[] packs) throws IOException {
+	public List<Power> getAllPowers(List<ModulePower> modules){
+		List<Power> powers=new ArrayList<Power>();
+		for(ModulePower m:modules){
+			powers.addAll(m.getPowers());
+		}
+		return powers;
+	}
+	public List<ModulePower> initPower(String[] packs) throws IOException {
+		List<ModulePower> modules=new ArrayList<ModulePower>();
+		
 
-		List<Power> powers = new ArrayList<Power>();
-		// 用来去重复的，临时map
-		Map map = new HashMap();
-		int index = 0;
 		Set<Class<?>> classs = new HashSet<Class<?>>();
 		for (String pack : packs) {
 			classs.addAll(Common.getClasses(pack));
@@ -76,12 +82,29 @@ public class InitServerCommonUtil {
 
 					String moduleName = ma.modeName();
 
+					String icoUrl=ma.icoUrl();
+					
+					int appIndex=ma.appIndex();
+					
+					int moduIndex=ma.modeIndex();
+					ModulePower module=new ModulePower();
+				
+					module.setApp(appName);
+					module.setAppIndex(appIndex);
+					module.setModule(moduleName);
+					module.setModuIndex(moduIndex);
+					module.setIcoUrl(icoUrl);
+					module.setHref(ma.href());
 					Method[] methods = c.getMethods();
-
+					List<Power> powers = module.getPowers();
+					// 用来去重复的，临时map
+					Map map = new HashMap();
+					modules.add(module);
+					int index = 0;
 					for (Method method : methods) {
 
 						Annotation[] methodAnnotations = method.getAnnotations();
-
+						
 						for (Annotation methodAnnotation : methodAnnotations) {
 							if (methodAnnotation.annotationType() == FunctionAnnotation.class) {
 
@@ -91,7 +114,7 @@ public class InitServerCommonUtil {
 								String functionKey = requestMapping.value()[0];
 								String[] functionName = fa.name();
 								String[] buttonName = fa.buttonName();
-
+								
 								for (String fn : functionName) {
 									Power power = new Power();
 									power.setApp(appName);
@@ -117,7 +140,7 @@ public class InitServerCommonUtil {
 				}
 			}
 		}
-		return powers;
+		return modules;
 	}
 
 	public void initRootDepartment() {

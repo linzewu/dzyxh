@@ -35,9 +35,10 @@ var comm = {
 		});
 	},
 	createMume : function(id, data) {
-		var ul = $("#" + id);
+		var ul = $("#" + id);	
 		ul.empty();
-		$.each(data,function(i,n){
+		//此处的data为自定义Map，详见createMenus.js
+		data.each(function(key,n,i){
 			var li = $("<li><a id='_menu"+i+"' href=\"javascript:void(0)\"><img></a></li>");
 			li.find("img").attr("src", n.icon);
 			li.find("a").append(n.title);
@@ -57,7 +58,6 @@ var comm = {
 				li.find("a").click();
 			}
 		});
-		
 	},
 	openComWindow:function(url,param){
 		if(param){

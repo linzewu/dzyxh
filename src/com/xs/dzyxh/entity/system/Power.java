@@ -1,6 +1,6 @@
 package com.xs.dzyxh.entity.system;
 
-public class Power {
+public class Power{
 
 	// 模块
 	private String module;
@@ -16,6 +16,8 @@ public class Power {
 
 	// 请求路径
 	private String key;
+	
+	
 
 	@Override
 	public int hashCode() {
@@ -100,5 +102,6 @@ public class Power {
 		return "模块名称：" + this.module + "\t 应用名称：" + this.app + "\t 功能名称：" + this.function + "\t key:" + this.key;
 
 	}
+
 
 }

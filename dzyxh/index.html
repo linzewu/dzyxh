@@ -29,6 +29,8 @@
 <script type="text/javascript" src="/dzyxh/js/datas.js"></script>
 <script type="text/javascript" src="js/drag_map.js"></script>
 <script type="text/javascript" src="js/jquery.printPage.js"></script>
+<!-- <script type="text/javascript" src="/dzyxh/role/menu.js"></script> -->
+<script type="text/javascript" src="js/createMenus.js"></script>
 <title>电子档案影像化管理系统</title>
 <style type="text/css">
 #mask {
@@ -71,8 +73,8 @@
 	</div>
 	<div data-options="region:'south'" style="height: 30px;"></div>
 	<div data-options="region:'center',border: 0">
-		<div class="easyui-tabs" data-options="fit:true,tabHeight:30">
-			<div title="窗口采集"
+		<div class="" id="tabAll" data-options="fit:true,tabHeight:30">
+			<!-- <div title="窗口采集"
 				data-options="href:'page/window.html',onLoad:win.initEvents">
 			</div>
 			<div title="业务监督管理"
@@ -83,7 +85,7 @@
 			</div>
 			<div title="系统管理"
 				data-options="href:'page/system.html',onLoad:system.initEvents">
-			</div>
+			</div> -->
 		</div>
 	</div>
 	<div id="comm_window" class="easyui-window" 

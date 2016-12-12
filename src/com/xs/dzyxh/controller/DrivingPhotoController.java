@@ -54,8 +54,10 @@ public class DrivingPhotoController {
 	@FunctionAnnotation(name = "图片ID信息查询")
 	@RequestMapping(value = "getDriImgs")
 	public @ResponseBody Map<String, Object> getDriImgs(DrivingPhoto base, Integer page, Integer rows) {
-		List<String> baseList = drivingPhotoManager.getDrivingPhotoIds(base, page, rows);
-		Integer count = 0;
+		List<DrivingPhoto> baseList = drivingPhotoManager.getDrivingPhotos(base, page, rows);
+		//Integer count = 0;
 		return ResultHandler.toMyJSON(baseList, null);
 	}
+	
+	
 }

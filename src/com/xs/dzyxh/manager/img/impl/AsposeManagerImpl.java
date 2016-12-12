@@ -21,8 +21,8 @@ import com.aspose.words.SaveFormat;
 import com.aspose.words.Shape;
 import com.aspose.words.ShapeType;
 import com.xs.dzyxh.entity.aspose.ImageData;
-import com.xs.dzyxh.manager.driver.impl.DrivingApplyUitl;
 import com.xs.dzyxh.manager.img.IAsposeManager;
+import com.xs.dzyxh.manager.window.impl.DrivingApplyUitl;
 
 @Service("asposeManager")
 public class AsposeManagerImpl implements IAsposeManager {

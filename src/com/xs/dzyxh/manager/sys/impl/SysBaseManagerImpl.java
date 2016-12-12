@@ -5,7 +5,7 @@ import javax.annotation.Resource;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Service;
 
-import com.xs.dzyxh.manager.driver.IBaseManager;
+import com.xs.dzyxh.manager.window.IBaseManager;
 
 @Service("sysBaseManager")
 public class SysBaseManagerImpl implements IBaseManager<Object> {

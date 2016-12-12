@@ -24,7 +24,7 @@ import com.xs.dzyxh.manager.sys.IUserManager;
 
 @Controller
 @RequestMapping(value = "/user")
-@ModuleAnnotation(modeName = Constant.ConstantDZYXH.MODE_NAME_SYSTEM, appName = Constant.ConstantDZYXH.APP_NAME_USER)
+@ModuleAnnotation(modeName = Constant.ConstantDZYXH.MODE_NAME_SYSTEM, appName = Constant.ConstantDZYXH.APP_NAME_USER,href="/dzyxh/page/system/UserManager.html",icoUrl="/dzyxh/images/user.png",modeIndex=4,appIndex=1)
 public class UserController {
 
 	@Resource(name = "userManager")

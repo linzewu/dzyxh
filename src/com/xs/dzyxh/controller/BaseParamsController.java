@@ -19,12 +19,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xs.common.ComputerInfoUtil;
 import com.xs.common.Constant;
 import com.xs.common.ResultHandler;
+import com.xs.common.Annotation.ModuleAnnotation;
 import com.xs.dzyxh.entity.system.BaseParams;
 import com.xs.dzyxh.manager.sys.IBaseParamsManager;
 import com.xs.web.util.PageInfo;
 
 @Controller
 @RequestMapping(value = "/bps")
+@ModuleAnnotation(modeName = Constant.ConstantDZYXH.MODE_NAME_SYSTEM, appName = Constant.ConstantDZYXH.APP_NAME_SYS,icoUrl="/dzyxh/images/system.png",href="/dzyxh/page/system/systemInfo.html",modeIndex=4,appIndex=2)
 public class BaseParamsController {
 
 	@Resource(name = "baseParamsManager")

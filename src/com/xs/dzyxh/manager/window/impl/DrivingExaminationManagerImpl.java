@@ -1,4 +1,4 @@
-package com.xs.dzyxh.manager.driver.impl;
+package com.xs.dzyxh.manager.window.impl;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -23,11 +23,11 @@ import com.xs.dzyxh.entity.driimg.DrivingPhoto;
 import com.xs.dzyxh.entity.driver.DrivingApply;
 import com.xs.dzyxh.entity.driver.DrivingBase;
 import com.xs.dzyxh.entity.driver.DrivingExamination;
-import com.xs.dzyxh.manager.driver.IBaseManager;
-import com.xs.dzyxh.manager.driver.IDrivingExaminationManager;
 import com.xs.dzyxh.manager.driverimg.IDrivingPhotoManager;
 import com.xs.dzyxh.manager.img.IAsposeManager;
 import com.xs.dzyxh.manager.img.IBarCodeManager;
+import com.xs.dzyxh.manager.window.IBaseManager;
+import com.xs.dzyxh.manager.window.IDrivingExaminationManager;
 
 @Service("drivingExamination")
 public class DrivingExaminationManagerImpl implements IDrivingExaminationManager, IBaseManager<DrivingApply> {

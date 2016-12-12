@@ -44,11 +44,21 @@ public class Constant {
 		
 		public static final String MODE_NAME_SYSTEM="系统管理";
 		
+		public static final String MODE_NAME_WINDOW="窗口采集";
+		
 		public static final String APP_NAME_DEPT ="组织架构管理";
 		
 		public static final String APP_NAME_ROLE="角色权限管理";
 		
+		public static final String APP_NAME_SYS="系统参数管理";
+		
 		public static final String APP_NAME_USER="用户管理";
+		
+		public static final String APP_NAME_EXAMINATION="体检信息";
+		
+		public static final String APP_NAME_DRIVING="驾驶人业务";
+		
+		public static final String APP_NAME_EQUIPMENT="窗口设备";
 		
 	}
 	

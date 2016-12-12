@@ -1,4 +1,4 @@
-package com.xs.dzyxh.manager.driver.impl;
+package com.xs.dzyxh.manager.window.impl;
 
 import javax.annotation.Resource;
 
@@ -6,7 +6,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Service;
 
-import com.xs.dzyxh.manager.driver.IBaseManager;
+import com.xs.dzyxh.manager.window.IBaseManager;
 @Service("driverBaseManager")
 public class DriverBaseManagerImpl implements IBaseManager<Object>{
 

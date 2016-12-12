@@ -13,16 +13,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.xs.common.Constant;
 import com.xs.common.ResultHandler;
 import com.xs.common.Annotation.FunctionAnnotation;
+import com.xs.common.Annotation.ModuleAnnotation;
 import com.xs.dzyxh.entity.driver.DrivingBase;
 import com.xs.dzyxh.entity.driver.DrivingExamination;
-import com.xs.dzyxh.manager.driver.IDrivingBaseManager;
-import com.xs.dzyxh.manager.driver.IDrivingExaminationManager;
 import com.xs.dzyxh.manager.driverimg.IDrivingPhotoManager;
+import com.xs.dzyxh.manager.window.IDrivingBaseManager;
+import com.xs.dzyxh.manager.window.IDrivingExaminationManager;
 
 @Controller
 @RequestMapping(value = "/exa")
+@ModuleAnnotation(modeName = Constant.ConstantDZYXH.MODE_NAME_WINDOW, appName = Constant.ConstantDZYXH.APP_NAME_EXAMINATION,icoUrl="/dzyxh/images/car_48.png",href="/dzyxh/page/window/tjbxx.html",modeIndex=1,appIndex=1)
 public class DrivingExaminationContorller {
 	@Resource(name = "drivingExamination")
 	private IDrivingExaminationManager drivingExaminationManager;

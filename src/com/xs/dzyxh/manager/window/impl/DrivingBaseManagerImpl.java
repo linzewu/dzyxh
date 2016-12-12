@@ -1,4 +1,4 @@
-package com.xs.dzyxh.manager.driver.impl;
+package com.xs.dzyxh.manager.window.impl;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.xs.common.Common;
 import com.xs.dzyxh.entity.driver.DrivingBase;
-import com.xs.dzyxh.manager.driver.IDrivingBaseManager;
+import com.xs.dzyxh.manager.window.IDrivingBaseManager;
 
 @Service("driverManager")
 public class DrivingBaseManagerImpl implements IDrivingBaseManager {

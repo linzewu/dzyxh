@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 
 import com.xs.common.Common;
 import com.xs.dzyxh.entity.driimg.DrivingPhoto;
-import com.xs.dzyxh.manager.driver.IBaseManager;
 import com.xs.dzyxh.manager.driverimg.IDrivingPhotoManager;
+import com.xs.dzyxh.manager.window.IBaseManager;
 
 @Service("driimgManager")
 public class DrivingPhotoManagerImpl implements IDrivingPhotoManager {
@@ -86,7 +86,7 @@ public class DrivingPhotoManagerImpl implements IDrivingPhotoManager {
 						params.add(dir.getLsh());
 					}
 				}
-				sql.append(" order by cjsj asc"); 
+				sql.append(" order by zpzl asc"); 
 				Query query = session.createQuery(sql.toString());
 				if (page != null && rows != null) {
 					query.setFirstResult((page - 1) * rows);
@@ -105,12 +105,12 @@ public class DrivingPhotoManagerImpl implements IDrivingPhotoManager {
 	}
 
 	@Override
-	public List<String> getDrivingPhotoIds(final DrivingPhoto dir,final Integer page,final Integer rows) {
-		return hibernateTemplate.execute(new HibernateCallback<List<String>>() {
+	public List getDrivingPhotoIds(final DrivingPhoto dir,final Integer page,final Integer rows) {
+		return hibernateTemplate.execute(new HibernateCallback<List>() {
 
 			@Override
-			public List<String> doInHibernate(Session session) throws HibernateException {
-				StringBuffer sql = new StringBuffer("select id From DrivingPhoto where 1=1");
+			public List doInHibernate(Session session) throws HibernateException {
+				StringBuffer sql = new StringBuffer("select id,zpzl From DrivingPhoto where 1=1");
 
 				List params = new ArrayList();
 				if (dir != null) {
@@ -135,7 +135,7 @@ public class DrivingPhotoManagerImpl implements IDrivingPhotoManager {
 						params.add(dir.getLsh());
 					}
 				}
-				sql.append(" order by cjsj asc"); 
+				sql.append(" order by zpzl asc"); 
 				Query query = session.createQuery(sql.toString());
 				if (page != null && rows != null) {
 					query.setFirstResult((page - 1) * rows);
@@ -147,7 +147,7 @@ public class DrivingPhotoManagerImpl implements IDrivingPhotoManager {
 					i++;
 				}
 
-				List<String> dirimgs = (List<String>) query.list();
+				List dirimgs = (List) query.list();
 				return dirimgs;
 			}
 		});

@@ -1,4 +1,4 @@
-package com.xs.dzyxh.manager.driver.impl;
+package com.xs.dzyxh.manager.window.impl;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -21,11 +21,11 @@ import com.xs.dzyxh.entity.aspose.ImageData;
 import com.xs.dzyxh.entity.driimg.DrivingPhoto;
 import com.xs.dzyxh.entity.driver.DrivingApply;
 import com.xs.dzyxh.entity.driver.DrivingBase;
-import com.xs.dzyxh.manager.driver.IBaseManager;
-import com.xs.dzyxh.manager.driver.IDrivingApplyManager;
 import com.xs.dzyxh.manager.driverimg.IDrivingPhotoManager;
 import com.xs.dzyxh.manager.img.IAsposeManager;
 import com.xs.dzyxh.manager.img.IBarCodeManager;
+import com.xs.dzyxh.manager.window.IBaseManager;
+import com.xs.dzyxh.manager.window.IDrivingApplyManager;
 @Service("driverApplyManager")
 public class DrivingApplyManagerImpl implements IDrivingApplyManager,IBaseManager<DrivingApply> {
 	@Resource(name = "driverHibernateTemplate")

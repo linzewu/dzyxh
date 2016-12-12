@@ -130,7 +130,7 @@
 		//图片信息
 		var tab = $('<div class="products"><ul></ul></div>');
 		var tabs = $("#businessInfo");
-		var options = "<div data-options=\"title:'体检表'\"><div class='products' id='tjbTab'></div></div>";
+		var options = "<div data-options=\"title:'电子图片'\"><div class='products' id='tjbTab'></div></div>";
 		tabs.append(options);
 		/* 	tab
 		.append("<li><a href=\"#\" class=\"item\"> <img src=\"exa/getExaPic?"
@@ -139,17 +139,17 @@
 		var table = $("#tjbTab");
 		$
 				.post(
-						"exa/getDriExaminations",
+						"img/getDriImgs",
 						{
 							"sfzmhm" : sfzmhm
 						},
 						function(data, status) {
 							if (status == "success") {
 								if (data.rows.length == 0) {
-									var tab = $('<div class="products" align="center">无体检数据</div>');
+									var tab = $('<div class="products" align="center">没有找到相关图片数据</div>');
 									table
 											.append($(
-													'<fieldset class="base_fl"><legend>体检图片</legend></fieldset>')
+													'<fieldset class="base_fl"><legend>电子图片</legend></fieldset>')
 													.append(tab));
 								} else {
 									//图片信息
@@ -159,17 +159,16 @@
 												.append("<li><a href=\"#\" class=\"item\"> <img src=\"exa/getExaPic?"
 														+ params
 														+ "\" /><div><p>体检表</p></div></a></li>"); */
-									$
-											.each(
+									$.each(
 													data.rows,
 													function(i, val) {
 														var params = "id="
 																+ val.id;
 														tab
 																.append("<li><a href=\"#\" class=\"item\"> <img src=\"img/getDriBaseById?id="
-																		+ val.sqbtpId
+																		+ val.id
 																		+ "\" /><div><p>"
-																		+ val.tjrq
+																		+ comm.getParamNameByValue("zplx", val.zpzl)
 																		+ "</p></div></a></li>");
 													});
 									table
@@ -271,20 +270,19 @@
 												.append("<li><a href=\"#\" class=\"item\"> <img src=\"exa/getExaPic?"
 														+ params
 														+ "\" /><div><p>体检表</p></div></a></li>"); */
-									var picIds = data.picIds;
-									$
-											.each(
+									/* var picIds = data.picIds;
+									$.each(
 													picIds,
 													function(i, val) {
 														tab
 																.append("<li><a href=\"#\" class=\"item\"> <img src=\"img/getDriBaseById?id="
-																		+ val
-																		+ "\" /><div><p>图片</p></div></a></li>");
-													});
+																		+ val[0]
+																		+ "\" /><div><p>"+comm.getParamNameByValue("zplx", val[1])+"</p></div></a></li>");
+													});*/
 									table
 											.append($(
-													'<fieldset class="base_fl"><legend>档案图片</legend></fieldset>')
-													.append(tab));
+													'<fieldset class="base_fl"><legend>申请表图片</legend></fieldset>')
+													.append(tab)); 
 									//获取当前选择页
 									var current_tab = $('#businessInfo').tabs(
 											'getSelected');

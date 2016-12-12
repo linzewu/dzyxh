@@ -86,7 +86,7 @@ public class DrivingApply implements java.io.Serializable {
 	private String zw1zpId;//指纹1照片ID
 	private String zw2zpId;//指纹2照片ID
 	private String jbrqzzpId;//经办人照片ID
-	List<String> picIds;
+	List picIds;
 	public DrivingApply() {
 	}
 
@@ -612,11 +612,11 @@ public class DrivingApply implements java.io.Serializable {
 		this.jdcjszsqbzp = jdcjszsqbzp;
 	}
 	@Transient
-	public List<String> getPicIds() {
+	public List getPicIds() {
 		return picIds;
 	}
 
-	public void setPicIds(List<String> picIds) {
+	public void setPicIds(List picIds) {
 		this.picIds = picIds;
 	}
 	@Column(name = "ZTL", length = 1)
