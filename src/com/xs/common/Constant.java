@@ -63,5 +63,5 @@ public class Constant {
 	}
 	
 	public static final String initPassword="888888";
-	
+	public static final String admin="admin";
 }

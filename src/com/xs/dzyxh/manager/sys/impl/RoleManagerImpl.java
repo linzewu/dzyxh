@@ -203,6 +203,12 @@ public class RoleManagerImpl implements IRoleManager {
 			}
 		}
 	}
+	
+	public void addMenuToPower(Map<String, String> menus, List<Power> power){
+		for (Power p : power) {
+			menus.put(p.getKey(),p.getKey());	
+		}
+	}
 
 	public void addMenuToMap(Map<String, String> menus, Object[] ms) {
 		for (Object m : ms) {

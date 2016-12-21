@@ -59,7 +59,6 @@ public class RoleController {
 		User user = (User) session.getAttribute(Constant.ConstantKey.USER_SESSIO_NKEY);
 		ServletContext sc = request.getSession().getServletContext();
 		List<ModulePower> modules = (List<ModulePower>) sc.getAttribute("modules");
-		List<Power> powers =(List<Power>)sc.getAttribute("powers");
 		String js=user.getJs();
 		String roleqx=null;
 		if(js!=null){
@@ -69,7 +68,12 @@ public class RoleController {
 			}
 		}
 		Map<String,String> menus=new HashMap<String,String>();
-		roleManager.addMenuToMap(menus, roleqx);
+		if(user.getYhm().equals(Constant.admin)){
+			List<Power> powers =(List<Power>)sc.getAttribute("powers");
+			roleManager.addMenuToPower(menus, powers);
+		}else{
+			roleManager.addMenuToMap(menus, roleqx);
+		}
 		if(user.getQx()!=null){
 			JSONArray jss=JSONArray.fromObject(user.getQx());
 			roleManager.addMenuToMap(menus, jss.toArray());

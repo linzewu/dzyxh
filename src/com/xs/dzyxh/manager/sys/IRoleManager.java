@@ -27,4 +27,5 @@ public interface IRoleManager {
 	public void addMenuToMap(Map<String, String> menus, Object[] ms);
 	public List<Power> transformationPowers(Map<String, String> menus, List<Power> powers);
 	public  Map<String,ModulePower> transformationModules(Map<String, String> menus, List<ModulePower> modules);
+	public void addMenuToPower(Map<String, String> menus, List<Power> power);
 }
