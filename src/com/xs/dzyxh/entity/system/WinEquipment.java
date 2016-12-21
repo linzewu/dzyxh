@@ -18,6 +18,14 @@ public class WinEquipment extends BaseEntity{
 	private String ip;
 	private Integer status;
 	private String name;
+	private String ywms;
+	@Column(name = "YWMS")
+	public String getYwms() {
+		return ywms;
+	}
+	public void setYwms(String ywms) {
+		this.ywms = ywms;
+	}
 	@Column(length=20,name = "IP")
 	public String getIp() {
 		return ip;

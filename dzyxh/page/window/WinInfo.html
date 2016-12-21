@@ -1,113 +1,135 @@
-<form id="winInfoForm" method="post"> 
-<div class="easyui-layout" fit=true style="min-height: 480px;min-width: 800px;">
-	  <div data-options="region:'center'" style="padding:5px" >
-	  	<div class="easyui-tabs"  data-options="fit:true" id="win-info-tab" >
-			<div data-options="title:'窗口设备信息'" >
-				<table class="base_table" cellspacing="0" cellpadding="0"> 
-					<tr><td class="info_title">窗口设备名称：</td>
-						<td class="info"><input name="name" >			
-						</td>
-						<td class="info_title">ip：</td>
-						<td class="info"><input name="ip" > </td>
-					</tr>
-				</table>
-			</div>		
-		</div>
-	  </div>
-	  <div data-options="region:'south'" style="height:100px;width: 100%;">
-	  		<div style="text-align: center;" >
-			   <a href="#" id="winSave" style="width:80px" ></a>
-			   <a href="#" id="winClose" style="width:80px" ></a>
+<form id="winInfoForm" method="post">
+	<div class="easyui-layout" fit=true
+		style="min-height: 480px; min-width: 800px;">
+		<div data-options="region:'center'" style="padding: 5px">
+			<div class="easyui-tabs" data-options="fit:true" id="win-info-tab">
+				<div data-options="title:'窗口设备信息'">
+					<table class="base_table" cellspacing="0" cellpadding="0">
+						<tr>
+							<td class="info_title">业务窗口名称：</td>
+							<td class="info"><input name="name"></td>
+							<td class="info_title">电脑IP：</td>
+							<td class="info"><input name="ip"></td>
+
+						</tr>
+						<tr>
+							<td class="info_title">业务描述：</td>
+							<td class="info" colspan="3"><textarea  style="width: 80%;height: 80px"
+									name="ywms"></textarea></td>
+						</tr>
+					</table>
+				</div>
 			</div>
-			<input type="hidden" name="id" >
-			<input type="hidden" name="status" >
-	  </div>
-</div>
+		</div>
+		<div data-options="region:'south'" style="height: 100px; width: 100%;">
+			<div style="text-align: center;">
+				<a href="#" id="winSave" style="width: 80px"></a> <a href="#"
+					id="winClose" style="width: 80px"></a>
+			</div>
+			<input type="hidden" name="id"> <input type="hidden"
+				name="status">
+		</div>
+	</div>
 </form>
 
 <script type="text/javascript">
+	$(function() {
+		initEditAttr();
+	});
 
- $(function(){
-	initEditAttr();
-}); 
+	function initEditAttr(rows) {
 
+		var title = $("#win-tabs").tabs("getSelected").panel("options").title;
+		;
+		if (title == "添加窗口设备") {
+			//	setCurrentDeptNode();
+			//createPowerList(0);
+			$("#winSave").linkbutton(
+					{
+						text : '保存',
+						onClick : function() {
+							saveWin('win/saveWin', function() {
+								$.messager
+										.confirm("提示", "保存成功,是否继续新增窗口设备？",
+												function(r) {
+													if (r) {
+														$("#winInfoForm").form(
+																"clear");
+														//$("#winInfoForm input[name=qxms]:eq(0)").click()
+														//setCurrentDeptNode();
+														$("#win-info-tab")
+																.tabs("select",
+																		0);
+													} else {
+														$("#win-tabs").tabs(
+																"close", 1);
+													}
 
-function initEditAttr(rows){
-	
-	var title =  $("#win-tabs").tabs("getSelected").panel("options").title;;
-	if(title=="添加窗口设备"){
-	//	setCurrentDeptNode();
-		//createPowerList(0);
-		$("#winSave").linkbutton({
-			text:'保存',
-			onClick:function(){
-				saveWin('win/saveWin',function(){
-					$.messager.confirm("提示","保存成功,是否继续新增窗口设备？",function(r){
-						if(r){
-							$("#winInfoForm").form("clear");
-							//$("#winInfoForm input[name=qxms]:eq(0)").click()
-							//setCurrentDeptNode();
-							$("#win-info-tab").tabs("select",0);
-						}else{
-							$("#win-tabs").tabs("close",1);
+													$("#winManager").datagrid(
+															"reload");
+												});
+							});
 						}
-						
-						$("#winManager").datagrid("reload");
 					});
-				});
+		}
+
+		if (title == "编辑窗口设备") {
+			var row = $("#winManager").datagrid("getSelected");
+			if (row) {
+				$("#winInfoForm").form("load", row);
+
+				//$("#winInfoForm input[name=bmmc]").val($("#dept-list").tree("find",row.bmdm).text);
+				//createPowerList(row.qxms);
+
+				$("#winSave").linkbutton(
+						{
+							text : '保存',
+							onClick : function() {
+								saveWin('win/saveWin', function() {
+									$.messager.confirm("提示", "保存成功,是否关闭编辑页面？",
+											function(r) {
+												if (r) {
+													$("#win-tabs").tabs(
+															"close", 1);
+												}
+												$("#winManager").datagrid(
+														"reload");
+											});
+								});
+							}
+						});
+
 			}
+		}
+
+		$("#winClose").linkbutton(
+				{
+					text : "关闭",
+					onClick : function() {
+						$("#win-tabs").tabs(
+								"close",
+								$("#win-tabs").tabs("getSelected").panel(
+										"options").title);
+					}
+				});
+	}
+
+	function saveWin(url, callback) {
+
+		var flag = $("#winInfoForm").form("validate");
+		if (!flag) {
+			return;
+		}
+		$.messager.progress({
+			title : "提示",
+			msg : "数据保存中..."
+		});
+
+		$.post(url, $("#winInfoForm").serializeJson(), callback).error(
+				function() {
+					$.messager.alert("错误", "保存错误", "error");
+				}).complete(function() {
+			$.messager.progress("close");
 		});
 	}
-	
-	if(title=="编辑窗口设备"){
-		var row = $("#winManager").datagrid("getSelected");
-		if(row){
-			$("#winInfoForm").form("load",row);
-			
-			//$("#winInfoForm input[name=bmmc]").val($("#dept-list").tree("find",row.bmdm).text);
-			//createPowerList(row.qxms);
-			
-			$("#winSave").linkbutton({
-				text:'保存',
-				onClick:function(){
-					saveWin('win/saveWin',function(){
-						$.messager.confirm("提示","保存成功,是否关闭编辑页面？",function(r){
-							if(r){
-								$("#win-tabs").tabs("close",1);
-							}
-							$("#winManager").datagrid("reload");
-						});
-					});
-				}
-			});
-			
-		}
-	}
-	
-	$("#winClose").linkbutton({
-		text:"关闭",
-		onClick:function(){
-			$("#win-tabs").tabs("close",$("#win-tabs").tabs("getSelected").panel("options").title);
-		}
-	});
-}
-
-function saveWin(url,callback){
-	
-	var flag = $("#winInfoForm").form("validate");
-	if(!flag){
-		return;
-	}
-	$.messager.progress({
-		title:"提示",
-		msg:"数据保存中..."
-	});
-	
-	$.post(url,$("#winInfoForm").serializeJson(),callback).error(function(){
-		$.messager.alert("错误","保存错误","error");
-	}).complete(function() {
-		$.messager.progress("close");
-	});
-}
-
 </script>
