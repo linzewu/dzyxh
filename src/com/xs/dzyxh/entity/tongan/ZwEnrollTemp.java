@@ -10,7 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 @Entity
-@Table(name = "ZW_ENROLL_TEMP", schema = "TONGAN")
+@Table(name = "ZW_ENROLL_TEMP")
 public class ZwEnrollTemp {
 	private ZwEnrollTempId id;
 	private Integer version;

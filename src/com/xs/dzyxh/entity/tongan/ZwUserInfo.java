@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 @Entity
-@Table(name = "ZW_USER_INFO", schema = "TONGAN")
+@Table(name = "ZW_USER_INFO")
 public class ZwUserInfo {
 	private String id;
 	private String modifyTime;

@@ -32,6 +32,7 @@ import com.xs.dzyxh.entity.driver.DrivingBase;
 import com.xs.dzyxh.entity.driver.DrivingExamination;
 import com.xs.dzyxh.entity.system.ScanDataLog;
 import com.xs.dzyxh.entity.tongan.DrvTempMid;
+import com.xs.dzyxh.entity.tongan.DrvTempMidId;
 import com.xs.dzyxh.entity.tongan.SqPhotos;
 import com.xs.dzyxh.entity.tongan.SqPhotosId;
 import com.xs.dzyxh.entity.tongan.TjPhotos;
@@ -352,6 +353,11 @@ public class DataScanJob {
 			if (jsonObject.containsKey("DRV_TEMP_MID")) {
 				JSONObject base = jsonObject.getJSONObject("DRV_TEMP_MID");
 				DrvTempMid mid=new DrvTempMid();
+				DrvTempMidId id=new DrvTempMidId();
+				id.setJxdm(getStringValue("JXDM", base));
+				id.setQh(getStringValue("QH", base));
+				id.setSfzmhm(getStringValue("SFZMHM", base));
+				mid.setId(id);
 				mid.setBsl(getStringValue("BSL", base));
 				mid.setCsrq(getDateValue("CSRQ", base));
 				mid.setDjzsxxdz(getStringValue("DJZSXXDZ", base));
@@ -360,7 +366,6 @@ public class DataScanJob {
 				mid.setDzxx(getStringValue("DZXX", base));
 				mid.setGj(getStringValue("GJ", base));
 				mid.setHmcd(getStringValue("HMCD", base));
-				mid.setJxdm(getStringValue("JXDM", base));
 				mid.setJxmc(getStringValue("JXMC", base));
 				mid.setJyjbqk(getStringValue("JYJBQK", base));
 				mid.setLxdh(getStringValue("LXDH", base));
@@ -370,10 +375,8 @@ public class DataScanJob {
 				mid.setLy(getStringValue("LY", base));
 				mid.setQbqg(getStringValue("QBQG", base));
 				mid.setQgjb(getStringValue("QGJB", base));
-				mid.setQh(getStringValue("QH", base));
 				mid.setSfjyjb(getStringValue("SFJYJB", base));
-				mid.setSfngzzzl(getStringValue("SFNGZZZL", base));
-				mid.setSfzmhm(getStringValue("SFZMHM", base));
+				mid.setSfngzzzl(getStringValue("SFNGZZZL", base));	
 				mid.setSfzmmc(getStringValue("SFZMMC", base));
 				mid.setSg(getIntegerValue("SG", base));
 				mid.setSjbj(getStringValue("SJBJ", base));

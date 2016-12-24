@@ -16,7 +16,7 @@ import javax.persistence.TemporalType;
 import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 @Entity
-@Table(name = "SQ_PHOTOS", schema = "TONGAN")
+@Table(name = "SQ_PHOTOS")
 public class SqPhotos {
 	private SqPhotosId id;
 	private Date sqrq;

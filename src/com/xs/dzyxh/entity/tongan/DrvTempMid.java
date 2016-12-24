@@ -2,22 +2,22 @@ package com.xs.dzyxh.entity.tongan;
 
 import java.util.Date;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 @Entity
-@Table(name = "DRV_TEMP_MID", schema = "TONGAN")
+@Table(name = "DRV_TEMP_MID")
 public class DrvTempMid {
-	private String sfzmhm;
+	private DrvTempMidId id;
 	private String sfzmmc;
 	private String xm;
 	private String xb;
@@ -44,7 +44,7 @@ public class DrvTempMid {
 	private String sjbj;
 	private String hmcd;
 	private String ly;
-	private String qh;
+	
 	private String yddh;
 	private String dzxx;
 	private String zzsb;
@@ -62,18 +62,20 @@ public class DrvTempMid {
 	private String sfjyjb;
 	private String jyjbqk;
 	private String sfngzzzl;
-	private String jxdm;
 	private String ywlx;
-	@Id
-	@GenericGenerator(name = "assigned", strategy = "assigned")
-	@GeneratedValue(generator = "assigned")
-	@Column(name = "SFZMHM", length = 18)
-	public String getSfzmhm() {
-		return sfzmhm;
+
+	@EmbeddedId
+	@AttributeOverrides({
+			@AttributeOverride(name = "sfzmhm", column = @Column(name = "SFZMHM", nullable = false, length = 18)),
+			@AttributeOverride(name = "qh", column = @Column(name = "QH", nullable = false, length = 10)),
+			@AttributeOverride(name = "jxdm", column = @Column(name = "JXDM", nullable = false, length = 20)) 
+			})
+	public DrvTempMidId getId() {
+		return id;
 	}
 
-	public void setSfzmhm(String sfzmhm) {
-		this.sfzmhm = sfzmhm;
+	public void setId(DrvTempMidId id) {
+		this.id = id;
 	}
 
 	@Column(name = "SFZMMC", length = 1)
@@ -316,14 +318,7 @@ public class DrvTempMid {
 		this.ly = ly;
 	}
 
-	@Column(name = "QH", length = 10)
-	public String getQh() {
-		return qh;
-	}
 
-	public void setQh(String qh) {
-		this.qh = qh;
-	}
 
 	@Column(name = "YDDH", length = 20)
 	public String getYddh() {
@@ -478,14 +473,6 @@ public class DrvTempMid {
 		this.sfngzzzl = sfngzzzl;
 	}
 
-	@Column(name = "JXDM", length = 20)
-	public String getJxdm() {
-		return jxdm;
-	}
-
-	public void setJxdm(String jxdm) {
-		this.jxdm = jxdm;
-	}
 
 	@Column(name = "YWLX", length = 20)
 	public String getYwlx() {

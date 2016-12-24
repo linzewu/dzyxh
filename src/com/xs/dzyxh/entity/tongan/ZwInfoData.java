@@ -10,7 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 @Entity
-@Table(name = "ZW_INFO_DATA", schema = "TONGAN")
+@Table(name = "ZW_INFO_DATA")
 public class ZwInfoData {
 	private ZwInfoDataId id;
 	private String mainKey;

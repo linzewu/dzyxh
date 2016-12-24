@@ -18,7 +18,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 @Entity
-@Table(name = "TJ_PHOTOS", schema = "TONGAN")
+@Table(name = "TJ_PHOTOS")
 public class TjPhotos {
 	private String idno;
 	private byte[] photoXy;
