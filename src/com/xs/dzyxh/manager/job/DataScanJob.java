@@ -42,7 +42,6 @@ import com.xs.dzyxh.entity.tongan.ZwInfoData;
 import com.xs.dzyxh.entity.tongan.ZwInfoDataId;
 import com.xs.dzyxh.entity.tongan.ZwUserInfo;
 import com.xs.dzyxh.manager.sys.IScanDataLogManager;
-import com.xs.dzyxh.manager.tongan.ITonGanManager;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONNull;
@@ -139,8 +138,8 @@ public class DataScanJob {
 	private IDataScanJobManager dataScanJobManager;
 	@Resource(name = "scanDataLogManager")
 	private IScanDataLogManager scanDataLogManager;
-	@Resource(name = "tonGanManager")
-	private ITonGanManager tonGanManager;
+/*	@Resource(name = "tonGanManager")
+	private ITonGanManager tonGanManager;*/
 
 	BASE64Decoder decoder = new BASE64Decoder();
 
@@ -158,7 +157,6 @@ public class DataScanJob {
 
 				try {
 					String data = readFile(file);
-					this.transformationTonGanData(data);
 					this.transformationData(data);
 					file.delete();
 				} catch (Exception e) {
@@ -208,9 +206,14 @@ public class DataScanJob {
 			SqPhotos sqPhotos = getSqPhotos(jsonObject);
 			Map<String, DrivingPhoto> imgs = getDrivingPhotos(jsonObject);
 			dataScanJobManager.saveImg(sqPhotos, imgs);
+			dataLog.setSfzmhm(sqPhotos.getId().getSfzmhm());
+			dataLog.setQh(sqPhotos.getId().getQh());
+			dataLog.setJxdm(sqPhotos.getId().getJxdm());
+			dataLog.setClzt(200);
+			dataLog.setCjsj(new Date(System.currentTimeMillis()));
 		} catch (Exception e) {
 			dataLog.setClzt(500);
-			dataLog.setCwxx(e.getCause().getClass() + ":" + e.getLocalizedMessage());
+			dataLog.setCwxx("tongan数据入库失败:" + e.getLocalizedMessage());
 			throw new Exception(e.getMessage());
 		} finally {
 			String strData = DataScanJobUtil.mapper.writeValueAsString(dataLog);
@@ -343,6 +346,7 @@ public class DataScanJob {
 		}
 		ScanDataLog dataLog = new ScanDataLog();
 		try {
+			List<Object> tonGanDatas=this.getTonGanDatas(data);
 			JSONObject jsonObject = JSONObject.fromObject(new String(data));
 			DrivingBase dribase = new DrivingBase();
 			DrivingApply apply = new DrivingApply();
@@ -411,10 +415,12 @@ public class DataScanJob {
 				apply.setTjyymc(examination.getTjyymc());
 
 			}
-			if (jsonObject.containsKey("SQ_PHOTOS")) {
-				JSONObject JsonData = jsonObject.getJSONObject("SQ_PHOTOS");
-				Map<String, DrivingPhoto> photos=getDrivingPhotos(JsonData);
-				imgs.putAll(photos);
+			if (jsonObject.containsKey("SQ_PHOTOS") && !(jsonObject.get("SQ_PHOTOS") instanceof JSONNull)) {
+				JSONArray JsonDatas = jsonObject.getJSONArray("SQ_PHOTOS");
+				if (JsonDatas.size() > 0) {
+					Map<String, DrivingPhoto> photos = getDrivingPhotos(JsonDatas.getJSONObject(0));
+					imgs.putAll(photos);
+				}
 			}
 			if (jsonObject.containsKey("TJ_PHOTOS")) {
 				JSONArray imgsJson = jsonObject.getJSONArray("TJ_PHOTOS");
@@ -459,7 +465,7 @@ public class DataScanJob {
 			dataLog.setJxdm(dribase.getJxdm());
 			dataLog.setClzt(200);
 			dataLog.setCjsj(new Date(System.currentTimeMillis()));
-			dataScanJobManager.saveAll(dribase, apply, examination, imgs);
+			dataScanJobManager.saveAll(dribase, apply, examination, imgs,tonGanDatas);
 		} catch (Exception e) {
 			dataLog.setClzt(500);
 			dataLog.setCwxx(e.getCause().getClass() + ":" + e.getLocalizedMessage());
@@ -471,120 +477,121 @@ public class DataScanJob {
 		}
 	}
 
-	public void transformationTonGanData(String data) throws Exception {
+	public List<Object> getTonGanDatas(String data) throws Exception {
 		if (data == null) {
-			return;
+			return null;
 		}
-		ScanDataLog dataLog = new ScanDataLog();
 		List<Object> datas = new ArrayList<Object>();
-		try {
-			JSONObject jsonObject = JSONObject.fromObject(new String(data));
-			if (jsonObject.containsKey("DRV_TEMP_MID")) {
-				JSONObject base = jsonObject.getJSONObject("DRV_TEMP_MID");
-				DrvTempMid mid = new DrvTempMid();
-				DrvTempMidId id = new DrvTempMidId();
-				id.setJxdm(getStringValue("JXDM", base));
-				id.setQh(getStringValue("QH", base));
-				id.setSfzmhm(getStringValue("SFZMHM", base));
-				mid.setId(id);
-				mid.setBsl(getStringValue("BSL", base));
-				mid.setCsrq(getDateValue("CSRQ", base));
-				mid.setDjzsxxdz(getStringValue("DJZSXXDZ", base));
-				mid.setDjzsxzqh(getStringValue("DJZSXZQH", base));
-				mid.setDyslze(getStringValue("DYSLZE", base));
-				mid.setDzxx(getStringValue("DZXX", base));
-				mid.setGj(getStringValue("GJ", base));
-				mid.setHmcd(getStringValue("HMCD", base));
-				mid.setJxmc(getStringValue("JXMC", base));
-				mid.setJyjbqk(getStringValue("JYJBQK", base));
-				mid.setLxdh(getStringValue("LXDH", base));
-				mid.setLxzsxxdz(getStringValue("LXZSXXDZ", base));
-				mid.setLxzsxzqh(getStringValue("LXZSXZQH", base));
-				mid.setLxzsyzbm(getStringValue("LXZSYZBM", base));
-				mid.setLy(getStringValue("LY", base));
-				mid.setQbqg(getStringValue("QBQG", base));
-				mid.setQgjb(getStringValue("QGJB", base));
-				mid.setSfjyjb(getStringValue("SFJYJB", base));
-				mid.setSfngzzzl(getStringValue("SFNGZZZL", base));
-				mid.setSfzmmc(getStringValue("SFZMMC", base));
-				mid.setSg(getIntegerValue("SG", base));
-				mid.setSjbj(getStringValue("SJBJ", base));
-				mid.setTjrq(getDateValue("TJRQ", base));
-				mid.setTjyymc(getStringValue("TJYYMC", base));
-				mid.setTlsfjz(getStringValue("TLSFJZ", base));
-				mid.setXb(getStringValue("XB", base));
-				mid.setXm(getStringValue("XM", base));
-				mid.setYddh(getStringValue("YDDH", base));
-				mid.setYetl(getStringValue("YETL", base));
-				mid.setYsl(getIntegerValue("YSL", base));
-				mid.setYsz(getStringValue("YSZ", base));
-				mid.setYwlx(getStringValue("YWLX", base));
-				mid.setYxz(getStringValue("YXZ", base));
-				mid.setYysfjz(getStringValue("YYSFJZ", base));
-				mid.setYyspsy(getIntegerValue("YYSPSY", base));
-				mid.setZetl(getStringValue("ZETL", base));
-				mid.setZkcx(getStringValue("ZKCX", base));
-				mid.setZsl(getIntegerValue("ZSL", base));
-				mid.setZsz(getStringValue("ZSZ", base));
-				mid.setZxz(getStringValue("ZXZ", base));
-				mid.setZysfjz(getStringValue("ZYSFJZ", base));
-				mid.setZzsb(getStringValue("ZZSB", base));
-				mid.setZzzl(getStringValue("ZZZL", base));
-				mid.setZzzm(getStringValue("ZZZM", base));
-				datas.add(mid);
+		JSONObject jsonObject = JSONObject.fromObject(new String(data));
+		if (jsonObject.containsKey("DRV_TEMP_MID")) {
+			JSONObject base = jsonObject.getJSONObject("DRV_TEMP_MID");
+			DrvTempMid mid = new DrvTempMid();
+			DrvTempMidId id = new DrvTempMidId();
+			id.setJxdm(getStringValue("JXDM", base));
+			id.setQh(getStringValue("QH", base));
+			id.setSfzmhm(getStringValue("SFZMHM", base));
+			mid.setId(id);
+			mid.setBsl(getStringValue("BSL", base));
+			mid.setCsrq(getDateValue("CSRQ", base));
+			mid.setDjzsxxdz(getStringValue("DJZSXXDZ", base));
+			mid.setDjzsxzqh(getStringValue("DJZSXZQH", base));
+			mid.setDyslze(getStringValue("DYSLZE", base));
+			mid.setDzxx(getStringValue("DZXX", base));
+			mid.setGj(getStringValue("GJ", base));
+			mid.setHmcd(getStringValue("HMCD", base));
+			mid.setJxmc(getStringValue("JXMC", base));
+			mid.setJyjbqk(getStringValue("JYJBQK", base));
+			mid.setLxdh(getStringValue("LXDH", base));
+			mid.setLxzsxxdz(getStringValue("LXZSXXDZ", base));
+			mid.setLxzsxzqh(getStringValue("LXZSXZQH", base));
+			mid.setLxzsyzbm(getStringValue("LXZSYZBM", base));
+			mid.setLy(getStringValue("LY", base));
+			mid.setQbqg(getStringValue("QBQG", base));
+			mid.setQgjb(getStringValue("QGJB", base));
+			mid.setSfjyjb(getStringValue("SFJYJB", base));
+			mid.setSfngzzzl(getStringValue("SFNGZZZL", base));
+			mid.setSfzmmc(getStringValue("SFZMMC", base));
+			mid.setSg(getIntegerValue("SG", base));
+			mid.setSjbj(getStringValue("SJBJ", base));
+			mid.setTjrq(getDateValue("TJRQ", base));
+			mid.setTjyymc(getStringValue("TJYYMC", base));
+			mid.setTlsfjz(getStringValue("TLSFJZ", base));
+			mid.setXb(getStringValue("XB", base));
+			mid.setXm(getStringValue("XM", base));
+			mid.setYddh(getStringValue("YDDH", base));
+			mid.setYetl(getStringValue("YETL", base));
+			mid.setYsl(getIntegerValue("YSL", base));
+			mid.setYsz(getStringValue("YSZ", base));
+			mid.setYwlx(getStringValue("YWLX", base));
+			mid.setYxz(getStringValue("YXZ", base));
+			mid.setYysfjz(getStringValue("YYSFJZ", base));
+			mid.setYyspsy(getIntegerValue("YYSPSY", base));
+			mid.setZetl(getStringValue("ZETL", base));
+			mid.setZkcx(getStringValue("ZKCX", base));
+			mid.setZsl(getIntegerValue("ZSL", base));
+			mid.setZsz(getStringValue("ZSZ", base));
+			mid.setZxz(getStringValue("ZXZ", base));
+			mid.setZysfjz(getStringValue("ZYSFJZ", base));
+			mid.setZzsb(getStringValue("ZZSB", base));
+			mid.setZzzl(getStringValue("ZZZL", base));
+			mid.setZzzm(getStringValue("ZZZM", base));
+			datas.add(mid);
 
+		}
+		if (jsonObject.containsKey("TJ_PHOTOS")) {
+			JSONArray imgsJson = jsonObject.getJSONArray("TJ_PHOTOS");
+			int count = imgsJson.size();
+			for (int i = 0; i < count; i++) {
+				JSONObject imgJson = imgsJson.getJSONObject(i);
+				TjPhotos tj = new TjPhotos();
+				tj.setIdno(getStringValue("IDNO", imgJson));
+				tj.setPhotoSfz(getBytesValue("PHOTO_SFZ", imgJson));
+				tj.setPhotoXy(getBytesValue("PHOTO_XY", imgJson));
+				tj.setPhotoXyqm(getBytesValue("PHOTO_XYQM", imgJson));
+				tj.setPhotoYsqm(getBytesValue("PHOTO_YSQM", imgJson));
+				tj.setTjrq(getDateValue("TJRQ", imgJson));
+				datas.add(tj);
 			}
-			if (jsonObject.containsKey("TJ_PHOTOS")) {
-				JSONArray imgsJson = jsonObject.getJSONArray("TJ_PHOTOS");
-				int count = imgsJson.size();
-				for (int i = 0; i < count; i++) {
-					JSONObject imgJson = imgsJson.getJSONObject(i);
-					TjPhotos tj = new TjPhotos();
-					tj.setIdno(getStringValue("IDNO", imgJson));
-					tj.setPhotoSfz(getBytesValue("PHOTO_SFZ", imgJson));
-					tj.setPhotoXy(getBytesValue("PHOTO_XY", imgJson));
-					tj.setPhotoXyqm(getBytesValue("PHOTO_XYQM", imgJson));
-					tj.setPhotoYsqm(getBytesValue("PHOTO_YSQM", imgJson));
-					tj.setTjrq(getDateValue("TJRQ", imgJson));
-					datas.add(tj);
-				}
+		}
+		if (jsonObject.containsKey("ZW_ENROLL_TEMP")) {
+			JSONArray JsonDatas = jsonObject.getJSONArray("ZW_ENROLL_TEMP");
+			int count = JsonDatas.size();
+			for (int i = 0; i < count; i++) {
+				JSONObject JsonData = JsonDatas.getJSONObject(i);
+				ZwEnrollTemp zwEnrollTemp = new ZwEnrollTemp();
+				ZwEnrollTempId id = new ZwEnrollTempId();
+				id.setAuthenInfo(getStringValue("AUTHEN_INFO", JsonData));
+				id.setUserId(getStringValue("USER_ID", JsonData));
+				zwEnrollTemp.setCreateTime(getStringValue("CREATE_TIME", JsonData));
+				zwEnrollTemp.setId(id);
+				zwEnrollTemp.setModifyTime(getStringValue("MODIFY_TIME", JsonData));
+				zwEnrollTemp.setRevokeTime(getStringValue("REVOKE_TIME", JsonData));
+				zwEnrollTemp.setServiceCode(getIntegerValue("SERVICE_CODE", JsonData));
+				zwEnrollTemp.setServiceType(getIntegerValue("SERVICE_TYPE", JsonData));
+				zwEnrollTemp.setTemplate(getBytesValue("TEMPLATE", JsonData));
+				zwEnrollTemp.setTempSize(getIntegerValue("TEMP_SIZE", JsonData));
+				zwEnrollTemp.setTempType(getIntegerValue("TEMP_TYPE", JsonData));
+				zwEnrollTemp.setVersion(getIntegerValue("VERSION", JsonData));
+				datas.add(zwEnrollTemp);
 			}
-			if (jsonObject.containsKey("ZW_ENROLL_TEMP")) {
-				JSONArray JsonDatas = jsonObject.getJSONArray("ZW_ENROLL_TEMP");
-				int count = JsonDatas.size();
-				for (int i = 0; i < count; i++) {
-					JSONObject JsonData = JsonDatas.getJSONObject(i);
-					ZwEnrollTemp zwEnrollTemp = new ZwEnrollTemp();
-					ZwEnrollTempId id = new ZwEnrollTempId();
-					id.setAuthenInfo(getStringValue("AUTHEN_INFO", JsonData));
-					id.setUserId(getStringValue("USER_ID", JsonData));
-					zwEnrollTemp.setCreateTime(getStringValue("CREATE_TIME", JsonData));
-					zwEnrollTemp.setId(id);
-					zwEnrollTemp.setModifyTime(getStringValue("MODIFY_TIME", JsonData));
-					zwEnrollTemp.setRevokeTime(getStringValue("REVOKE_TIME", JsonData));
-					zwEnrollTemp.setServiceCode(getIntegerValue("SERVICE_CODE", JsonData));
-					zwEnrollTemp.setServiceType(getIntegerValue("SERVICE_TYPE", JsonData));
-					zwEnrollTemp.setTemplate(getBytesValue("TEMPLATE", JsonData));
-					zwEnrollTemp.setTempSize(getIntegerValue("TEMP_SIZE", JsonData));
-					zwEnrollTemp.setTempType(getIntegerValue("TEMP_TYPE", JsonData));
-					zwEnrollTemp.setVersion(getIntegerValue("VERSION", JsonData));
-					datas.add(zwEnrollTemp);
-				}
+		}
+		if (jsonObject.containsKey("ZW_USER_INFO")) {
+			JSONArray JsonDatas = jsonObject.getJSONArray("ZW_USER_INFO");
+			int count = JsonDatas.size();
+			for (int i = 0; i < count; i++) {
+				JSONObject JsonData = JsonDatas.getJSONObject(i);
+				ZwUserInfo zwUserInfo = new ZwUserInfo();
+				zwUserInfo.setCreateTime(getStringValue("CREATE_TIME", JsonData));
+				zwUserInfo.setId(getStringValue("USER_ID", JsonData));
+				zwUserInfo.setModifyTime(getStringValue("MODIFY_TIME", JsonData));
+				datas.add(zwUserInfo);
 			}
-			if (jsonObject.containsKey("ZW_USER_INFO")) {
-				JSONArray JsonDatas = jsonObject.getJSONArray("ZW_USER_INFO");
-				int count = JsonDatas.size();
-				for (int i = 0; i < count; i++) {
-					JSONObject JsonData = JsonDatas.getJSONObject(i);
-					ZwUserInfo zwUserInfo = new ZwUserInfo();
-					zwUserInfo.setCreateTime(getStringValue("CREATE_TIME", JsonData));
-					zwUserInfo.setId(getStringValue("USER_ID", JsonData));
-					zwUserInfo.setModifyTime(getStringValue("MODIFY_TIME", JsonData));
-					datas.add(zwUserInfo);
-				}
-			}
-			if (jsonObject.containsKey("SQ_PHOTOS")) {
-				JSONObject JsonData = jsonObject.getJSONObject("SQ_PHOTOS");
+		}
+		if (jsonObject.containsKey("SQ_PHOTOS") && !(jsonObject.get("SQ_PHOTOS") instanceof JSONNull)) {
+			JSONArray JsonDatas = jsonObject.getJSONArray("SQ_PHOTOS");
+			int count = JsonDatas.size();
+			if (count > 0) {
+				JSONObject JsonData = JsonDatas.getJSONObject(0);
 				SqPhotos sqPhotos = new SqPhotos();
 				SqPhotosId id = new SqPhotosId();
 				id.setJxdm(getStringValue("JXDM", JsonData));
@@ -606,42 +613,31 @@ public class DataScanJob {
 				sqPhotos.setSjbj(getCharValue("BSL", JsonData));
 				sqPhotos.setSqrq(getDateValue("SQRQ", JsonData));
 				datas.add(sqPhotos);
+			}
 
-			}
-			if (jsonObject.containsKey("ZW_INFO_DATA")) {
-				JSONArray imgsJson = jsonObject.getJSONArray("ZW_INFO_DATA");
-				int count = imgsJson.size();
-				for (int i = 0; i < count; i++) {
-					JSONObject imgJson = imgsJson.getJSONObject(i);
-					ZwInfoData zwInfoData = new ZwInfoData();
-					ZwInfoDataId id = new ZwInfoDataId();
-					id.setId(getStringValue("USER_ID", imgJson));
-					id.setSubKey(getStringValue("SUB_KEY", imgJson));
-					zwInfoData.setId(id);
-					zwInfoData.setCreateTime(getStringValue("CREATE_TIME", imgJson));
-					zwInfoData.setInfo(getBytesValue("INFO", imgJson));
-					zwInfoData.setInfoSize(getIntegerValue("INFO_SIZE", imgJson));
-					zwInfoData.setInfoType(getIntegerValue("INFO_TYPE", imgJson));
-					zwInfoData.setMainKey(getStringValue("MAIN_KEY", imgJson));
-					zwInfoData.setModifyTime(getStringValue("MODIFY_TIME", imgJson));
-					zwInfoData.setRevokeTime(getStringValue("REVOKE_TIME", imgJson));
-					zwInfoData.setSecurity(getIntegerValue("SECURITY", imgJson));
-					datas.add(zwInfoData);
-				}
-			}
-			for (Object val : datas) {
-				tonGanManager.addData(val);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			dataLog.setClzt(500);
-			dataLog.setCwxx("TonGan数据入库失败：" + e.getCause().getClass() + ":" + e.getLocalizedMessage());
-			throw new Exception("TonGan数据入库失败：" + e.getMessage());
-		} finally {
-			String strData = DataScanJobUtil.mapper.writeValueAsString(dataLog);
-			createStrFile(strData, ".data");
-			scanDataLogManager.save(dataLog);
 		}
+		if (jsonObject.containsKey("ZW_INFO_DATA")) {
+			JSONArray imgsJson = jsonObject.getJSONArray("ZW_INFO_DATA");
+			int count = imgsJson.size();
+			for (int i = 0; i < count; i++) {
+				JSONObject imgJson = imgsJson.getJSONObject(i);
+				ZwInfoData zwInfoData = new ZwInfoData();
+				ZwInfoDataId id = new ZwInfoDataId();
+				id.setId(getStringValue("USER_ID", imgJson));
+				id.setSubKey(getStringValue("SUB_KEY", imgJson));
+				zwInfoData.setId(id);
+				zwInfoData.setCreateTime(getStringValue("CREATE_TIME", imgJson));
+				zwInfoData.setInfo(getBytesValue("INFO", imgJson));
+				zwInfoData.setInfoSize(getIntegerValue("INFO_SIZE", imgJson));
+				zwInfoData.setInfoType(getIntegerValue("INFO_TYPE", imgJson));
+				zwInfoData.setMainKey(getStringValue("MAIN_KEY", imgJson));
+				zwInfoData.setModifyTime(getStringValue("MODIFY_TIME", imgJson));
+				zwInfoData.setRevokeTime(getStringValue("REVOKE_TIME", imgJson));
+				zwInfoData.setSecurity(getIntegerValue("SECURITY", imgJson));
+				datas.add(zwInfoData);
+			}
+		}
+		return datas;
 	}
 
 	private byte[] getBytesValue(String key, JSONObject obj) throws IOException {
@@ -680,7 +676,7 @@ public class DataScanJob {
 	}
 
 	private Date getDateValue(String key, JSONObject obj) throws IOException {
-		if (obj.containsKey(key) && obj.getString(key) != null) {
+		if (obj.containsKey(key) &&!(obj.get(key) instanceof JSONNull)) {
 			return new Date(obj.getLong(key));
 		}
 		return null;

@@ -1,6 +1,7 @@
 package com.xs.dzyxh.manager.job.impl;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -14,7 +15,6 @@ import com.xs.dzyxh.entity.driver.DrivingBase;
 import com.xs.dzyxh.entity.driver.DrivingExamination;
 import com.xs.dzyxh.entity.tongan.SqPhotos;
 import com.xs.dzyxh.manager.job.IDataScanJobManager;
-import com.xs.dzyxh.manager.tongan.ITonGanManager;
 import com.xs.dzyxh.manager.window.IDrivingApplyManager;
 import com.xs.dzyxh.manager.window.IDrivingExaminationManager;
 @Service("dataScanJobManagerImpl")
@@ -52,7 +52,10 @@ public class DataScanJobManagerImpl implements IDataScanJobManager {
 	
 	@Override
 	public void saveAll(DrivingBase base, DrivingApply apply, DrivingExamination examination,
-			Map<String, DrivingPhoto> imgs) throws Exception {
+			Map<String, DrivingPhoto> imgs,List<Object>  datas) throws Exception {
+		for(Object obj:datas){
+			tonganHibernateTemplate.saveOrUpdate(obj);
+		}	
 		driverHibernateTemplate.saveOrUpdate(base);
 		driverHibernateTemplate.saveOrUpdate(apply);
 		driverHibernateTemplate.saveOrUpdate(examination);
