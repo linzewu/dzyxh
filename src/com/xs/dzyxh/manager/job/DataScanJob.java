@@ -79,35 +79,32 @@ public class DataScanJob {
 			bos.close();
 			buffer = bos.toByteArray();
 		} catch (FileNotFoundException e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 		} catch (IOException e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 		}
 		return buffer;
 	}
-	public static String readFile(File file)  
-	{     
-	    String fileContent = "";     
-	    try   
-	    {       
-    
-	        if(file.isFile()&&file.exists())  
-	        {       
-	            InputStreamReader read = new InputStreamReader(new FileInputStream(file),"gbk");       
-	            BufferedReader reader=new BufferedReader(read);       
-	            String line;       
-	            while ((line = reader.readLine()) != null)   
-	            {        
-	                fileContent += line;       
-	            }         
-	            read.close();      
-	        }     
-	    } catch (Exception e)   
-	    {         
-	        e.printStackTrace();     
-	    }     
-	    return fileContent;   
-	}   
+
+	public static String readFile(File file) {
+		String fileContent = "";
+		try {
+
+			if (file.isFile() && file.exists()) {
+				InputStreamReader read = new InputStreamReader(new FileInputStream(file), "gbk");
+				BufferedReader reader = new BufferedReader(read);
+				String line;
+				while ((line = reader.readLine()) != null) {
+					fileContent += line;
+				}
+				read.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return fileContent;
+	}
+
 	public static void main(String[] arg) throws Exception {
 		DataScanJob d = new DataScanJob();
 		d.init();
@@ -116,7 +113,8 @@ public class DataScanJob {
 		for (int i = 0; i < filelist.length; i++) {
 			if (filelist[i].lastIndexOf(".data") > 0) {
 				// System.out.println(filelist[i]);
-				//byte[] data = getBytes(new File(d.outPath + "\\" + filelist[i]));
+				// byte[] data = getBytes(new File(d.outPath + "\\" +
+				// filelist[i]));
 				// Character c=Character.valueOf(Integer.valueOf("1"));
 				d.transformationData(readFile(new File(d.outPath + "\\" + filelist[i])));
 			}
@@ -142,8 +140,8 @@ public class DataScanJob {
 	@Resource(name = "scanDataLogManager")
 	private IScanDataLogManager scanDataLogManager;
 	@Resource(name = "tonGanManager")
-	private  ITonGanManager tonGanManager;
-	
+	private ITonGanManager tonGanManager;
+
 	BASE64Decoder decoder = new BASE64Decoder();
 
 	/*
@@ -156,10 +154,10 @@ public class DataScanJob {
 		for (int i = 0; i < filelist.length; i++) {
 			if (filelist[i].lastIndexOf(".data") > 0) {
 				File file = new File(inPath + "\\" + filelist[i]);
-				//byte[] data = getBytes(file);
+				// byte[] data = getBytes(file);
 
 				try {
-					String data=readFile(file);
+					String data = readFile(file);
 					this.transformationTonGanData(data);
 					this.transformationData(data);
 					file.delete();
@@ -169,7 +167,7 @@ public class DataScanJob {
 					if (!errorfile.exists() && !errorfile.isDirectory()) {
 						errorfile.mkdirs();
 					}
-					//数据文件剪切到错误文件夹
+					// 数据文件剪切到错误文件夹
 					DataScanJobUtil.cutFile(file, errorfile);
 				}
 			}
@@ -180,12 +178,12 @@ public class DataScanJob {
 	public void readImgData() {
 		String[] filelist = inFile.list();
 		for (int i = 0; i < filelist.length; i++) {
-			if (filelist[i].lastIndexOf(".Imgdata") > 0) {
+			if (filelist[i].lastIndexOf(".img") > 0) {
 				File file = new File(inPath + "\\" + filelist[i]);
-				//byte[] data = getBytes(file);
+				// byte[] data = getBytes(file);
 
 				try {
-					this.transformationData(readFile(file));
+					this.transformationImgData(readFile(file));
 					file.delete();
 				} catch (Exception e) {
 					File errorfile = new File(
@@ -193,31 +191,157 @@ public class DataScanJob {
 					if (!errorfile.exists() && !errorfile.isDirectory()) {
 						errorfile.mkdirs();
 					}
-					//数据文件剪切到错误文件夹
+					// 数据文件剪切到错误文件夹
 					DataScanJobUtil.cutFile(file, errorfile);
 				}
 			}
 		}
 	}
-	/*public void transformationImgData(String data) throws Exception {
+
+	public void transformationImgData(String data) throws Exception {
 		if (data == null) {
-			return ;
+			return;
 		}
-		ScanDataLog dataLog=new ScanDataLog();
-		JSONArray imgsJson = JSONArray.fromObject(new String(data));
-		int count = imgsJson.size();
-		for (int i = 0; i < count; i++) {
-			
+		ScanDataLog dataLog = new ScanDataLog();
+		try {
+			JSONObject jsonObject = JSONObject.fromObject(new String(data));
+			SqPhotos sqPhotos = getSqPhotos(jsonObject);
+			Map<String, DrivingPhoto> imgs = getDrivingPhotos(jsonObject);
+			dataScanJobManager.saveImg(sqPhotos, imgs);
+		} catch (Exception e) {
+			dataLog.setClzt(500);
+			dataLog.setCwxx(e.getCause().getClass() + ":" + e.getLocalizedMessage());
+			throw new Exception(e.getMessage());
+		} finally {
+			String strData = DataScanJobUtil.mapper.writeValueAsString(dataLog);
+			createStrFile(strData, ".img");
+			scanDataLogManager.save(dataLog);
 		}
-		DrivingPhoto photoXyqm = new DrivingPhoto(null, dribase.getSfzmhm(), null,
-				getBytesValue("PHOTO_XYQM", imgJson), "10", tjsj, null, null, null, null, null,
-				dribase.getQh(), dribase.getJxdm());
-	}*/
+	}
+
+	private SqPhotos getSqPhotos(JSONObject imgJson) throws IOException {
+		SqPhotos data = new SqPhotos();
+		String sfz = getStringValue("SFZMHM", imgJson);
+		String qh = getStringValue("QH", imgJson);
+		String jxdm = getStringValue("JXDM", imgJson);
+		Date sqrq = getDateValue("SQRQ", imgJson);
+		SqPhotosId id = new SqPhotosId();
+		id.setJxdm(jxdm);
+		id.setQh(qh);
+		id.setSfzmhm(sfz);
+		data.setId(id);
+		data.setPhotoDlrqm(getBytesValue("PHOTO_DLRQM", imgJson));
+		data.setPhotoDlrsfzfm(getBytesValue("PHOTO_DLRSFZFM", imgJson));
+		data.setPhotoDlrsfzzm(getBytesValue("PHOTO_DLRSFZZM", imgJson));
+		data.setPhotoJzzfm(getBytesValue("PHOTO_JZZFM", imgJson));
+		data.setPhotoJzzzm(getBytesValue("PHOTO_JZZZM", imgJson));
+		data.setPhotoMgzp(getBytesValue("PHOTO_MGZP", imgJson));
+		data.setPhotoSqrqm(getBytesValue("PHOTO_SQRQM", imgJson));
+		data.setPhotoSfzfm(getBytesValue("PHOTO_SFZFM", imgJson));
+		data.setPhotoSfzzm(getBytesValue("PHOTO_SFZZM", imgJson));
+		data.setPhotoSqb(getBytesValue("PHOTO_SQB", imgJson));
+		data.setPhotoTjb(getBytesValue("PHOTO_TJB", imgJson));
+		data.setSqrq(sqrq);
+		return data;
+	}
+
+	private Map<String, DrivingPhoto> getDrivingPhotos(JSONObject imgJson) throws IOException {
+		Map<String, DrivingPhoto> imgs = new HashMap<String, DrivingPhoto>();
+		String sfz = getStringValue("SFZMHM", imgJson);
+		String qh = getStringValue("QH", imgJson);
+		String jxdm = getStringValue("JXDM", imgJson);
+		Date sqrq = getDateValue("SQRQ", imgJson);
+		// 申请人签名
+		byte[] blob = getBytesValue("PHOTO_SQRQM", imgJson);
+		if (blob != null) {
+			DrivingPhoto photosqrqm = new DrivingPhoto(null, sfz, null, blob, "05", sqrq, null, null, null, null, null,
+					qh, jxdm);
+			imgs.put("05", photosqrqm);
+			DrivingPhoto phototjsqrqm = new DrivingPhoto(null, sfz, null, blob, "10", sqrq, null, null, null, null,
+					null, qh, jxdm);
+			imgs.put("10", phototjsqrqm);
+		}
+		// 代理人签名
+		blob = getBytesValue("PHOTO_DLRQM", imgJson);
+		if (blob != null) {
+			DrivingPhoto photosqrqm = new DrivingPhoto(null, sfz, null, blob, "06", sqrq, null, null, null, null, null,
+					qh, jxdm);
+			imgs.put("06", photosqrqm);
+			DrivingPhoto phototjsqrqm = new DrivingPhoto(null, sfz, null, blob, "12", sqrq, null, null, null, null,
+					null, qh, jxdm);
+			imgs.put("12", phototjsqrqm);
+		}
+		// 身份证正面
+		blob = getBytesValue("PHOTO_SFZZM", imgJson);
+		if (blob != null) {
+			DrivingPhoto photo = new DrivingPhoto(null, sfz, null, blob, "15", sqrq, null, null, null, null, null, qh,
+					jxdm);
+			imgs.put("15", photo);
+		}
+		// 身份证反面
+		blob = getBytesValue("PHOTO_SFZFM", imgJson);
+		if (blob != null) {
+			DrivingPhoto photo = new DrivingPhoto(null, sfz, null, blob, "16", sqrq, null, null, null, null, null, qh,
+					jxdm);
+			imgs.put("16", photo);
+		}
+		// 居住证正面
+		blob = getBytesValue("PHOTO_JZZZM", imgJson);
+		if (blob != null) {
+			DrivingPhoto photo = new DrivingPhoto(null, sfz, null, blob, "17", sqrq, null, null, null, null, null, qh,
+					jxdm);
+			imgs.put("17", photo);
+		}
+		// 居住证反面
+		blob = getBytesValue("PHOTO_JZZFM", imgJson);
+		if (blob != null) {
+			DrivingPhoto photo = new DrivingPhoto(null, sfz, null, blob, "18", sqrq, null, null, null, null, null, qh,
+					jxdm);
+			imgs.put("18", photo);
+		}
+		// 代理人身份证正面
+		blob = getBytesValue("PHOTO_DLRSFZZM", imgJson);
+		if (blob != null) {
+			DrivingPhoto photo = new DrivingPhoto(null, sfz, null, blob, "19", sqrq, null, null, null, null, null, qh,
+					jxdm);
+			imgs.put("19", photo);
+		}
+		// 代理人身份证反面
+		blob = getBytesValue("PHOTO_DLRSFZFM", imgJson);
+		if (blob != null) {
+			DrivingPhoto photo = new DrivingPhoto(null, sfz, null, blob, "20", sqrq, null, null, null, null, null, qh,
+					jxdm);
+			imgs.put("20", photo);
+		}
+		// 免冠照片
+		blob = getBytesValue("PHOTO_MGZP", imgJson);
+		if (blob != null) {
+			DrivingPhoto photo = new DrivingPhoto(null, sfz, null, blob, "04", sqrq, null, null, null, null, null, qh,
+					jxdm);
+			imgs.put("04", photo);
+		}
+		// 申请表
+		blob = getBytesValue("PHOTO_SQB", imgJson);
+		if (blob != null) {
+			DrivingPhoto photo = new DrivingPhoto(null, sfz, null, blob, "01", sqrq, null, null, null, null, null, qh,
+					jxdm);
+			imgs.put("01", photo);
+		}
+		// 体检表
+		blob = getBytesValue("PHOTO_TJB", imgJson);
+		if (blob != null) {
+			DrivingPhoto photo = new DrivingPhoto(null, sfz, null, blob, "02", sqrq, null, null, null, null, null, qh,
+					jxdm);
+			imgs.put("02", photo);
+		}
+		return imgs;
+	}
+
 	public void transformationData(String data) throws Exception {
 		if (data == null) {
-			return ;
+			return;
 		}
-		ScanDataLog dataLog=new ScanDataLog();
+		ScanDataLog dataLog = new ScanDataLog();
 		try {
 			JSONObject jsonObject = JSONObject.fromObject(new String(data));
 			DrivingBase dribase = new DrivingBase();
@@ -287,6 +411,11 @@ public class DataScanJob {
 				apply.setTjyymc(examination.getTjyymc());
 
 			}
+			if (jsonObject.containsKey("SQ_PHOTOS")) {
+				JSONObject JsonData = jsonObject.getJSONObject("SQ_PHOTOS");
+				Map<String, DrivingPhoto> photos=getDrivingPhotos(JsonData);
+				imgs.putAll(photos);
+			}
 			if (jsonObject.containsKey("TJ_PHOTOS")) {
 				JSONArray imgsJson = jsonObject.getJSONArray("TJ_PHOTOS");
 				int count = imgsJson.size();
@@ -333,27 +462,27 @@ public class DataScanJob {
 			dataScanJobManager.saveAll(dribase, apply, examination, imgs);
 		} catch (Exception e) {
 			dataLog.setClzt(500);
-			dataLog.setCwxx(e.getCause().getClass()  +":"+e.getLocalizedMessage());
+			dataLog.setCwxx(e.getCause().getClass() + ":" + e.getLocalizedMessage());
 			throw new Exception(e.getMessage());
-		}finally{
-			String strData =  DataScanJobUtil.mapper.writeValueAsString(dataLog);
-			createStrFile(strData);
+		} finally {
+			String strData = DataScanJobUtil.mapper.writeValueAsString(dataLog);
+			createStrFile(strData, ".data");
 			scanDataLogManager.save(dataLog);
 		}
 	}
 
 	public void transformationTonGanData(String data) throws Exception {
 		if (data == null) {
-			return ;
+			return;
 		}
-		ScanDataLog dataLog=new ScanDataLog();
-		List<Object> datas=new ArrayList<Object>();
+		ScanDataLog dataLog = new ScanDataLog();
+		List<Object> datas = new ArrayList<Object>();
 		try {
 			JSONObject jsonObject = JSONObject.fromObject(new String(data));
 			if (jsonObject.containsKey("DRV_TEMP_MID")) {
 				JSONObject base = jsonObject.getJSONObject("DRV_TEMP_MID");
-				DrvTempMid mid=new DrvTempMid();
-				DrvTempMidId id=new DrvTempMidId();
+				DrvTempMid mid = new DrvTempMid();
+				DrvTempMidId id = new DrvTempMidId();
 				id.setJxdm(getStringValue("JXDM", base));
 				id.setQh(getStringValue("QH", base));
 				id.setSfzmhm(getStringValue("SFZMHM", base));
@@ -376,7 +505,7 @@ public class DataScanJob {
 				mid.setQbqg(getStringValue("QBQG", base));
 				mid.setQgjb(getStringValue("QGJB", base));
 				mid.setSfjyjb(getStringValue("SFJYJB", base));
-				mid.setSfngzzzl(getStringValue("SFNGZZZL", base));	
+				mid.setSfngzzzl(getStringValue("SFNGZZZL", base));
 				mid.setSfzmmc(getStringValue("SFZMMC", base));
 				mid.setSg(getIntegerValue("SG", base));
 				mid.setSjbj(getStringValue("SJBJ", base));
@@ -409,8 +538,8 @@ public class DataScanJob {
 				JSONArray imgsJson = jsonObject.getJSONArray("TJ_PHOTOS");
 				int count = imgsJson.size();
 				for (int i = 0; i < count; i++) {
-					JSONObject imgJson = imgsJson.getJSONObject(i);					
-					TjPhotos tj=new TjPhotos();
+					JSONObject imgJson = imgsJson.getJSONObject(i);
+					TjPhotos tj = new TjPhotos();
 					tj.setIdno(getStringValue("IDNO", imgJson));
 					tj.setPhotoSfz(getBytesValue("PHOTO_SFZ", imgJson));
 					tj.setPhotoXy(getBytesValue("PHOTO_XY", imgJson));
@@ -424,9 +553,9 @@ public class DataScanJob {
 				JSONArray JsonDatas = jsonObject.getJSONArray("ZW_ENROLL_TEMP");
 				int count = JsonDatas.size();
 				for (int i = 0; i < count; i++) {
-					JSONObject JsonData = JsonDatas.getJSONObject(i);					
-					ZwEnrollTemp zwEnrollTemp=new ZwEnrollTemp();
-					ZwEnrollTempId id=new ZwEnrollTempId();
+					JSONObject JsonData = JsonDatas.getJSONObject(i);
+					ZwEnrollTemp zwEnrollTemp = new ZwEnrollTemp();
+					ZwEnrollTempId id = new ZwEnrollTempId();
 					id.setAuthenInfo(getStringValue("AUTHEN_INFO", JsonData));
 					id.setUserId(getStringValue("USER_ID", JsonData));
 					zwEnrollTemp.setCreateTime(getStringValue("CREATE_TIME", JsonData));
@@ -438,7 +567,7 @@ public class DataScanJob {
 					zwEnrollTemp.setTemplate(getBytesValue("TEMPLATE", JsonData));
 					zwEnrollTemp.setTempSize(getIntegerValue("TEMP_SIZE", JsonData));
 					zwEnrollTemp.setTempType(getIntegerValue("TEMP_TYPE", JsonData));
-					zwEnrollTemp.setVersion(getIntegerValue("VERSION", JsonData));			
+					zwEnrollTemp.setVersion(getIntegerValue("VERSION", JsonData));
 					datas.add(zwEnrollTemp);
 				}
 			}
@@ -446,8 +575,8 @@ public class DataScanJob {
 				JSONArray JsonDatas = jsonObject.getJSONArray("ZW_USER_INFO");
 				int count = JsonDatas.size();
 				for (int i = 0; i < count; i++) {
-					JSONObject JsonData = JsonDatas.getJSONObject(i);					
-					ZwUserInfo zwUserInfo=new ZwUserInfo();
+					JSONObject JsonData = JsonDatas.getJSONObject(i);
+					ZwUserInfo zwUserInfo = new ZwUserInfo();
 					zwUserInfo.setCreateTime(getStringValue("CREATE_TIME", JsonData));
 					zwUserInfo.setId(getStringValue("USER_ID", JsonData));
 					zwUserInfo.setModifyTime(getStringValue("MODIFY_TIME", JsonData));
@@ -455,40 +584,37 @@ public class DataScanJob {
 				}
 			}
 			if (jsonObject.containsKey("SQ_PHOTOS")) {
-				JSONArray JsonDatas = jsonObject.getJSONArray("SQ_PHOTOS");
-				int count = JsonDatas.size();
-				for (int i = 0; i < count; i++) {
-					JSONObject JsonData = JsonDatas.getJSONObject(i);					
-					SqPhotos sqPhotos=new SqPhotos();
-					SqPhotosId id=new SqPhotosId();
-					id.setJxdm(getStringValue("JXDM", JsonData));
-					id.setQh(getStringValue("QH", JsonData));
-					id.setSfzmhm(getStringValue("SFZMHM", JsonData));
-					sqPhotos.setCzrq(getDateValue("CZRQ", JsonData));
-					sqPhotos.setId(id);
-					sqPhotos.setPhotoDlrqm(getBytesValue("PHOTO_DLRQM", JsonData));
-					sqPhotos.setPhotoDlrsfzfm(getBytesValue("PHOTO_DLRSFZFM", JsonData));
-					sqPhotos.setPhotoDlrsfzzm(getBytesValue("PHOTO_DLRSFZZM", JsonData));
-					sqPhotos.setPhotoJzzfm(getBytesValue("PHOTO_JZZFM", JsonData));
-					sqPhotos.setPhotoJzzzm(getBytesValue("PHOTO_JZZZM", JsonData));
-					sqPhotos.setPhotoMgzp(getBytesValue("PHOTO_MGZP", JsonData));
-					sqPhotos.setPhotoQrqm(getBytesValue("PHOTO_SQRQM", JsonData));
-					sqPhotos.setPhotoSfzfm(getBytesValue("PHOTO_SFZFM", JsonData));
-					sqPhotos.setPhotoSfzzm(getBytesValue("PHOTO_SFZZM", JsonData));
-					sqPhotos.setPhotoSqb(getBytesValue("PHOTO_SQB", JsonData));
-					sqPhotos.setPhotoTjb(getBytesValue("PHOTO_TJB", JsonData));
-					sqPhotos.setSjbj(getCharValue("BSL", JsonData));
-					sqPhotos.setSqrq(getDateValue("SQRQ", JsonData));
-					datas.add(sqPhotos);
-				}
+				JSONObject JsonData = jsonObject.getJSONObject("SQ_PHOTOS");
+				SqPhotos sqPhotos = new SqPhotos();
+				SqPhotosId id = new SqPhotosId();
+				id.setJxdm(getStringValue("JXDM", JsonData));
+				id.setQh(getStringValue("QH", JsonData));
+				id.setSfzmhm(getStringValue("SFZMHM", JsonData));
+				sqPhotos.setCzrq(getDateValue("CZRQ", JsonData));
+				sqPhotos.setId(id);
+				sqPhotos.setPhotoDlrqm(getBytesValue("PHOTO_DLRQM", JsonData));
+				sqPhotos.setPhotoDlrsfzfm(getBytesValue("PHOTO_DLRSFZFM", JsonData));
+				sqPhotos.setPhotoDlrsfzzm(getBytesValue("PHOTO_DLRSFZZM", JsonData));
+				sqPhotos.setPhotoJzzfm(getBytesValue("PHOTO_JZZFM", JsonData));
+				sqPhotos.setPhotoJzzzm(getBytesValue("PHOTO_JZZZM", JsonData));
+				sqPhotos.setPhotoMgzp(getBytesValue("PHOTO_MGZP", JsonData));
+				sqPhotos.setPhotoSqrqm(getBytesValue("PHOTO_SQRQM", JsonData));
+				sqPhotos.setPhotoSfzfm(getBytesValue("PHOTO_SFZFM", JsonData));
+				sqPhotos.setPhotoSfzzm(getBytesValue("PHOTO_SFZZM", JsonData));
+				sqPhotos.setPhotoSqb(getBytesValue("PHOTO_SQB", JsonData));
+				sqPhotos.setPhotoTjb(getBytesValue("PHOTO_TJB", JsonData));
+				sqPhotos.setSjbj(getCharValue("BSL", JsonData));
+				sqPhotos.setSqrq(getDateValue("SQRQ", JsonData));
+				datas.add(sqPhotos);
+
 			}
 			if (jsonObject.containsKey("ZW_INFO_DATA")) {
 				JSONArray imgsJson = jsonObject.getJSONArray("ZW_INFO_DATA");
 				int count = imgsJson.size();
 				for (int i = 0; i < count; i++) {
 					JSONObject imgJson = imgsJson.getJSONObject(i);
-					ZwInfoData zwInfoData=new ZwInfoData();
-					ZwInfoDataId id=new ZwInfoDataId();
+					ZwInfoData zwInfoData = new ZwInfoData();
+					ZwInfoDataId id = new ZwInfoDataId();
 					id.setId(getStringValue("USER_ID", imgJson));
 					id.setSubKey(getStringValue("SUB_KEY", imgJson));
 					zwInfoData.setId(id);
@@ -502,23 +628,24 @@ public class DataScanJob {
 					zwInfoData.setSecurity(getIntegerValue("SECURITY", imgJson));
 					datas.add(zwInfoData);
 				}
-			}	
-			for(Object val:datas){
+			}
+			for (Object val : datas) {
 				tonGanManager.addData(val);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			dataLog.setClzt(500);
-			dataLog.setCwxx("TonGan数据入库失败："+e.getCause().getClass()  +":"+e.getLocalizedMessage());
-			throw new Exception("TonGan数据入库失败："+e.getMessage());
-		}finally{
-			String strData =  DataScanJobUtil.mapper.writeValueAsString(dataLog);
-			createStrFile(strData);
+			dataLog.setCwxx("TonGan数据入库失败：" + e.getCause().getClass() + ":" + e.getLocalizedMessage());
+			throw new Exception("TonGan数据入库失败：" + e.getMessage());
+		} finally {
+			String strData = DataScanJobUtil.mapper.writeValueAsString(dataLog);
+			createStrFile(strData, ".data");
 			scanDataLogManager.save(dataLog);
 		}
 	}
+
 	private byte[] getBytesValue(String key, JSONObject obj) throws IOException {
-		if (obj.containsKey(key)) {
+		if (obj.containsKey(key) && !(obj.get(key) instanceof JSONNull)) {
 			return decoder.decodeBuffer(obj.getString(key));
 		}
 		return null;
@@ -544,12 +671,14 @@ public class DataScanJob {
 		}
 		return null;
 	}
+
 	private Integer getIntegerValue(String key, JSONObject obj) throws IOException {
 		if (obj.containsKey(key) && !(obj.get(key) instanceof JSONNull)) {
 			return obj.getInt(key);
 		}
 		return null;
 	}
+
 	private Date getDateValue(String key, JSONObject obj) throws IOException {
 		if (obj.containsKey(key) && obj.getString(key) != null) {
 			return new Date(obj.getLong(key));
@@ -557,11 +686,10 @@ public class DataScanJob {
 		return null;
 	}
 
-
-	private void createStrFile(String str) throws IOException {
+	private void createStrFile(String str, String hz) throws IOException {
 		FileOutputStream fos = null;
 		try {
-			String fileName = UUID.randomUUID() + ".data";
+			String fileName = UUID.randomUUID() + hz;
 			File txt = new File(outFile, fileName);
 			if (!txt.exists()) {
 				txt.createNewFile();

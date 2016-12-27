@@ -12,7 +12,9 @@ import com.xs.dzyxh.entity.driimg.DrivingPhoto;
 import com.xs.dzyxh.entity.driver.DrivingApply;
 import com.xs.dzyxh.entity.driver.DrivingBase;
 import com.xs.dzyxh.entity.driver.DrivingExamination;
+import com.xs.dzyxh.entity.tongan.SqPhotos;
 import com.xs.dzyxh.manager.job.IDataScanJobManager;
+import com.xs.dzyxh.manager.tongan.ITonGanManager;
 import com.xs.dzyxh.manager.window.IDrivingApplyManager;
 import com.xs.dzyxh.manager.window.IDrivingExaminationManager;
 @Service("dataScanJobManagerImpl")
@@ -28,6 +30,26 @@ public class DataScanJobManagerImpl implements IDataScanJobManager {
 	@Resource(name = "driimgHibernateTemplate")
 	private HibernateTemplate driimgHibernateTemplate;
 	
+	@Resource(name = "tonganHibernateTemplate")
+	private HibernateTemplate tonganHibernateTemplate;
+	
+	public void saveImg(SqPhotos sqPhotos, Map<String, DrivingPhoto> photos)throws Exception {
+		if(sqPhotos!=null){
+			DrivingBase base=driverHibernateTemplate.get(DrivingBase.class, sqPhotos.getId().getSfzmhm());
+			if(base==null){
+				base =new DrivingBase();
+				base.setSfzmhm(sqPhotos.getId().getSfzmhm());
+				base.setQh(sqPhotos.getId().getQh());
+				base.setJxdm(sqPhotos.getId().getJxdm());
+				driverHibernateTemplate.save(base);
+			}
+			tonganHibernateTemplate.saveOrUpdate(sqPhotos);
+		}
+		for(DrivingPhoto photo:photos.values()){
+			driimgHibernateTemplate.saveOrUpdate(photo);
+		}
+	}
+	
 	@Override
 	public void saveAll(DrivingBase base, DrivingApply apply, DrivingExamination examination,
 			Map<String, DrivingPhoto> imgs) throws Exception {
@@ -39,7 +61,7 @@ public class DataScanJobManagerImpl implements IDataScanJobManager {
 		}
 		apply.setSqrqzzp(getPhotoId(imgs,"05"));//申请人签字,照片表外键
 		apply.setDlrqzzp(getPhotoId(imgs,"06"));// 代理人签字,照片表外键
-		apply.setSfzzpId(getPhotoId(imgs,"03"));//身份证照片ID
+		apply.setSfzzpId(getPhotoId(imgs,"04"));//身份证照片ID
 		apply.setZw1zpId(getPhotoId(imgs,"07"));//指纹1照片ID
 		apply.setZw2zpId(getPhotoId(imgs,"08"));//指纹2照片ID
 		apply.setJbrqzzpId(getPhotoId(imgs,"09"));//经办人照片ID

@@ -21,7 +21,7 @@ public class SqPhotos {
 	private SqPhotosId id;
 	private Date sqrq;
 	private byte[] photoMgzp;
-	private byte[] photoQrqm;
+	private byte[] photoSqrqm;
 	private byte[] photoDlrqm;
 	private byte[] photoSfzzm;
 	private byte[] photoSfzfm;
@@ -73,12 +73,13 @@ public class SqPhotos {
 	@Lob
 	@Basic(fetch = FetchType.LAZY)
 	@Column(name = "PHOTO_SQRQM", columnDefinition = "BLOB")
-	public byte[] getPhotoQrqm() {
-		return photoQrqm;
+	public byte[] getPhotoSqrqm() {
+		return photoSqrqm;
 	}
-	public void setPhotoQrqm(byte[] photoQrqm) {
-		this.photoQrqm = photoQrqm;
+	public void setPhotoSqrqm(byte[] photoSqrqm) {
+		this.photoSqrqm = photoSqrqm;
 	}
+
 	
 
 	@Lob
@@ -87,6 +88,7 @@ public class SqPhotos {
 	public byte[] getPhotoDlrqm() {
 		return photoDlrqm;
 	}
+	
 	public void setPhotoDlrqm(byte[] photoDlrqm) {
 		this.photoDlrqm = photoDlrqm;
 	}

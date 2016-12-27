@@ -123,6 +123,7 @@
 			<tx:method name="remove*" propagation="REQUIRED" />
 			<tx:method name="save*" propagation="REQUIRED" />
 			<tx:method name="saveAll" propagation="REQUIRED" />
+			<tx:method name="saveImg" propagation="REQUIRED" />
 			<tx:method name="update*" propagation="REQUIRED" />
 			<tx:method name="delete*" propagation="REQUIRED" />
 			<tx:method name="reset*" propagation="REQUIRED" />
@@ -185,6 +186,7 @@
 			<tx:method name="remove*" propagation="REQUIRED" />
 			<tx:method name="save*" propagation="REQUIRED" />
 			<tx:method name="saveAll" propagation="REQUIRED" />
+			<tx:method name="saveImg" propagation="REQUIRED" />
 			<tx:method name="update*" propagation="REQUIRED" />
 			<tx:method name="delete*" propagation="REQUIRED" />
 			<tx:method name="reset*" propagation="REQUIRED" />
@@ -246,6 +248,8 @@
 			<tx:method name="add*" propagation="REQUIRED" />
 			<tx:method name="remove*" propagation="REQUIRED" />
 			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="saveAll" propagation="REQUIRED" />
+			<tx:method name="saveImg" propagation="REQUIRED" />
 			<tx:method name="*" read-only="true" />
 		</tx:attributes>
 	</tx:advice>
@@ -260,7 +264,7 @@
 
 
 
-	<bean id="messageSource"
+	<bean id="messageSource" 
 		class="org.springframework.context.support.ResourceBundleMessageSource">
 		<!-- 国际化信息所在的文件名 -->
 		<property name="basename" value="messages" />

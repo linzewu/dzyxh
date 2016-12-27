@@ -2,7 +2,7 @@ package com.xs.dzyxh.entity.tongan;
 
 import javax.persistence.Column;
 
-public class DrvTempMidId {
+public class DrvTempMidId  implements java.io.Serializable{
 	private String sfzmhm;
 	private String qh;
 	private String jxdm;

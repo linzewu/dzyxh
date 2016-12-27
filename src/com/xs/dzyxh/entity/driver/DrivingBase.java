@@ -94,7 +94,7 @@ public class DrivingBase implements java.io.Serializable {
 		this.sfzmhm = sfzmhm;
 	}
 
-	@Column(name = "SFZMMC", nullable = false, length = 1)
+	@Column(name = "SFZMMC",  length = 1)
 	public char getSfzmmc() {
 		return this.sfzmmc;
 	}
