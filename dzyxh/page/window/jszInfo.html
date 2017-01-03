@@ -130,7 +130,7 @@
 		//图片信息
 		var tab = $('<div class="products"><ul></ul></div>');
 		var tabs = $("#businessInfo");
-		var options = "<div data-options=\"title:'电子图片'\"><div class='products' id='tjbTab'></div></div>";
+		var options = "<div data-options=\"title:'档案图片'\"><div class='products' id='tjbTab'></div></div>";
 		tabs.append(options);
 		/* 	tab
 		.append("<li><a href=\"#\" class=\"item\"> <img src=\"exa/getExaPic?"
@@ -149,7 +149,7 @@
 									var tab = $('<div class="products" align="center">没有找到相关图片数据</div>');
 									table
 											.append($(
-													'<fieldset class="base_fl"><legend>电子图片</legend></fieldset>')
+													'<fieldset class="base_fl"><legend>档案照片</legend></fieldset>')
 													.append(tab));
 								} else {
 									//图片信息
@@ -173,7 +173,7 @@
 													});
 									table
 											.append($(
-													'<fieldset class="base_fl"><legend>体检图片</legend></fieldset>')
+													'<fieldset class="base_fl"><legend>所有照片</legend></fieldset>')
 													.append(tab));
 									//绑定图片单击事件
 									$(".products img")
@@ -363,26 +363,37 @@
 				if (status == "success") {
 					$("#sfzmhm").text(
 							comm.getParamNameByValue("sfzmhm", data.sfzmhm));
-					$("#sfzmmc").text(data.sfzmmc);
-					$("#xm").text(data.xm);
+					//$("#sfzmmc").text(data.sfzmmc);
+					setData("#sfzmmc",data.sfzmmc);
+					//$("#xm").text(data.xm);
+					setData("#xm",data.xm);
 					$("#xb").text(comm.getParamNameByValue("xb", data.xb));
-					$("#csrq").text(data.csrq);
+					setData("#csrq",data.csrq);
+					//$("#csrq").text(data.csrq);
 					$("#gj").text(comm.getParamNameByValue("gj", data.gj));
-					$("#djzsxzqh").text(data.djzsxzqh);
-					$("#djzsxxdz").text(data.djzsxxdz);
-					$("#lxzsxzqh").text(data.lxzsxzqh);
-					$("#lxzsxxdz").text(data.lxzsxxdz);
-					$("#lxzsyzbm").text(data.lxzsyzbm);
-					$("#lxdh").text(data.lxdh);
-					$("#zzzm").text(data.zzzm);
-					if(data.gxsj!=null){
-						$("#gxsj").text(data.gxsj);
-					}
+					//$("#djzsxzqh").text(data.djzsxzqh);
+					setData("#djzsxzqh",data.djzsxzqh);
+					//$("#djzsxxdz").text(data.djzsxxdz);
+					setData("#djzsxxdz",data.djzsxxdz);
+					//$("#lxzsxzqh").text(data.lxzsxzqh);
+					setData("#lxzsxzqh",data.lxzsxzqh);
+					//$("#lxzsxxdz").text(data.lxzsxxdz);
+					setData("#lxzsxxdz",data.lxzsxxdz);
+					//$("#lxzsyzbm").text(data.lxzsyzbm);
+					setData("#lxzsyzbm",data.lxzsyzbm);
+					//$("#lxdh").text(data.lxdh);
+					setData("#lxdh",data.lxdh);
+					//$("#zzzm").text(data.zzzm);
+					setData("#zzzm",data.zzzm);
+					setData("#gxsj",data.gxsj);
 				
 					$("#sfbd").text(comm.getParamNameByValue("sfbd", data.sfbd));
-					$("#sjhm").text(data.sjhm);
-					$("#dzyx").text(data.dzyx);
-					$("#qh").text(data.qh);
+					//$("#sjhm").text(data.sjhm);
+					setData("#sjhm",data.sjhm);
+					//$("#dzyx").text(data.dzyx);
+					setData("#dzyx",data.dzyx);
+					//$("#qh").text(data.qh);
+					setData("#qh",data.qh);
 					$("#jxdm")
 							.text(comm.getParamNameByValue("jxdm", data.jxdm));
 					//重构标签页
@@ -408,6 +419,11 @@
 			}
 		})
 		return o;
+	}
+	function setData(obj,value){
+		if (value!=null) {
+			$(obj).text(value);
+		}
 	}
 	init();
 	//openMask();

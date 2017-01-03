@@ -288,7 +288,7 @@ $(function($){
             				temp=$.parseJSON(data);
                          }
             		}catch (e) {
-            			console.log("返回非JSON对象");
+            			//console.log("返回非JSON对象");
         			}
             	}else if(typeof(data) == "object"&&!$.isArray(data)){
             		temp=data;
@@ -298,7 +298,7 @@ $(function($){
                     return;
                 }
                 fn.success(data, textStatus);
-            }  
+            }
         });  
         return _ajax(_opt);  
     };  
@@ -310,7 +310,8 @@ $(document).ajaxStart(function(){
 		msg:"数据请求中。。。"
 	}); 
 });
-
+/**/
 $(document).ajaxComplete(function(){
 	$.messager.progress('close');
+
 });

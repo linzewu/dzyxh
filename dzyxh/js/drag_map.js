@@ -1,7 +1,6 @@
 drag = 0
 move = 0
 
-
 var ie = document.all;
 var nn6 = document.getElementById && !document.all;
 var isdrag = false;
@@ -103,20 +102,25 @@ function onWheelZoom(obj) { // ��������
 function dowImg() {
 	window.open($(".bigImg").attr("src"));
 }
-function pringImg(){
-	$("#printImg").attr("href","apply/printImg?url="+$(".bigImg").attr("src"));
+function pringImg() {
+	$("#printImg").attr("href",
+			"apply/printImg?url=" + $(".bigImg").attr("src"));
 	$("#printImg").click();
 }
-function onClickPic(src){
-	$(".bigImg").attr("src",src)
-	.load(
-			function() {
-				imgWidth = this.width;
-				imgHeight = this.height;
-				imgLeft = block1.style.left;
-				imgTop = block1.style.top;
-				//图片加载完成后预览
-				openMask();
+function onClickPic(src) {
+	$(".bigImg").attr("src", src).load(function() {
+		var win=$(window).width()/1.8;
+		imgWidth = this.width;
+		//限制图片初始大小不超过浏览器宽度/1.8
+		if(imgWidth>win){
+			imgWidth=win;
+			this.width=win;
+		}
+		imgHeight = this.height;
+		imgLeft = block1.style.left;
+		imgTop = block1.style.top;
+		// 图片加载完成后预览
+		openMask();
 	});
 }
 function closeMask() {
@@ -127,9 +131,9 @@ function closeMask() {
 	oImg.style.display = 'none';
 	layer1.style.display = 'none';
 	realsize();
-	
+
 }
-//图片预览
+// 图片预览
 function openMask() {
 	var oMask = document.getElementById('mask');
 	var oImg = document.getElementById('img');
@@ -139,28 +143,45 @@ function openMask() {
 	layer1.style.display = 'block';
 	oMask.style.width = document.documentElement.clientWidth + 'px';
 	oMask.style.height = document.documentElement.clientHeight + 'px';
-	//图片居中
+	// 图片居中
 	oImg.style.left = (document.documentElement.clientWidth - imgWidth) / 2
 			+ 'px';
-	oImg.style.top = (document.documentElement.clientHeight - imgHeight)
-			/ 2 + 'px';
+	oImg.style.top = (document.documentElement.clientHeight - imgHeight) / 2
+			+ 'px';
 }
 /**
  * 重置图片位置大小
+ * 
  * @returns
  */
 function realsize() {
-/*	images1.height = imgHeight;
-	images1.width = imgWidth;*/
+	/*
+	 * images1.height = imgHeight; images1.width = imgWidth;
+	 */
 	images1.style.zoom = 1;
 	block1.style.left = imgLeft;
 	block1.style.top = imgTop;
 
 }
-(function ($) {
-	$(document).ready(function () {
+//图片90°左旋转
+var jd = 0;
+function leftRotate() {
+	jd -= 90;
+	$(".bigImg").rotate({
+		animateTo : jd
+	})
+}
+//图片90°右旋转
+function rightRotate() {
+	jd += 90;
+	$(".bigImg").rotate({
+		animateTo : jd
+	})
+}
+(function($) {
+	$(document).ready(function() {
 		/** Coding Here */
-	}).keydown(function (e) {
+	}).keydown(function(e) {
 		if (e.which === 27) {
 			closeMask();
 		}

@@ -31,6 +31,7 @@
 <script type="text/javascript" src="js/jquery.printPage.js"></script>
 <!-- <script type="text/javascript" src="/dzyxh/role/menu.js"></script> -->
 <script type="text/javascript" src="js/createMenus.js"></script>
+<script type="text/javascript" src="js/jquery.rotate.min.js"></script>
 <title>电子档案影像化管理系统</title>
 <style type="text/css">
 #mask {
@@ -60,7 +61,7 @@
 	z-index: 999890;
 	position: absolute;
 	top: 150px;
-	right: 30px;
+	right: 50px;
 	display: none;
 }
 </style>
@@ -96,14 +97,14 @@
 		<div style="background-color: #e8e4e0;height: 100%">
 		</div>
 	</div>
-<div id="mask"></div>
+<div id="mask" ondblclick="closeMask();"></div>
 <div id="Layer1">
 	<table cellspacing="2" cellpadding="0" border="0">
 		<tbody>
 			<tr>
 				<td colspan="3" align="center"><input type="button" value="关闭"
 					onclick="closeMask();"
-					style="width: 50px; height: 20px; cursor: pointer;"></td>
+					style="width: 60px; height: 20px; cursor: pointer;"></td>
 			</tr>
 			<tr>
 				<td colspan="3">&nbsp;</td>
@@ -111,7 +112,7 @@
 			<tr>
 				<td colspan="3" align="center"><input type="button" value="打印"
 					onclick="pringImg();"
-					style="width: 50px; height: 20px; cursor: pointer;"></td>
+					style="width: 60px; height: 20px; cursor: pointer;"></td>
 			</tr>
 			<tr>
 				<td colspan="3">&nbsp;</td>
@@ -119,7 +120,31 @@
 			<tr>
 				<td colspan="3" align="center"><input type="button" value="下载"
 					onclick="dowImg();"
-					style="width: 50px; height: 20px; cursor: pointer;"></td>
+					style="width: 60px; height: 20px; cursor: pointer;"></td>
+			</tr>
+			<tr>
+				<td colspan="3">&nbsp;</td>
+			</tr>
+			<tr>
+				<td colspan="3"  align="center">
+				<input type="button" value="左旋转"
+					onclick="leftRotate();"
+					style="width: 60px; height: 20px; cursor: pointer;">
+	
+			</td>
+			</tr>
+			<tr>
+				<td colspan="3">&nbsp;</td>
+			</tr>
+			<tr>
+				<td colspan="3"  align="center">
+				<input type="button" value="右旋转"
+					onclick="rightRotate();"
+					style="width: 60px; height: 20px; cursor: pointer;">
+				
+				<!-- <img title="向上" style="cursor: pointer;"
+					onClick="rightRotate();" height="30" src="images/right90.png"
+					width="30"> --></td>
 			</tr>
 			<tr>
 				<td colspan="3">&nbsp;</td>
@@ -172,7 +197,7 @@
 	<div class="dragAble" id="block1" onMouseOver="dragObj=block1; drag=1;"
 		style="z-index: 10; left: 10px; width: 0px; position: absolute; top: 150px; height: 0px"
 		onMouseOut="" drag="0">
-		<img onmousewheel="return onWheelZoom(this)" style="zoom: 1" src="g"
+		<img onmousewheel="return onWheelZoom(this)" style="zoom: 1" src=""
 			border="0" name="images1" class="bigImg">
 	</div>
 	<a href="" id="printImg"></a>
