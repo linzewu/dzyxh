@@ -9,6 +9,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -227,7 +229,12 @@ public class DataScanJob {
 		String sfz = getStringValue("SFZMHM", imgJson);
 		String qh = getStringValue("QH", imgJson);
 		String jxdm = getStringValue("JXDM", imgJson);
-		Date sqrq = getDateValue("SQRQ", imgJson);
+		String sqrq = getStringValue("SQRQ", imgJson);
+		
+		String xm=getStringValue("XM",imgJson);
+		String ywlx=getStringValue("YWLX",imgJson);
+		String zkcx=getStringValue("ZKCX",imgJson);
+		
 		SqPhotosId id = new SqPhotosId();
 		id.setJxdm(jxdm);
 		id.setQh(qh);
@@ -244,16 +251,27 @@ public class DataScanJob {
 		data.setPhotoSfzzm(getBytesValue("PHOTO_SFZZM", imgJson));
 		data.setPhotoSqb(getBytesValue("PHOTO_SQB", imgJson));
 		data.setPhotoTjb(getBytesValue("PHOTO_TJB", imgJson));
+		data.setXm(xm);
+		data.setZkcx(zkcx);
+		data.setYwlx(ywlx);
 		data.setSqrq(sqrq);
 		return data;
 	}
 
-	private Map<String, DrivingPhoto> getDrivingPhotos(JSONObject imgJson) throws IOException {
+	private Map<String, DrivingPhoto> getDrivingPhotos(JSONObject imgJson) throws IOException, ParseException {
 		Map<String, DrivingPhoto> imgs = new HashMap<String, DrivingPhoto>();
 		String sfz = getStringValue("SFZMHM", imgJson);
 		String qh = getStringValue("QH", imgJson);
 		String jxdm = getStringValue("JXDM", imgJson);
-		Date sqrq = getDateValue("SQRQ", imgJson);
+		
+		String rq = getStringValue("SQRQ", imgJson);
+		Date sqrq =null;
+		if(rq!=null){
+			SimpleDateFormat sd=new SimpleDateFormat("yyyy/MM/dd");
+			 sqrq = sd.parse(rq);
+		}
+		
+		
 		// 申请人签名
 		byte[] blob = getBytesValue("PHOTO_SQRQM", imgJson);
 		if (blob != null) {
@@ -597,7 +615,7 @@ public class DataScanJob {
 				id.setJxdm(getStringValue("JXDM", JsonData));
 				id.setQh(getStringValue("QH", JsonData));
 				id.setSfzmhm(getStringValue("SFZMHM", JsonData));
-				sqPhotos.setCzrq(getDateValue("CZRQ", JsonData));
+				sqPhotos.setCzrq(getStringValue("CZRQ", JsonData));
 				sqPhotos.setId(id);
 				sqPhotos.setPhotoDlrqm(getBytesValue("PHOTO_DLRQM", JsonData));
 				sqPhotos.setPhotoDlrsfzfm(getBytesValue("PHOTO_DLRSFZFM", JsonData));
@@ -611,7 +629,7 @@ public class DataScanJob {
 				sqPhotos.setPhotoSqb(getBytesValue("PHOTO_SQB", JsonData));
 				sqPhotos.setPhotoTjb(getBytesValue("PHOTO_TJB", JsonData));
 				sqPhotos.setSjbj(getCharValue("BSL", JsonData));
-				sqPhotos.setSqrq(getDateValue("SQRQ", JsonData));
+				sqPhotos.setSqrq(getStringValue("SQRQ", JsonData));
 				datas.add(sqPhotos);
 			}
 

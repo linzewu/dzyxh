@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Table(name = "SQ_PHOTOS")
 public class SqPhotos {
 	private SqPhotosId id;
-	private Date sqrq;
+	private String sqrq;
 	private byte[] photoMgzp;
 	private byte[] photoSqrqm;
 	private byte[] photoDlrqm;
@@ -32,7 +32,13 @@ public class SqPhotos {
 	private byte[] photoTjb;
 	private byte[] photoSqb;
 	private Character sjbj;
-	private Date czrq;
+	private String czrq;
+	
+	private String ywlx;
+	
+	private String zkcx;
+	
+	private String xm;
 	
 	@EmbeddedId
 	@AttributeOverrides({
@@ -47,14 +53,11 @@ public class SqPhotos {
 		this.id = id;
 	}
 	
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	@DateTimeFormat( pattern = "yyyy-MM-dd HH:mm:ss" )
-	@Temporal(TemporalType.DATE)
-	@Column(name = "SQRQ", length = 7)
-	public Date getSqrq() {
+	@Column(name = "SQRQ")
+	public String getSqrq() {
 		return sqrq;
 	}
-	public void setSqrq(Date sqrq) {
+	public void setSqrq(String sqrq) {
 		this.sqrq = sqrq;
 	}
 	
@@ -189,15 +192,37 @@ public class SqPhotos {
 		this.sjbj = sjbj;
 	}
 	
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	@DateTimeFormat( pattern = "yyyy-MM-dd HH:mm:ss" )
-	@Temporal(TemporalType.DATE)
+	
 	@Column(name = "CZRQ", length = 7)
-	public Date getCzrq() {
+	public String getCzrq() {
 		return czrq;
 	}
-	public void setCzrq(Date czrq) {
+	public void setCzrq(String czrq) {
 		this.czrq = czrq;
 	}
+	
+	@Column(length=2)
+	public String getYwlx() {
+		return ywlx;
+	}
+	@Column(length=10)
+	public String getZkcx() {
+		return zkcx;
+	}
+	@Column(length=20)
+	public String getXm() {
+		return xm;
+	}
+	public void setYwlx(String ywlx) {
+		this.ywlx = ywlx;
+	}
+	public void setZkcx(String zkcx) {
+		this.zkcx = zkcx;
+	}
+	public void setXm(String xm) {
+		this.xm = xm;
+	}
+	
+	
 	
 }
