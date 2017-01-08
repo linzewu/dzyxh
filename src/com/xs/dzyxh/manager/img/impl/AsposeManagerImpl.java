@@ -115,6 +115,7 @@ public class AsposeManagerImpl implements IAsposeManager {
 							com.aspose.words.ImageData i = shape.getImageData();// 获得图片数据
 							if (shape.getAlternativeText().equals(image.getName())) {// 如果shape类型是ole类型
 								i.setImage((InputStream)image.getValue());
+								break;
 							}
 
 						}

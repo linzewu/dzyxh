@@ -14,8 +14,6 @@ public class ZwUserInfo {
 	private String modifyTime;
 	private String createTime;
 	@Id
-	@GenericGenerator(name = "assigned", strategy = "assigned")
-	@GeneratedValue(generator = "assigned")
 	@Column(name="USER_ID")
 	public String getId() {
 		return id;

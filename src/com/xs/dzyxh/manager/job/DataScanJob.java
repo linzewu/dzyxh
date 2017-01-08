@@ -407,6 +407,7 @@ public class DataScanJob {
 				examination.setTlsfjz(getCharValue("TLSFJZ", base));
 				examination.setSfzmhm(dribase.getSfzmhm());
 				examination.setTjyymc(getStringValue("TJYYMC", base));
+				examination.setSqfs(getStringValue("SQFS", base));
 				examination.setXm(dribase.getXm());
 				examination.setXb(dribase.getXb());
 				examination.setGj(dribase.getGj());
@@ -483,8 +484,9 @@ public class DataScanJob {
 			dataLog.setCjsj(new Date(System.currentTimeMillis()));
 			dataScanJobManager.saveAll(dribase, apply, examination, imgs,tonGanDatas);
 		} catch (Exception e) {
+			e.printStackTrace();
 			dataLog.setClzt(500);
-			dataLog.setCwxx(e.getCause().getClass() + ":" + e.getLocalizedMessage());
+			dataLog.setCwxx( ".data数据入库失败:" + e.getLocalizedMessage());
 			throw new Exception(e.getMessage());
 		} finally {
 			String strData = DataScanJobUtil.mapper.writeValueAsString(dataLog);

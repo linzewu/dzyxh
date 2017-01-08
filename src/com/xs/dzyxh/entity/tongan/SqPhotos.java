@@ -1,7 +1,5 @@
 package com.xs.dzyxh.entity.tongan;
 
-import java.util.Date;
-
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Basic;
@@ -11,10 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import org.springframework.format.annotation.DateTimeFormat;
-import com.fasterxml.jackson.annotation.JsonFormat;
 @Entity
 @Table(name = "SQ_PHOTOS")
 public class SqPhotos {
@@ -193,7 +187,7 @@ public class SqPhotos {
 	}
 	
 	
-	@Column(name = "CZRQ", length = 7)
+	@Column(name = "CZRQ", length = 12)
 	public String getCzrq() {
 		return czrq;
 	}

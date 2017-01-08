@@ -88,11 +88,11 @@ public class DrivingApplyUitl {
 				if ("04".equals(zl)) {
 					img = new ImageData("txtp", new ByteArrayInputStream(p.getZp()), 152, 196,0);
 				} else if ("10".equals(zl)) {
-					img = new ImageData("sqrqz", new ByteArrayInputStream(p.getZp()), 110, 26,0);
+					img = new ImageData("tjsqrqz", new ByteArrayInputStream(p.getZp()), 110, 26,1);
 				} else if ("11".equals(zl)) {
-					img = new ImageData("tjqsqz", new ByteArrayInputStream(p.getZp()), 110, 26,0);
+					img = new ImageData("tjysqz", new ByteArrayInputStream(p.getZp()), 110, 26,1);
 				} else if ("12".equals(zl)) {
-					img = new ImageData("dlrqz", new ByteArrayInputStream(p.getZp()), 110, 26,0);
+					img = new ImageData("tjdlrqz", new ByteArrayInputStream(p.getZp()), 110, 26,1);
 				} else if ("13".equals(zl)) {
 					img = new ImageData("yyyz", new ByteArrayInputStream(p.getZp()), 120, 120,0);
 				} else{

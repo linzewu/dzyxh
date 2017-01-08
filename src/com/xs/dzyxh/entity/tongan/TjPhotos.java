@@ -28,8 +28,6 @@ public class TjPhotos {
 	private Date tjrq;
 	
 	@Id
-	@GenericGenerator(name = "assigned", strategy = "assigned")
-	@GeneratedValue(generator = "assigned")
 	@Column(name="IDNO")
 	public String getIdno() {
 		return idno;
