@@ -107,19 +107,10 @@ public class DataScanJob {
 	}
 
 	public static void main(String[] arg) throws Exception {
-		DataScanJob d = new DataScanJob();
-		d.init();
-
-		String[] filelist = d.outFile.list();
-		for (int i = 0; i < filelist.length; i++) {
-			if (filelist[i].lastIndexOf(".data") > 0) {
-				// System.out.println(filelist[i]);
-				// byte[] data = getBytes(new File(d.outPath + "\\" +
-				// filelist[i]));
-				// Character c=Character.valueOf(Integer.valueOf("1"));
-				d.transformationData(readFile(new File(d.outPath + "\\" + filelist[i])));
-			}
-		}
+		
+		String[] temp="fdsfasd.img".split("\\.");
+		
+		System.out.println(temp[temp.length-1]);
 
 	}
 
@@ -153,7 +144,10 @@ public class DataScanJob {
 	public void readData() {
 		String[] filelist = inFile.list();
 		for (int i = 0; i < filelist.length; i++) {
-			if (filelist[i].lastIndexOf(".data") > 0) {
+			
+			String[] temp=filelist[i].split("\\.");
+			
+			if (temp[temp.length-1].equals("data")) {
 				File file = new File(inPath + "\\" + filelist[i]);
 				// byte[] data = getBytes(file);
 
@@ -173,12 +167,16 @@ public class DataScanJob {
 			}
 		}
 	}
+	
+		
 
 	@Scheduled(fixedDelay = 1000)
 	public void readImgData() {
 		String[] filelist = inFile.list();
 		for (int i = 0; i < filelist.length; i++) {
-			if (filelist[i].lastIndexOf(".img") > 0) {
+			String[] temp=filelist[i].split("\\.");
+			
+			if (temp[temp.length-1].equals("img")) {
 				File file = new File(inPath + "\\" + filelist[i]);
 				// byte[] data = getBytes(file);
 
