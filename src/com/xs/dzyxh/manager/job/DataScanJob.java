@@ -484,7 +484,6 @@ public class DataScanJob {
 			dataLog.setCjsj(new Date(System.currentTimeMillis()));
 			dataScanJobManager.saveAll(dribase, apply, examination, imgs,tonGanDatas);
 		} catch (Exception e) {
-			e.printStackTrace();
 			dataLog.setClzt(500);
 			dataLog.setCwxx( ".data数据入库失败:" + e.getLocalizedMessage());
 			throw new Exception(e.getMessage());
