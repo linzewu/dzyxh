@@ -1,5 +1,6 @@
 package com.xs.dzyxh.manager.window.impl;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,11 +22,11 @@ import com.xs.common.Common;
 import com.xs.dzyxh.entity.aspose.ImageData;
 import com.xs.dzyxh.entity.driimg.DrivingPhoto;
 import com.xs.dzyxh.entity.driver.DrivingApply;
-import com.xs.dzyxh.entity.driver.DrivingBase;
 import com.xs.dzyxh.entity.driver.DrivingExamination;
 import com.xs.dzyxh.manager.driverimg.IDrivingPhotoManager;
 import com.xs.dzyxh.manager.img.IAsposeManager;
 import com.xs.dzyxh.manager.img.IBarCodeManager;
+import com.xs.dzyxh.manager.tongan.ITonGanManager;
 import com.xs.dzyxh.manager.window.IBaseManager;
 import com.xs.dzyxh.manager.window.IDrivingExaminationManager;
 
@@ -42,6 +43,9 @@ public class DrivingExaminationManagerImpl implements IDrivingExaminationManager
 
 	@Resource(name = "asposeManager")
 	private IAsposeManager asposeManager;
+	
+	@Resource(name = "tonGanManager")
+	private ITonGanManager tonGanManager;
 
 	public byte[] getExaminationImgToByte( DrivingExamination examinat) throws Exception {
 		if (examinat != null) {
@@ -62,10 +66,18 @@ public class DrivingExaminationManagerImpl implements IDrivingExaminationManager
 			//DrivingPhoto driving = new DrivingPhoto();
 			//List<DrivingPhoto> photos = drivingPhotoManager.getDrivingPhotos(driving, null, null);
 			List<ImageData> imgs = DrivingApplyUitl.convertTjbImgData(photos);
+			if(examinat.getTjyymc()!=null){
+				String [] tjyymc= examinat.getTjyymc().split("-");
+				if(tjyymc.length>1){
+					byte [] dwyztp=tonGanManager.getTjUser(tjyymc[1],tjyymc[0]).getDwyztp();
+					if(dwyztp!=null){
+						imgs.add(new ImageData("yyyz",new ByteArrayInputStream(dwyztp), 120, 120,1));
+					}			
+			}
 			if (examinat.getLsh() != null) {
 				try {
 					imgs.add(new ImageData("ewm", barCodeManager.createBarCode(examinat.getLsh()), 135, 40,
-							HorizontalAlignment.RIGHT));
+							0,HorizontalAlignment.RIGHT));
 				} catch (Exception e) {
 					// 条形码生成错误，跳过
 					// e.printStackTrace();
@@ -76,6 +88,7 @@ public class DrivingExaminationManagerImpl implements IDrivingExaminationManager
 					DrivingApplyUitl.class.getClassLoader().getResourceAsStream("\\2016最新机动车驾驶人身体条件证明.docx"),
 					new ByteArrayOutputStream(), datas, imgs);
 			return out.toByteArray();
+		}
 		}
 		return null;
 	}

@@ -57,7 +57,7 @@ public class DrivingApplyUitl {
 				String zl = p.getZpzl();
 				ImageData img = null;
 				if ("04".equals(zl)) {
-					img = new ImageData("txtp", new ByteArrayInputStream(p.getZp()), 152, 196,0);
+					img = new ImageData("txtp", new ByteArrayInputStream(p.getZp()), 152, 196,1);
 				} else if ("05".equals(zl)) {
 					img = new ImageData("sqrqz", new ByteArrayInputStream(p.getZp()), 110, 26,0);
 				} else if ("06".equals(zl)) {
@@ -86,7 +86,7 @@ public class DrivingApplyUitl {
 				String zl = p.getZpzl();
 				ImageData img = null;
 				if ("04".equals(zl)) {
-					img = new ImageData("txtp", new ByteArrayInputStream(p.getZp()), 152, 196,0);
+					img = new ImageData("txtp", new ByteArrayInputStream(p.getZp()), 152, 196,1);
 				} else if ("10".equals(zl)) {
 					img = new ImageData("tjsqrqz", new ByteArrayInputStream(p.getZp()), 110, 26,1);
 				} else if ("11".equals(zl)) {
@@ -94,7 +94,7 @@ public class DrivingApplyUitl {
 				} else if ("12".equals(zl)) {
 					img = new ImageData("tjdlrqz", new ByteArrayInputStream(p.getZp()), 110, 26,1);
 				} else if ("13".equals(zl)) {
-					img = new ImageData("yyyz", new ByteArrayInputStream(p.getZp()), 120, 120,0);
+					img = new ImageData("yyyz", new ByteArrayInputStream(p.getZp()), 120, 120,1);
 				} else{
 					continue;
 				}

@@ -342,16 +342,16 @@ public class DataScanJob {
 		// 申请表
 		blob = getBytesValue("PHOTO_SQB", imgJson);
 		if (blob != null) {
-			DrivingPhoto photo = new DrivingPhoto(null, sfz, null, blob, "01", sqrq, null, null, null, null, null, qh,
+			DrivingPhoto photo = new DrivingPhoto(null, sfz, null, blob, "91", sqrq, null, null, null, null, null, qh,
 					jxdm);
-			imgs.put("01", photo);
+			imgs.put("91", photo);
 		}
 		// 体检表
 		blob = getBytesValue("PHOTO_TJB", imgJson);
 		if (blob != null) {
-			DrivingPhoto photo = new DrivingPhoto(null, sfz, null, blob, "02", sqrq, null, null, null, null, null, qh,
+			DrivingPhoto photo = new DrivingPhoto(null, sfz, null, blob, "92", sqrq, null, null, null, null, null, qh,
 					jxdm);
-			imgs.put("02", photo);
+			imgs.put("92", photo);
 		}
 		return imgs;
 	}
@@ -413,7 +413,9 @@ public class DataScanJob {
 				examination.setGj(dribase.getGj());
 				examination.setCsrq(dribase.getCsrq());
 				examination.setLxdh(dribase.getLxdh());
-
+				examination.setYjdz(dribase.getLxzsxxdz());
+				examination.setLxdh(dribase.getLxdh());
+				
 				apply.setJxmc(getStringValue("JXMC", base));
 				apply.setSqzjcxdh(getStringValue("ZKCX", base));
 				apply.setLy(getCharValue("LY", base));
