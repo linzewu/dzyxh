@@ -85,7 +85,7 @@ public class DrivingApplyUitl {
 			for (DrivingPhoto p : photos) {
 				String zl = p.getZpzl();
 				ImageData img = null;
-				if ("04".equals(zl)) {
+				if ("14".equals(zl)) {
 					img = new ImageData("txtp", new ByteArrayInputStream(p.getZp()), 152, 196,1);
 				} else if ("10".equals(zl)) {
 					img = new ImageData("tjsqrqz", new ByteArrayInputStream(p.getZp()), 110, 26,1);
