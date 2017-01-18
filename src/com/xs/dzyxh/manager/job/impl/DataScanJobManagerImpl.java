@@ -15,6 +15,7 @@ import com.xs.dzyxh.entity.driver.DrivingBase;
 import com.xs.dzyxh.entity.driver.DrivingExamination;
 import com.xs.dzyxh.entity.tongan.SqPhotos;
 import com.xs.dzyxh.manager.job.IDataScanJobManager;
+import com.xs.dzyxh.manager.tongan.ITonGanManager;
 import com.xs.dzyxh.manager.window.IDrivingApplyManager;
 import com.xs.dzyxh.manager.window.IDrivingExaminationManager;
 @Service("dataScanJobManagerImpl")
@@ -23,6 +24,8 @@ public class DataScanJobManagerImpl implements IDataScanJobManager {
 	private IDrivingApplyManager drivingApplyManager;
 	@Resource(name = "drivingExamination")
 	private IDrivingExaminationManager drivingExaminationManager;
+	@Resource(name = "tonGanManager")
+	private ITonGanManager tonGanManager;
 	
 	@Resource(name = "driverHibernateTemplate")
 	private HibernateTemplate driverHibernateTemplate;
@@ -83,6 +86,11 @@ public class DataScanJobManagerImpl implements IDataScanJobManager {
 				base.getJxdm());
 		driimgHibernateTemplate.saveOrUpdate(photo2);
 		examination.setSqbtpId(photo2.getId());//体检表合成照片
+		SqPhotos sqPhoto=tonGanManager.getSqPhotos(photo2.getSfzmhm(), photo2.getJxdm(), photo2.getQh());
+		if(sqPhoto!=null){
+			sqPhoto.setPhotoTjb(photo2.getZp());
+			tonganHibernateTemplate.update(sqPhoto);
+		}
 		driverHibernateTemplate.saveOrUpdate(apply);
 		driverHibernateTemplate.saveOrUpdate(examination);
 
