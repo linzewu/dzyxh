@@ -89,6 +89,7 @@ public class DataScanJobManagerImpl implements IDataScanJobManager {
 		SqPhotos sqPhoto=tonGanManager.getSqPhotos(photo2.getSfzmhm(), photo2.getJxdm(), photo2.getQh());
 		if(sqPhoto!=null){
 			sqPhoto.setPhotoTjb(photo2.getZp());
+			sqPhoto.setPhotoSqb(photo.getZp());
 			tonganHibernateTemplate.update(sqPhoto);
 		}
 		driverHibernateTemplate.saveOrUpdate(apply);
