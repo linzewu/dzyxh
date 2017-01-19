@@ -59,9 +59,9 @@ public class DrivingApplyUitl {
 				if ("04".equals(zl)) {
 					img = new ImageData("txtp", new ByteArrayInputStream(p.getZp()), 152, 196,1);
 				} else if ("05".equals(zl)) {
-					img = new ImageData("sqrqz", new ByteArrayInputStream(p.getZp()), 110, 26,0);
+					img = new ImageData("sqrqz", new ByteArrayInputStream(p.getZp()), 110, 24,0);
 				} else if ("06".equals(zl)) {
-					img = new ImageData("dlrqz", new ByteArrayInputStream(p.getZp()), 110, 26,0);
+					img = new ImageData("dlrqz", new ByteArrayInputStream(p.getZp()), 110, 24,0);
 				} else if ("07".equals(zl)) {
 					img = new ImageData("zw1", new ByteArrayInputStream(p.getZp()), 80, 95,1);
 				} else if ("08".equals(zl)) {
@@ -78,6 +78,19 @@ public class DrivingApplyUitl {
 
 		return imgs;
 	}
+	
+	public static boolean isExistSqbImgData(Collection<DrivingPhoto> photos,String code) {
+		if (photos != null) {
+			for (DrivingPhoto p : photos) {
+				String zl = p.getZpzl();
+				if (code.equals(zl)) {
+					return true;
+				} 		
+			}
+		}
+		return false;
+	}
+	
 	
 	public static List<ImageData> convertTjbImgData(Collection<DrivingPhoto> photos) {
 		List<ImageData> imgs = new ArrayList<ImageData>();
@@ -106,7 +119,7 @@ public class DrivingApplyUitl {
 		return imgs;
 	}
 	
-	public static Map<String, String> convertTjbData( DrivingExamination examination) {
+	public static Map<String, String> convertTjbData( DrivingExamination examination,Collection<DrivingPhoto> photos) {
 		if ( examination == null) {
 			return null;
 		}
@@ -180,14 +193,24 @@ public class DrivingApplyUitl {
 		datas.put("wtdlrsfzmhm", formatString(examination.getWtdlrsfzmhm()));// 委托代理人身份号码
 		datas.put("wtdlrlxdz", formatString(examination.getWtdlrlxdz()));// 委托代理人联系地址
 		datas.put("wtdlrlxdh", formatString(examination.getWtdlrlxdh()));// 委托代理人联系电话
-		datas.put("brsqfs", dg(examination.getSqfs(),"1"));//申请方式-本人
-		datas.put("wtsqfs", dg(examination.getSqfs(),"2"));//申请方式-委托
+		if (isExistSqbImgData(photos, "05")) {
+			datas.put("brsqfs", dg("1","1"));//申请方式-本人	
+			datas.put("wtsqfs", dg("1","2"));//申请方式-委托
+		} else {
+			datas.put("brsqfs", dg("2","1"));//申请方式-本人	
+			datas.put("wtsqfs", dg("2","2"));//申请方式-委托
+		}
+		if(examination.getSqfs()!=null){
+			datas.put("brsqfs", dg(examination.getSqfs(),"1"));//申请方式-本人
+			datas.put("wtsqfs", dg(examination.getSqfs(),"2"));//申请方式-委托
+		}
+		
 		
 		return datas;
 	}
 
 
-	public static Map<String, String> convertData(DrivingBase base, DrivingApply apply) {
+	public static Map<String, String> convertData(DrivingBase base, DrivingApply apply,Collection<DrivingPhoto> photos) {
 		if (base == null || apply == null) {
 			return null;
 		}
@@ -197,6 +220,7 @@ public class DrivingApplyUitl {
 		datas.put("csrq", dateFormat(base.getCsrq()));// 出生日期
 		datas.put("gj",BaseParamsUtil.getBaseParamNameByType("gj", formatString(base.getGj())) );// 国籍
 		datas.put("lxdh", formatString(base.getLxdh()));// 联系电话
+		datas.put("yzbm", formatString(base.getLxzsyzbm()));//邮政编码
 		// datas.put("lsh", apply.getLsh());
 		datas.put("sfzmhm", apply.getId().getSfzmhm());// 身份证
 		// datas.put("qh", apply.getId().getQh());
@@ -226,12 +250,14 @@ public class DrivingApplyUitl {
 		datas.put("wtjhrsfzmhm", formatString(apply.getWtjhrsfzmhm()));// 委托\监护人身份号码
 		datas.put("wtjhrlxdz", formatString(apply.getWtjhrlxdz()));// 委托\监护人联系地址
 		datas.put("wtjhrlxdh", formatString(apply.getWtjhrlxdh()));// 委托\监护人联系电话
-		if ("1".equals(apply.getSqfs())) {
+		if (isExistSqbImgData(photos, "05")) {
 			datas.put("brsqrq", dateFormat(apply.getSqrq()));// 本人申请日期
-			datas.put("dlrsqrq", dateFormat(null));// 代理人申请日期
+			datas.put("dlrsqrq", dateFormat(null));// 代理人申请日期		
+			datas.put("brsq", dg("1", "1"));// 本人申请			
 		} else {
 			datas.put("brsqrq", dateFormat(null));// 本人申请日期
 			datas.put("dlrsqrq", dateFormat(apply.getSqrq()));// 代理人申请日期
+			datas.put("wt", dg("3", "3"));// 代理申请
 		}
 
 		return datas;

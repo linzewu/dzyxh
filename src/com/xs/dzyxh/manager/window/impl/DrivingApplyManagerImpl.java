@@ -64,7 +64,7 @@ public class DrivingApplyManagerImpl implements IDrivingApplyManager,IBaseManage
 
 		if(base!=null){
 			//得到填充的数据
-			Map<String,String> datas=DrivingApplyUitl.convertData(base, apply);			
+			Map<String,String> datas=DrivingApplyUitl.convertData(base, apply,photos);			
 			List<ImageData> imgs=DrivingApplyUitl.convertSqbImgData(photos);
 			if(apply.getLsh()!=null){
 				try {

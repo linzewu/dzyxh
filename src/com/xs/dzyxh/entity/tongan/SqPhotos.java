@@ -187,7 +187,7 @@ public class SqPhotos {
 	}
 	
 	
-	@Column(name = "CZRQ", length = 12)
+	@Column(name = "CZRQ", length = 20)
 	public String getCzrq() {
 		return czrq;
 	}

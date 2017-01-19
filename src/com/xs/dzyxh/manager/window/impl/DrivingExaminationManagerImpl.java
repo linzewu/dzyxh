@@ -62,7 +62,7 @@ public class DrivingExaminationManagerImpl implements IDrivingExaminationManager
 
 		if (examinat != null) {
 			// 得到填充的数据
-			Map<String, String> datas = DrivingApplyUitl.convertTjbData( examinat);
+			Map<String, String> datas = DrivingApplyUitl.convertTjbData( examinat,photos);
 			//DrivingPhoto driving = new DrivingPhoto();
 			//List<DrivingPhoto> photos = drivingPhotoManager.getDrivingPhotos(driving, null, null);
 			List<ImageData> imgs = DrivingApplyUitl.convertTjbImgData(photos);

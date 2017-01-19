@@ -415,29 +415,39 @@ public class DataScanJob {
 				examination.setLxdh(dribase.getLxdh());
 				examination.setYjdz(dribase.getLxzsxxdz());
 				examination.setLxdh(dribase.getLxdh());
-				
+				examination.setSqzjcxdh(getStringValue("ZKCX", base));
+				examination.setDyslze(getCharValue("DYSLZE", base));
+				examination.setYyspsy(getBigDecimalValue("YYSPSY", base));
+
 				apply.setJxmc(getStringValue("JXMC", base));
-				apply.setSqzjcxdh(getStringValue("ZKCX", base));
+				apply.setSqzjcxdh(examination.getSqzjcxdh());
 				apply.setLy(getCharValue("LY", base));
-				apply.setDyslze(getCharValue("DYSLZE", base));
-				apply.setYyspsy(getBigDecimalValue("YYSPSY", base));
+				apply.setDyslze(examination.getDyslze());
+				apply.setYyspsy(examination.getYyspsy());
 				apply.setYwlx(getStringValue("YWLX", base));
 				apply.setSg(examination.getSg());
 				apply.setId(new DrivingApplyId());
 				apply.getId().setQh(dribase.getQh());
 				apply.getId().setJxdm(dribase.getJxdm());
 				apply.getId().setSfzmhm(dribase.getSfzmhm());
+				apply.setYjdz(dribase.getLxzsxxdz());
 				apply.setBsl(examination.getBsl());
 				apply.setZxz(examination.getZxz());
 				apply.setYxz(examination.getYxz());
 				apply.setQgjb(examination.getQgjb());
 				apply.setTjyymc(examination.getTjyymc());
+				
 
 			}
 			if (jsonObject.containsKey("SQ_PHOTOS") && !(jsonObject.get("SQ_PHOTOS") instanceof JSONNull)) {
 				JSONArray JsonDatas = jsonObject.getJSONArray("SQ_PHOTOS");
 				if (JsonDatas.size() > 0) {
-					Map<String, DrivingPhoto> photos = getDrivingPhotos(JsonDatas.getJSONObject(0));
+					Map<String, DrivingPhoto> photos = getDrivingPhotos(JsonDatas.getJSONObject(0));			
+					String rq = getStringValue("SQRQ", JsonDatas.getJSONObject(0));
+					if(rq!=null){
+						SimpleDateFormat sd=new SimpleDateFormat("yyyy/MM/dd");
+						apply.setSqrq( sd.parse(rq));
+					}
 					imgs.putAll(photos);
 				}
 			}
