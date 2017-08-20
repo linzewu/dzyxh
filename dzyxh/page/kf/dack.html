@@ -1,0 +1,32 @@
+<table id="kfdackgrid" class="easyui-datagrid"
+	data-options="fitColumns:true,singleSelect:true,fit:true,toolbar:kfdackToolbar">
+	<thead> 
+		<tr>
+			<th data-options="field:'dnbh',width:20">档案编号</th>
+			<th data-options="field:'ywlsh',width:20">流水号</th>
+			<th data-options="field:'jdcxh',width:20">机动车序号</th>
+			<th data-options="field:'hpzl',width:20">号牌种类</th>
+			<th data-options="field:'hphm',width:20">号牌号码</th>
+			<th data-options="field:'clsbdh',width:30">车辆识别代号</th>
+			<th data-options="field:'kczt',width:10">库存状态</th>
+			<th data-options="field:'kcwz',width:10">库存位置</th>
+			<th data-options="field:'rkr',width:10">入库人</th>
+			<th data-options="field:'rksj',width:10">入库时间</th>
+		</tr>
+	</thead>
+</table>
+
+<div id="kfdackToolbar">
+	<div>
+		<label>流水号：</label><input type="text" class="easyui-textbox" />
+		<label>业务类型：</label><input type="text" class="easyui-combobox" data-options="data:ywlx,valueField:'id',textField:'text'" />
+		<label>号牌种类：</label><input type="text" class="easyui-combobox" data-options="data:getBaseParames('hpzl'),valueField:'id',textField:'value'" />
+		<label>号牌号码：</label><input type="text" class="easyui-textbox" />
+	</div>
+	<div>&nbsp;</div>
+	<div>
+		<label>车辆识别代号：</label><input type="text" class="easyui-textbox" />
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" >查询</a>
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="alert('请选择档案')" >档案出库</a>
+	</div>
+</div>

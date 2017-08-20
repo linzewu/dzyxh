@@ -77,6 +77,42 @@ var comm = {
 			$(target).append("<option value='"+data[i].id+"'>"+data[i].value+"</option>");
 		}
 	},
+	creaTemplate:function(param){
+		var id=param.id;
+		var title=param.title;
+		var menu=param.menus;
+		var temp = $("<div class=\"easyui-layout\" data-options=\"fit:true\">"+
+		"<div data-options=\"region:'west',title:'"+title+"',split:true\" style=\"width: 200px;\" ><ul class=menus></ul></div>"+
+		"<div data-options=\"region:'center',href:'"+menu[0].href+"',title:'"+menu[0].title+"',queryParams:"+param.param+"\" id="+id+"Contex></div></div>");
+		comm.createMumeOfTemp(temp,menu,id+"Contex");
+		return temp;
+	},
+	createMumeOfTemp : function(temp, data,context) {
+		var ul = temp.find(".menus" );
+		ul.empty();
+		console.log(ul);
+		$.each(data,function(i,n){
+			var li = $("<li><a id='_menu"+i+"' href=\"javascript:void(0)\"><img></a></li>");
+			li.find("img").attr("src", n.icon);
+			li.find("a").append(n.title);
+			if (n.callbak) {
+				li.find("a").bind("click", n.callbak)
+			} else {
+				li.find("a").bind(
+						"click",
+						function() {
+							if(n.target){
+								comm.toPage(n.target, n.title,
+										n.href, n.param);
+							}else{
+								comm.toPage("#"+context, n.title,
+										n.href, n.param);
+							}
+						});
+			}
+			ul.append(li);
+		});
+	},
 	createTab:function(id,title,href){
 		
 		if($(id).tabs("getTab",title)){

@@ -41,24 +41,19 @@
 			<version>11.1.0.7.0</version> </dependency> -->
 		<!-- spring 4 -->
 		<dependency>
-			<groupId>aspose-words-15.11.0-jdk16</groupId>
-			<artifactId>aspose-words-15.11.0-jdk16.jar</artifactId>
-			<version>1.0</version>
+			<groupId>aspose</groupId>
+			<artifactId>aspose-words-jdk16</artifactId>
+			<version>15.11.0</version>
 		</dependency>
 		<dependency>
-			<groupId>jbarcode-0.2.8</groupId>
-			<artifactId>jbarcode-0.2.8.jar</artifactId>
-			<version>1.0</version>
+			<groupId>jbarcode</groupId>
+			<artifactId>jbarcode</artifactId>
+			<version>0.28</version>
 		</dependency>
 		<dependency>
-			<groupId>JBarcode-Recognition_Source-0.2</groupId>
-			<artifactId>JBarcode-Recognition_Source-0.2.jar</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc14</artifactId>
-			<version>10.2.0.5.0</version>
+			<groupId>jbarcode</groupId>
+			<artifactId>JBarcode-Recognition_Source</artifactId>
+			<version>0.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -246,14 +241,13 @@
 			<artifactId>validation-api</artifactId>
 			<version>1.0.0.GA</version>
 		</dependency>
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+			<version>11.2.0</version>
+		</dependency>
 
-		<!-- <dependency> <groupId>joda-time</groupId> <artifactId>joda-time</artifactId> 
-			<version>2.9.1</version> </dependency> -->
-		<!-- <dependency> <groupId>de.schlichtherle.truelicense</groupId> <artifactId>truelicense-core</artifactId> 
-			<version>1.32</version> </dependency> -->
-		<!-- <dependency> <groupId>com.oracle</groupId> <artifactId>ojdbc6</artifactId> 
-			<version>11.2.0</version> </dependency> -->
-
+	
 	</dependencies>
 
 </project>

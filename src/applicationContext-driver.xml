@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd  
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd  
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd  
+        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd  
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd
+        http://www.springframework.org/schema/mvc  http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
+	default-lazy-init="false">
+
+	<!-- 驾驶人 driver 数据源配置 -->
+	<!-- 数据库连接池c3p0配置 -->
+	<bean id="driverDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="jdbcUrl" value="${db.url}"></property>
+		<property name="driverClass" value="${db.driverClassName}"></property>
+		<property name="user" value="${db.driver.username}"></property>
+		<property name="password" value="${db.driver.password}"></property>
+		<property name="maxPoolSize" value="10"></property>
+		<property name="minPoolSize" value="3"></property>
+		<property name="initialPoolSize" value="3"></property>
+	</bean>
+
+	<!-- 配置 driver sessionFactory -->
+	<bean id="driverSessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="driverDataSource" />
+		</property>
+		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
+		<property name="packagesToScan">
+			<list>
+				<value>com.xs.dzyxh.entity.driver</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="driverHibernateTemplate" class="org.springframework.orm.hibernate4.HibernateTemplate">
+		<property name="sessionFactory" ref="driverSessionFactory" />
+	</bean>
+
+	<!-- 配置事务管理器 -->
+	<bean id="driverTransactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="driverSessionFactory" />
+	</bean>
+
+	<!-- 声明式容器事务管理 ,transaction-manager指定事务管理器为transactionManager -->
+	<tx:advice id="driverTxAdvice" transaction-manager="driverTransactionManager">
+		<tx:attributes>
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="edit*" propagation="REQUIRED" />
+			<tx:method name="remove*" propagation="REQUIRED" />
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="saveAll" propagation="REQUIRED" />
+			<tx:method name="saveImg" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="delete*" propagation="REQUIRED" />
+			<tx:method name="reset*" propagation="REQUIRED" />
+			<tx:method name="batchUpdate" propagation="REQUIRED" />
+			<tx:method name="*" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config expose-proxy="true">
+		<!-- 只对业务逻辑层实施事务 -->
+		<aop:pointcut id="drivertxPointcut"
+			expression="execution(* com.xs.dzyxh.manager.driver.*.*(..))||execution(* com.xs.dzyxh.manager.job.IDataScanJobManager.*(..))" />
+		<aop:advisor pointcut-ref="drivertxPointcut" advice-ref="driverTxAdvice" />
+	</aop:config>
+	<!-- 驾驶人 driver 数据源配置完成 -->
+
+
+	<!-- 驾驶人 driver img 数据源配置 -->
+	<!-- 数据库连接池c3p0配置 -->
+	<bean id="driimgDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="jdbcUrl" value="${db.url}"></property>
+		<property name="driverClass" value="${db.driverClassName}"></property>
+		<property name="user" value="${db.driver.img.username}"></property>
+		<property name="password" value="${db.driver.img.password}"></property>
+		<property name="maxPoolSize" value="10"></property>
+		<property name="minPoolSize" value="3"></property>
+		<property name="initialPoolSize" value="3"></property>
+	</bean>
+
+	<!-- 配置 driver sessionFactory -->
+	<bean id="driimgSessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="driimgDataSource" />
+		</property>
+		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
+		<property name="packagesToScan">
+			<list>
+				<value>com.xs.dzyxh.entity.driimg</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="driimgHibernateTemplate" class="org.springframework.orm.hibernate4.HibernateTemplate">
+		<property name="sessionFactory" ref="driimgSessionFactory" />
+	</bean>
+
+	<!-- 配置事务管理器 -->
+	<bean id="driimgTransactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="driimgSessionFactory" />
+	</bean>
+
+	<!-- 声明式容器事务管理 ,transaction-manager指定事务管理器为transactionManager -->
+	<tx:advice id="driimgTxAdvice" transaction-manager="driimgTransactionManager">
+		<tx:attributes>
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="edit*" propagation="REQUIRED" />
+			<tx:method name="remove*" propagation="REQUIRED" />
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="saveAll" propagation="REQUIRED" />
+			<tx:method name="saveImg" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="delete*" propagation="REQUIRED" />
+			<tx:method name="reset*" propagation="REQUIRED" />
+			<tx:method name="batchUpdate" propagation="REQUIRED" />
+			<tx:method name="*" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config expose-proxy="true">
+		<!-- 只对业务逻辑层实施事务 -->
+		<aop:pointcut id="driimgtxPointcut"
+			expression="execution(* com.xs.dzyxh.manager.driverimg.*.*(..))||execution(* com.xs.dzyxh.manager.job.IDataScanJobManager.*(..))" />
+		<aop:advisor pointcut-ref="driimgtxPointcut" advice-ref="driimgTxAdvice" />
+	</aop:config>
+	<!-- 驾驶人 driver 数据源配置完成 -->
+
+
+
+	<!-- TONGAN 数据源配置 -->
+	<!-- 数据库连接池c3p0配置 -->
+	<bean id="tonganDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="jdbcUrl" value="${db.url}"></property>
+		<property name="driverClass" value="${db.driverClassName}"></property>
+		<property name="user" value="${db.tongan.username}"></property>
+		<property name="password" value="${db.tongan.password}"></property>
+		<property name="maxPoolSize" value="10"></property>
+		<property name="minPoolSize" value="3"></property>
+		<property name="initialPoolSize" value="3"></property>
+	</bean>
+
+	<!-- 配置 driver sessionFactory -->
+	<bean id="tonganSessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="tonganDataSource" />
+		</property>
+		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
+		<property name="packagesToScan">
+			<list>
+				<value>com.xs.dzyxh.entity.tongan</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="tonganHibernateTemplate" class="org.springframework.orm.hibernate4.HibernateTemplate">
+		<property name="sessionFactory" ref="tonganSessionFactory" />
+	</bean>
+
+	<!-- 配置事务管理器 -->
+	<bean id="tonganTransactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="tonganSessionFactory" />
+	</bean>
+
+	<!-- 声明式容器事务管理 ,transaction-manager指定事务管理器为transactionManager -->
+	<tx:advice id="tonganTxAdvice" transaction-manager="tonganTransactionManager">
+		<tx:attributes>
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="remove*" propagation="REQUIRED" />
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="saveAll" propagation="REQUIRED" />
+			<tx:method name="saveImg" propagation="REQUIRED" />
+			<tx:method name="*" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config expose-proxy="true">
+		<!-- 只对业务逻辑层实施事务 -->
+		<aop:pointcut id="tongantxPointcut"
+			expression="execution(* com.xs.dzyxh.manager.tongan.*.*(..))||execution(* com.xs.dzyxh.manager.job.IDataScanJobManager.*(..))" />
+		<aop:advisor pointcut-ref="tongantxPointcut" advice-ref="tonganTxAdvice" />
+	</aop:config>
+	<!-- TONGAN 数据源配置完成 -->
+
+</beans>

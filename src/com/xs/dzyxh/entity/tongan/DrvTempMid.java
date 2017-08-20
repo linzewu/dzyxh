@@ -1,5 +1,6 @@
 package com.xs.dzyxh.entity.tongan;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.AttributeOverride;
@@ -33,8 +34,8 @@ public class DrvTempMid {
 	private String zkcx;
 	private String jxmc;
 	private Integer sg;
-	private Integer zsl;
-	private Integer ysl;
+	private BigDecimal zsl;
+	private BigDecimal ysl;
 	private String bsl;
 	private String zxz;
 	private String yxz;
@@ -216,21 +217,23 @@ public class DrvTempMid {
 		this.sg = sg;
 	}
 
-	@Column(name = "ZSL")
-	public Integer getZsl() {
+	
+
+	@Column(name = "ZSL", precision = 3)
+	public BigDecimal getZsl() {
 		return zsl;
 	}
-
-	public void setZsl(Integer zsl) {
-		this.zsl = zsl;
-	}
-
-	@Column(name = "YSL")
-	public Integer getYsl() {
+	
+	@Column(name = "YSL", precision = 3)
+	public BigDecimal getYsl() {
 		return ysl;
 	}
 
-	public void setYsl(Integer ysl) {
+	public void setZsl(BigDecimal zsl) {
+		this.zsl = zsl;
+	}
+
+	public void setYsl(BigDecimal ysl) {
 		this.ysl = ysl;
 	}
 

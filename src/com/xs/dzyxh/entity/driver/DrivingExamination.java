@@ -230,7 +230,7 @@ public class DrivingExamination implements java.io.Serializable {
 		this.sg = sg;
 	}
 
-	@Column(name = "ZSL", precision = 22, scale = 0)
+	@Column(name = "ZSL", precision = 22)
 	public BigDecimal getZsl() {
 		return this.zsl;
 	}
@@ -239,7 +239,7 @@ public class DrivingExamination implements java.io.Serializable {
 		this.zsl = zsl;
 	}
 
-	@Column(name = "YSL", precision = 22, scale = 0)
+	@Column(name = "YSL", precision = 22)
 	public BigDecimal getYsl() {
 		return this.ysl;
 	}

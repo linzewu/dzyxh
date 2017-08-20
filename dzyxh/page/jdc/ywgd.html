@@ -1,0 +1,140 @@
+<div class="easyui-layout" data-options="fit:true">
+	 <div data-options="region:'center'" style="padding:5px;background:#eee;">
+	 	 <fieldset class="base_fl">
+	 	 	<legend>查询条件</legend>
+	 	 	<table class="base_table" cellpadding="0"  cellspacing="0">
+				<tr>
+					<td class="info_title"><label for="date">号牌号码:</label></td>
+					<td class="info"><input class="easyui-textbox" /></td>
+					<td class="info_title"><label for="date" >号牌种类:</label></td>
+					<td class="info"><input class="easyui-combobox" data-options="data:getBaseParames('hpzl'),valueField:'id',textField:'value'" /></td>
+				</tr>
+				<tr>
+					<td class="info_title"><label for="date">车辆识别代号:</label></td>
+					<td class="info"><input class="easyui-textbox" /></td>
+					<td class="info_title"><label for="date">业务流水号:</label></td>
+					<td class="info"><input class="easyui-textbox" /></td>
+				</tr>
+		 	</table>
+		 	<div style="text-align: right;"> 
+		 		<a href="#" class="easyui-linkbutton c6" style="width:80px;margin-top: 6px;">查询</a>
+		 		<a href="#" class="easyui-linkbutton c2" style="width:80px;margin-top: 6px;">退出</a>
+		 	</div>
+	 	 </fieldset>
+		 <fieldset class="base_fl">
+		 	<legend>业务信息</legend>
+			<table class="base_table" cellpadding="0"  cellspacing="0">
+				 <tr>
+					<td class="info_title"><label for="date">流水号:</label></td>
+					<td class="info">&nbsp;</td>
+					<td class="info_title"><label for="date">机动车序号:</label></td>
+					<td class="info">&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="info_title"><label for="date">业务类型:</label></td>
+					<td class="info">&nbsp;</td>
+					<td class="info_title"><label for="date">业务原因:</label></td>
+					<td class="info">&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="info_title"><label for="date">机动车所有人:</label></td>
+					<td class="info">&nbsp;</td>
+					<td class="info_title"><label for="date">车辆识别代号:</label></td>
+					<td class="info">&nbsp;</td>
+				</tr>
+				 <tr>
+					<td class="info_title"><label for="date">号牌号码:</label></td>
+					<td class="info">&nbsp;</td>
+					<td class="info_title"><label for="date">号牌种类:</label></td>
+					<td class="info">&nbsp;</td>
+				</tr>
+				
+				<tr>
+					<td class="info_title"><label for="date">中文品牌:</label></td>
+					<td class="info">&nbsp;</td>
+					<td class="info_title"><label for="date">车辆型号:</label></td>
+					<td class="info">&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="info_title"><label for="date">车辆类型:</label></td>
+					<td class="info">&nbsp;</td>
+					<td class="info_title"><label for="date">管理辖区:</label></td>
+					<td class="info">&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="info_title"><label for="date">申请日期:</label></td>
+					<td class="info">&nbsp;</td>
+					<td class="info_title"><label for="date">办结日期:</label></td>
+					<td class="info">&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="info_title"><label for="date">流水状态:</label></td>
+					<td class="info">&nbsp;</td>
+					<td class="info_title"><label for="date">管理部门:</label></td>
+					<td class="info">&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="info_title"><label for="date">来源:</label></td>
+					<td class="info" colspan="3">&nbsp;</td>
+				</tr>
+			 </table>
+		 </fieldset>
+	 </div>
+	 <div data-options="region:'east',title:'档案照片'" style="width:40%;">
+	 	<div class="easyui-layout" data-options="fit:true">
+	 		<div data-options="region:'center'" style="padding:5px;">
+	 			
+	 		</div>
+	 		<div data-options="region:'south'" style="height: 40px;text-align: center;">
+	 			 <a href="#" class="easyui-linkbutton c5" style="width:120px;margin-top: 6px;" onclick="openScan()">高速扫描</a>
+	 			 <a href="#" class="easyui-linkbutton c6" style="width:120px;margin-top: 6px;">快速存档</a>
+	 		</div>
+	 	</div>
+	 </div>
+</div>
+
+  <style type="text/css">
+        .products{
+            overflow:auto;
+            height:100%;
+            background:#fafafa;
+        }
+        .products ul{
+            list-style:none;
+            margin:0;
+            padding:0px;
+        }
+        .products li{
+            display:inline;
+            float:left;
+            margin:8px;
+        }
+        .item{
+            display:block;
+            text-decoration:none;
+        }
+        .item img{
+            border:1px solid #333;
+            width: 140px; height: 80px;
+        }
+        .item p{
+            margin:0;
+            font-weight:bold;
+            text-align:center;
+            color:#c3c3c3;
+        }
+        .cart{
+            float:right;
+            position:relative;
+            width:260px;
+            height:100%;
+            background:#ccc;
+            padding:0px 10px;
+        }
+        .ctitle{
+            text-align:center;
+            color:#555;
+            font-size:18px;
+            padding:10px;
+        }
+    </style>

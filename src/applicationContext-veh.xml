@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd  
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd  
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd  
+        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd  
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd
+        http://www.springframework.org/schema/mvc  http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
+	default-lazy-init="false">
+
+	<!-- veh  数据源配置 -->
+	<!-- 数据库连接池c3p0配置 -->
+	<bean id="vehDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="jdbcUrl" value="${db.url}"></property>
+		<property name="driverClass" value="${db.driverClassName}"></property>
+		<property name="user" value="${db.veh.username}"></property>
+		<property name="password" value="${db.veh.password}"></property>
+		<property name="maxPoolSize" value="10"></property>
+		<property name="minPoolSize" value="3"></property>
+		<property name="initialPoolSize" value="3"></property>
+	</bean>
+
+	<!-- 配置 veh sessionFactory -->
+	<bean id="vehSessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="arcSysDataSource" />
+		</property>
+		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
+		<property name="packagesToScan">
+			<list>
+				<value>com.xs.dzyxh.entity.veh</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="vehHibernateTemplate" class="org.springframework.orm.hibernate4.HibernateTemplate">
+		<property name="sessionFactory" ref="vehSessionFactory" />
+	</bean>
+
+	<!-- 配置事务管理器 -->
+	<bean id="vehTransactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="vehSessionFactory" />
+	</bean>
+
+	<!-- 声明式容器事务管理 ,transaction-manager指定事务管理器为transactionManager -->
+	<tx:advice id="vehTxAdvice" transaction-manager="vehTransactionManager">
+		<tx:attributes>
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="edit*" propagation="REQUIRED" />
+			<tx:method name="remove*" propagation="REQUIRED" />
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="delete*" propagation="REQUIRED" />
+			<tx:method name="reset*" propagation="REQUIRED" />
+			<tx:method name="batchUpdate" propagation="REQUIRED" />
+			<tx:method name="*" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config expose-proxy="true">
+		<!-- 只对业务逻辑层实施事务 -->
+		<aop:pointcut id="vehTxPointcut"
+			expression="execution(* com.xs.dzyxh.manager.veh.*.*(..))" />
+		<aop:advisor pointcut-ref="vehTxPointcut" advice-ref="vehTxAdvice" />
+	</aop:config>
+
+	<!-- ===========================veh 数据源配置完成=================================== -->
+	
+	
+	<!-- vehImg  数据源配置 -->
+	<!-- 数据库连接池c3p0配置 -->
+	<bean id="vehImgDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="jdbcUrl" value="${db.url}"></property>
+		<property name="driverClass" value="${db.driverClassName}"></property>
+		<property name="user" value="${db.veh.username}"></property>
+		<property name="password" value="${db.veh.password}"></property>
+		<property name="maxPoolSize" value="10"></property>
+		<property name="minPoolSize" value="3"></property>
+		<property name="initialPoolSize" value="3"></property>
+	</bean>
+
+	<!-- 配置 veh sessionFactory -->
+	<bean id="vehImgSessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="arcSysDataSource" />
+		</property>
+		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
+		<property name="packagesToScan">
+			<list>
+				<value>com.xs.dzyxh.entity.vehimg</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="vehImgHibernateTemplate" class="org.springframework.orm.hibernate4.HibernateTemplate">
+		<property name="sessionFactory" ref="vehImgSessionFactory" />
+	</bean>
+
+	<!-- 配置事务管理器 -->
+	<bean id="vehImgTransactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="vehImgSessionFactory" />
+	</bean>
+
+	<!-- 声明式容器事务管理 ,transaction-manager指定事务管理器为transactionManager -->
+	<tx:advice id="vehImgTxAdvice" transaction-manager="vehImgTransactionManager">
+		<tx:attributes>
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="edit*" propagation="REQUIRED" />
+			<tx:method name="remove*" propagation="REQUIRED" />
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="delete*" propagation="REQUIRED" />
+			<tx:method name="reset*" propagation="REQUIRED" />
+			<tx:method name="batchUpdate" propagation="REQUIRED" />
+			<tx:method name="*" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+
+
+	<aop:config expose-proxy="true">
+		<!-- 只对业务逻辑层实施事务 -->
+		<aop:pointcut id="vehImgTxPointcut"
+			expression="execution(* com.xs.dzyxh.manager.veh.*.*(..))" />
+		<aop:advisor pointcut-ref="vehImgTxPointcut" advice-ref="vehImgTxAdvice" />
+	</aop:config>
+	<!-- ===========================veh Img 数据源配置完成=================================== -->
+
+</beans>

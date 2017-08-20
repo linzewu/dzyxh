@@ -1,0 +1,32 @@
+<table id="ywlscxgrid" class="easyui-datagrid"
+	data-options="fitColumns:true,singleSelect:true,fit:true,toolbar:ywlscxToolbar">
+	<thead> 
+		<tr>
+			<th data-options="field:'ywlsh',width:30">流水号</th>
+			<th data-options="field:'xh',width:20">机动车序号</th>
+			<th data-options="field:'ywlx',width:30">业务类型</th>
+			<th data-options="field:'hpzl',width:30">号牌种类</th>
+			<th data-options="field:'hphm',width:20">号牌号码</th>
+			<th data-options="field:'clsbdh',width:40">车辆识别代号</th>
+			<th data-options="field:'syr',width:20">机动车所有人</th>
+			<th data-options="field:'lszt',width:20">流水状态</th>
+			<th data-options="field:'sqrq',width:20">申请日期</th>
+			<th data-options="field:'bjrq',width:20">办结日期</th>
+			<th data-options="field:'ly',width:20">来源</th>
+		</tr>
+	</thead>
+</table>
+
+<div id="ywlscxToolbar">
+	<div>
+		<label>流水号：</label><input type="text" class="easyui-textbox" />
+		<label>业务类型：</label><input type="text" class="easyui-combobox" data-options="data:ywlx,valueField:'id',textField:'text'" />
+		<label>号牌种类：</label><input type="text" class="easyui-combobox" data-options="data:getBaseParames('hpzl'),valueField:'id',textField:'value'" />
+		<label>号牌号码：</label><input type="text" class="easyui-textbox" />
+	</div>
+	<div>&nbsp;</div>
+	<div>
+		<label>车辆识别代号：</label><input type="text" class="easyui-textbox" />
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" >查询</a>
+	</div>
+</div>

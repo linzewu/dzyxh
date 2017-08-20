@@ -153,7 +153,8 @@ public class DataScanJob {
 
 				try {
 					String data = readFile(file);
-					this.transformationData(data);
+					//this.transformationData(data);
+					this.transformationDataNotImg(data);
 					file.delete();
 				} catch (Exception e) {
 					File errorfile = new File(
@@ -196,6 +197,8 @@ public class DataScanJob {
 		}
 	}
 
+	
+	
 	public void transformationImgData(String data) throws Exception {
 		if (data == null) {
 			return;
@@ -355,6 +358,24 @@ public class DataScanJob {
 		}
 		return imgs;
 	}
+	
+	public void transformationDataNotImg(String data) throws Exception{
+		ScanDataLog dataLog = new ScanDataLog();
+		try{
+			List<Object> tonGanDatas=this.getTonGanDatas(data);
+			this.dataScanJobManager.saveTongan(tonGanDatas);
+			
+		}catch (Exception e) {
+			dataLog.setClzt(500);
+			dataLog.setCwxx( ".data数据入库失败:" + e.getLocalizedMessage());
+			throw new Exception(e.getMessage());
+		} finally {
+			String strData = DataScanJobUtil.mapper.writeValueAsString(dataLog);
+			createStrFile(strData, ".data");
+			scanDataLogManager.save(dataLog);
+		}
+		
+	}
 
 	public void transformationData(String data) throws Exception {
 		if (data == null) {
@@ -363,11 +384,13 @@ public class DataScanJob {
 		ScanDataLog dataLog = new ScanDataLog();
 		try {
 			List<Object> tonGanDatas=this.getTonGanDatas(data);
+			
 			JSONObject jsonObject = JSONObject.fromObject(new String(data));
 			DrivingBase dribase = new DrivingBase();
 			DrivingApply apply = new DrivingApply();
 			DrivingExamination examination = new DrivingExamination();
 			Map<String, DrivingPhoto> imgs = new HashMap<String, DrivingPhoto>();
+			
 			if (jsonObject.containsKey("DRV_TEMP_MID")) {
 				JSONObject base = jsonObject.getJSONObject("DRV_TEMP_MID");
 				dribase.setHmcd(getCharValue("HMCD", base));// 号码长度标志
@@ -549,7 +572,7 @@ public class DataScanJob {
 			mid.setXm(getStringValue("XM", base));
 			mid.setYddh(getStringValue("YDDH", base));
 			mid.setYetl(getStringValue("YETL", base));
-			mid.setYsl(getIntegerValue("YSL", base));
+			mid.setYsl(getBigDecimalValue("YSL", base));
 			mid.setYsz(getStringValue("YSZ", base));
 			mid.setYwlx(getStringValue("YWLX", base));
 			mid.setYxz(getStringValue("YXZ", base));
@@ -557,7 +580,7 @@ public class DataScanJob {
 			mid.setYyspsy(getIntegerValue("YYSPSY", base));
 			mid.setZetl(getStringValue("ZETL", base));
 			mid.setZkcx(getStringValue("ZKCX", base));
-			mid.setZsl(getIntegerValue("ZSL", base));
+			mid.setZsl(getBigDecimalValue("ZSL", base));
 			mid.setZsz(getStringValue("ZSZ", base));
 			mid.setZxz(getStringValue("ZXZ", base));
 			mid.setZysfjz(getStringValue("ZYSFJZ", base));
@@ -623,6 +646,11 @@ public class DataScanJob {
 				JSONObject JsonData = JsonDatas.getJSONObject(0);
 				SqPhotos sqPhotos = new SqPhotos();
 				SqPhotosId id = new SqPhotosId();
+				
+				String xm=getStringValue("XM",JsonData);
+				String ywlx=getStringValue("YWLX",JsonData);
+				String zkcx=getStringValue("ZKCX",JsonData);
+				
 				id.setJxdm(getStringValue("JXDM", JsonData));
 				id.setQh(getStringValue("QH", JsonData));
 				id.setSfzmhm(getStringValue("SFZMHM", JsonData));
@@ -641,6 +669,9 @@ public class DataScanJob {
 				sqPhotos.setPhotoTjb(getBytesValue("PHOTO_TJB", JsonData));
 				sqPhotos.setSjbj(getCharValue("BSL", JsonData));
 				sqPhotos.setSqrq(getStringValue("SQRQ", JsonData));
+				sqPhotos.setXm(xm);
+				sqPhotos.setYwlx(ywlx);
+				sqPhotos.setZkcx(zkcx);
 				datas.add(sqPhotos);
 			}
 

@@ -11,5 +11,8 @@ import com.xs.dzyxh.entity.tongan.SqPhotos;
 
 public interface IDataScanJobManager {
 	public void saveAll(DrivingBase base,DrivingApply apply,DrivingExamination examination,Map<String, DrivingPhoto> imgs,List<Object> datas)throws Exception ;
+	
+	public void saveTongan(List<Object> datas);
+	
 	public void saveImg(SqPhotos sqPhotos, Map<String, DrivingPhoto> photos)throws Exception ;
 }

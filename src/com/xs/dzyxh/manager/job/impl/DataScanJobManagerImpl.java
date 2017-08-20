@@ -102,4 +102,11 @@ public class DataScanJobManagerImpl implements IDataScanJobManager {
 		}
 		return null;
 	}
+
+	@Override
+	public void saveTongan(List<Object> datas) {
+		for(Object obj:datas){
+			tonganHibernateTemplate.saveOrUpdate(obj);
+		}	
+	}
 }

@@ -44,7 +44,7 @@ public class Constant {
 		
 		public static final String MODE_NAME_SYSTEM="系统管理";
 		
-		public static final String MODE_NAME_WINDOW="窗口采集";
+		public static final String MODE_NAME_WINDOW="驾驶人档案管理";
 		
 		public static final String APP_NAME_DEPT ="组织架构管理";
 		

@@ -63,15 +63,15 @@ function login() {
 	}
 	
 	$.post("user/login",{userName:userName,password:password}, function(data){
-		console.log(data);
 		if(data.state==1){
 			window.location.href="index.html";
 		}else{
 			$.messager.alert("登陆失败","用户名或密码错误！","info");
 		}
 	},"json").error(function(e){
-		$.messager.alert("提升",e.responseText);
-	});
+		$.messager.alert("提示",e.responseText);
+	}).complete(function(){
+	})
 }
 
 $(document).ajaxStart(function(){

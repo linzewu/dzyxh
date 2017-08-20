@@ -122,11 +122,7 @@ $(function() {
 		json=jQuery.parseJSON(json);
 		var m = new Map();
 		var temp = {};
-/*		alert(menus["state"]);
-		if(menus["state"]==600){
-			 window.location.href="login.html";
-	         return;
-		}*/
+		
 		$.each(json, function(i, val) {
 			var module = val["module"];
 			var app = val["app"];
@@ -156,11 +152,87 @@ $(function() {
 					+ 'Contex"></div></div>');
 			tab.append(page);	
 			$("#tabAll").append(tab);
-		
 			page.layout();
 			comm.createMume(k + 'Mune', data);
 		})
 		$("#tabAll").tabs();
+		$("#tabAll").tabs("add",{
+			title:"机动车档案管理",
+			selected:false,
+			content:comm.creaTemplate({
+				id:'jdcdagl',
+				title:"机动车档案管理",
+				menus : [
+					{
+						"icon" : "images/fxp_48.png",
+						"title" : "业务归档",
+						href : "page/jdc/ywgd.html"
+					},
+					{
+						"icon" : "images/group_48.png",
+						"title" : "已归档业务",
+						href : "page/jdc/ygdyw.html"
+					},
+					{
+						"icon" : "images/car_48.png",
+						"title" : "档案查询",
+						href : "page/jdc/dacx.html"
+					},
+					{
+						"icon" : "images/suiji_48.png",
+						"title" : "业务流水查询",
+						href : "page/jdc/ygdyw.html"
+					}
+				]
+			})
+		});
+		
+		$("#tabAll").tabs("add",{
+			title:"库房档案管理",
+			selected:false,
+			content:comm.creaTemplate({
+				id:'kfdagl',
+				title:"库房档案管理",
+				menus : [
+					{
+						"icon" : "images/car_48.png",
+						"title" : "档案查询",
+						href : "page/kf/dacx.html"
+					},
+					{
+						"icon" : "images/box_in_48.png",
+						"title" : "档案入库",
+						href : "page/kf/dark.html"
+					},
+					{
+						"icon" : "images/box_out_48.png",
+						"title" : "档案出库",
+						href : "page/kf/dack.html"
+					}
+				]
+			})
+		});
+		
+		$("#tabAll").tabs("add",{
+			title:"业务监督及预警",
+			selected:false,
+			content:comm.creaTemplate({
+				id:'ywjdyj',
+				title:"业务监督及预警",
+				menus : [
+					{
+						"icon" : "images/pd_48.png",
+						"title" : "业务黑名单",
+						href : "page/ywjd/hmd.html"
+					},
+					{
+						"icon" : "images/group_48.png",
+						"title" : "业务预警信息",
+						href : "page/ywjd/ywyj.html"
+					}
+				]
+			})
+		});
 	},"json");
 	
 })

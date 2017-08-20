@@ -1,0 +1,23 @@
+<table id="hmdgrid" class="easyui-datagrid"
+	data-options="fitColumns:true,singleSelect:true,fit:true,toolbar:hmdToolbar">
+	<thead> 
+		<tr>
+			<th data-options="field:'xm',width:20">姓名</th>
+			<th data-options="field:'sfzmhm',width:20">身份证号码</th>
+			<th data-options="field:'lrsj',width:20">录入时间</th>
+			<th data-options="field:'lrr',width:20">录入人</th>
+			<th data-options="field:'lryy',width:20">录入原因</th>
+			<th data-options="field:'blyw',width:20">办理业务</th>
+			<th data-options="field:'ywls',width:20">业务流水</th>
+		</tr>
+	</thead>
+</table>
+
+<div id="hmdToolbar">
+	<div>
+		<label>身份证：</label><input type="text" class="easyui-textbox" />
+		<label>姓名：</label><input type="text" class="easyui-textbox" />
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" >查询</a>
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" >添加黑名单</a>
+	</div>
+</div>
