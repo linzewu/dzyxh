@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+ <link rel="stylesheet" type="text/css" href="/dzyxh/js/easyui/themes/default/easyui.css">
+ <link rel="stylesheet" type="text/css" href="/dzyxh/js/easyui/themes/icon.css">
+
+<style type="text/css">
+.docs-pictures{
+POSITION: absolute;
+}
+.docs-pictures li img { width: 100%;}
+
+.docs-pictures li{ display: inline-block; width: 150px; margin-left: 1%; padding-top: 1%; text-align: center;}
+
+</style>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>电子影像 业务采集</title>
+  <link rel="stylesheet" href="/dzyxh/js/viewer/viewer.min.css">  
+<!--[if lt IE 9]>  
+<script src="/dzyxh/js/viewer/html5shiv.min.js"></script>  
+<script src="/dzyxh/js/viewer/respond.min.js"></script>  
+<![endif]-->  
+
+<script type="text/javascript" src="/dzyxh/js/easyui/jquery.min.js"></script>
+<script type="text/javascript" src="/dzyxh/js/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/dzyxh/js/viewer/viewer.min.js"></script>
+
+<!--[if lt IE 8]>  
+<p class="browserupgrade">你的浏览器版本太低，为了你正常使用该系统，请最少使用IE8版本，推荐IE11版本</p>  
+<![endif]-->  
+
+<script type="text/javascript">
+
+
+function GetQueryString(name)
+{
+     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null)return  unescape(r[2]); return null;
+}
+
+
+</script>
+</head>
+<body style="margin: 0 auto;" >
+<div style=" width:100%;height: 100%;">
+	<div style="float: left;">
+		<div  style="width:800px;">
+			 <ul class="docs-pictures">
+          	 </ul>
+		</div>
+	</div>
+	<div style="width: 400px;height: 620px; float: left;">
+		<div style="width: 100%;height: 460px;margin: 20px 0 0 20px ;">
+			<table>
+				<tr><td align="right">车辆识别代号：</td><td><span id="clsbdh"></span> </td></tr>
+				<tr><td align="right">号牌号码：</td><td><span id="hphm"></span></td></tr>
+				<tr><td align="right">号牌种类：</td><td><span id="hpzl"></span></td></tr>
+				<tr><td align="right">业务类型：</td><td><span id="ywlx"></span></td></tr>
+				<tr><td align="right">流水号：</td><td><span id="lsh"></span></td></tr>
+			</table>
+		</div>
+	</div>
+</div>
+</body>
+</html>

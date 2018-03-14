@@ -31,7 +31,7 @@
 	<bean id="vehSessionFactory"
 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="dataSource">
-			<ref bean="arcSysDataSource" />
+			<ref bean="vehDataSource" />
 		</property>
 		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
 		<property name="packagesToScan">
@@ -82,8 +82,8 @@
 		destroy-method="close">
 		<property name="jdbcUrl" value="${db.url}"></property>
 		<property name="driverClass" value="${db.driverClassName}"></property>
-		<property name="user" value="${db.veh.username}"></property>
-		<property name="password" value="${db.veh.password}"></property>
+		<property name="user" value="${db.veh.img.username}"></property>
+		<property name="password" value="${db.veh.img.password}"></property>
 		<property name="maxPoolSize" value="10"></property>
 		<property name="minPoolSize" value="3"></property>
 		<property name="initialPoolSize" value="3"></property>
@@ -93,7 +93,7 @@
 	<bean id="vehImgSessionFactory"
 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="dataSource">
-			<ref bean="arcSysDataSource" />
+			<ref bean="vehImgDataSource" />
 		</property>
 		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
 		<property name="packagesToScan">

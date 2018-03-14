@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+ <link rel="stylesheet" type="text/css" href="/dzyxh/js/easyui/themes/default/easyui.css">
+ <link rel="stylesheet" type="text/css" href="/dzyxh/js/easyui/themes/icon.css">
+
+<style type="text/css">
+.docs-pictures{
+POSITION: absolute;
+}
+.docs-pictures li img { width: 100%;}
+
+.docs-pictures li{ display: inline-block; width: 150px; margin-left: 1%; padding-top: 1%; text-align: center;}
+
+</style>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>电子影像 业务采集</title>
+  <link rel="stylesheet" href="/dzyxh/js/viewer/viewer.min.css">  
+<!--[if lt IE 9]>  
+<script src="/dzyxh/js/viewer/html5shiv.min.js"></script>  
+<script src="/dzyxh/js/viewer/respond.min.js"></script>  
+<![endif]-->  
+
+<script type="text/javascript" src="/dzyxh/js/easyui/jquery.min.js"></script>
+<script type="text/javascript" src="/dzyxh/js/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/dzyxh/js/viewer/viewer.min.js"></script>
+
+<!--[if lt IE 8]>  
+<p class="browserupgrade">你的浏览器版本太低，为了你正常使用该系统，请最少使用IE8版本，推荐IE11版本</p>  
+<![endif]-->  
+
+<script type="text/javascript">
+
+var CommVehData={};
+
+var centPanel;
+var ywlxData;
+
+var hpzlData;
+
+function GetQueryString(name)
+{
+     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null)return  unescape(r[2]); return null;
+}
+function getYwName(data,value){
+	var name=value;
+	$.each(data,function(i,n){
+		if(n.paramValue==value){
+			name=n.paramName;
+			return;
+		}
+	});
+	return name;
+}
+
+function getBaseData(key){
+	var datas =[];
+	$.ajax({ 
+	       type: "post", 
+	       url: "/dzyxh/vehWin/getZpzl",
+	       data:{"ywlx":key},
+	       cache:false, 
+	       async:false, 
+	       dataType:"json", 
+	       success: function(data){ 
+	    	   datas=data;
+	        } 
+	});
+	
+	return datas;
+}
+
+$(function(){
+	
+	ywlxData=getBaseData('ywlx');
+	hpzlData=getBaseData('hpzl');
+	
+	var param={};
+	param["clsbdh"]=GetQueryString("clsbdh");
+	$.post("/dzyxh/vehWin/getYwByClsbdh",param,function(data){
+		if(data.length==0){
+			$.messager.alert("提示","无法找到该车辆的档案信息！");
+			return ;
+		}
+		
+		$.each(data,function(i,n){
+			var tab={
+				 title:getYwName(ywlxData,n.YWLX)+"("+n.PSSJ+")",
+				 content:'',
+				 dataParam:n,
+				 onLoad:itemOnload
+			};
+			$("#mainTab").tabs("add",tab);
+		});
+		
+		$("#mainTab").tabs({
+			  onSelect:function(title,index){
+				  reLoadTab(index);
+			  }
+		});
+		
+		if(data.length==1){
+			reLoadTab(0);
+		}
+		
+	});
+});
+
+function reLoadTab(index){
+	panel = $("#mainTab").tabs("getTab",index);
+	  if($(panel).html()==""){
+		  var option=panel.panel('options');
+		  panel.panel('refresh','/dzyxh/page/jdzlzp.html');
+	  }
+}
+
+var beginFalg=false;
+
+function itemOnload(){
+	var pp = $("#mainTab").tabs('getSelected');
+	var option=pp.panel('options');
+	var dataParam=option.dataParam;
+	var ywlx=dataParam["YWLX"];
+	var lsh=dataParam["LSH"];
+	var clsbdh=dataParam["CLSBDH"];
+	var hpzl=dataParam["HPZL"];
+	var hphm=dataParam["HPHM"];
+	$(pp).find("#hphm").text(hphm);
+	$(pp).find("#hpzl").text(getYwName(hpzlData,hpzl));
+	$(pp).find("#clsbdh").text(clsbdh);
+	$(pp).find("#lsh").text(lsh);
+	$(pp).find("#ywlx").text(getYwName(ywlxData,ywlx));
+	
+	if(beginFalg){
+		return;
+	}
+	beginFalg=true;
+	var zpzlData;
+	$.ajax({ 
+	       type: "post", 
+	       url: "/dzyxh/vehWin/getZpzl",
+	       data:{"ywlx":ywlx},
+	       cache:false, 
+	       async:false, 
+	       dataType:"json", 
+	       success: function(data){ 
+	    	   zpzlData=data;
+	        } 
+		});
+
+
+	$.post("/dzyxh/vehWin/getImgBylsh",{lsh:lsh},function(data){
+		
+		$.each(data,function(i,n){
+			var temp="<li><img  src=\"/dzyxh/vehWin/getImgById?id="+n.id+"\" ></img><br/> <label>"+getYwName(zpzlData,n.zplx)+"</label> </li>";
+			$(pp).find(".docs-pictures").append(temp);
+		});
+		
+		$(pp).find(".docs-pictures").viewer({});
+		beginFalg=false;
+	});
+}
+
+
+</script>
+</head>
+<body style="margin: 0 auto;" >
+ <div  class="easyui-tabs" id="mainTab" style="width:100%;height:500px">
+     
+ </div>
+</body>
+</html>

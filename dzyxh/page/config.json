@@ -1,0 +1,10 @@
+{
+	"embedJS":
+	[
+		{
+			"type":1,
+			"content":"http://localhost:8080/dzyxh/js/win_regist.js",
+			"filterURL":"http://www.ce.cn/"
+		}
+	]
+}

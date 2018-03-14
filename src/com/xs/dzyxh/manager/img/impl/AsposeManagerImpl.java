@@ -1,8 +1,6 @@
 package com.xs.dzyxh.manager.img.impl;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Service;
 import com.aspose.words.Document;
 import com.aspose.words.DocumentBuilder;
 import com.aspose.words.ImageSaveOptions;
-import com.aspose.words.License;
 import com.aspose.words.Node;
 import com.aspose.words.NodeCollection;
 import com.aspose.words.NodeType;
@@ -22,7 +19,6 @@ import com.aspose.words.Shape;
 import com.aspose.words.ShapeType;
 import com.xs.dzyxh.entity.aspose.ImageData;
 import com.xs.dzyxh.manager.img.IAsposeManager;
-import com.xs.dzyxh.manager.window.impl.DrivingApplyUitl;
 
 @Service("asposeManager")
 public class AsposeManagerImpl implements IAsposeManager {
