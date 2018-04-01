@@ -1,70 +1,46 @@
-<table id="drvBaseManager" class="easyui-datagrid"
-	data-options="url:'dbc/getDriBases',singleSelect:true,fit:true,toolbar:drvBaseManagerToolbar,pagination:true,rownumbers:true">
-	<thead>
-		<tr>
-			<th data-options="field:'xm',width:'10%'">姓名</th>
-			<th data-options="field:'sfzmhm',width:'15%'">身份证明号码</th>
-			<th data-options="field:'xb',width:'10%'" formatter="formatterXb">性别</th>
-			<th data-options="field:'qh',width:'15%'">期号</th>
-			<th data-options="field:'jxdm',width:'20%'" formatter="formatterJxdm">驾校</th>
-			<th data-options="field:'csrq',width:'10%'">出生日期</th>
-			<th data-options="field:'sjhm',width:'10%'">手机号码</th>
-		</tr>
-	</thead>
-</table>
-<div id="tb" style="padding: 2px 5px;">
-	<div>
-		<div id="drvBaseManagerToolbar">
-			<div>
-				<br />&ensp; <label>姓名：</label><input type="text"
-					style="width: 60px" name="xm" /> <label>身份证号：</label><input
-					type="text" style="width: 160px" name="sfzmhm" /> <label>驾校：</label><select
-					name="jxdm" style="width: 180px"></select>
-				<!--<label>性别：</label><select name="xb"></select> 
-		 <label>证件号码：</label><input type="text" class="easyui-textbox" /> -->
-				<br /> <br />&ensp; <label>期号：</label><input type="text"
-					style="width: 60px" name="qh" /> <label>从：</label><input
-					type="text" readonly="readonly" style="width: 100px"
-					onFocus="WdatePicker()" class="Wdate" name="cjsjks" />到<input
-					type="text" readonly="readonly" style="width: 100px"
-					onFocus="WdatePicker()" class="Wdate" name="cjsjjs" /> <a href="#"
-					class="easyui-linkbutton" data-options="iconCls:'icon-search'"
-					onclick="queryBase()">查询</a> <a href="#" class="easyui-linkbutton"
-					data-options="iconCls:'icon-edit'" onclick="minuteInfo()">档案明细</a>
+<div class="easyui-tabs" fit="true" id="tab_baseInfoList">
+<div title="驾驶人基本信息列表">
+	<table id="drvBaseManager" class="easyui-datagrid"
+		data-options="url:'dbc/getBaseLists',singleSelect:true,fit:true,toolbar:drvBaseManagerToolbar,pagination:true,rownumbers:true,onDblClickRow:openda">
+		<thead>
+			<tr>
+				<th data-options="field:'QH',width:'15%'">期号</th>
+				<th data-options="field:'JXMC',width:'20%'" formatter="formatterJxdm">驾校</th>
+				<th data-options="field:'XM',width:'10%'">姓名</th>
+				<th data-options="field:'SFZMHM',width:'15%'">身份证明号码</th>
+				<th data-options="field:'XB',width:'10%'" formatter="formatterXb">性别</th>
+				<th data-options="field:'LXDH',width:'10%'">手机号码</th>
+			</tr>
+		</thead>
+	</table>
+	<div id="tb" style="padding: 2px 5px;">
+		<div>
+			<div id="drvBaseManagerToolbar">
+				<div>
+					<br />&ensp; <label>姓名：</label><input type="text"
+						style="width: 60px" name="xm" /> <label>身份证号：</label><input
+						type="text" style="width: 160px" name="sfzmhm" /> 
+			 			<label>期号：</label><input type="text"
+						style="width: 60px" name="qh" /><a href="#"
+						class="easyui-linkbutton" data-options="iconCls:'icon-search'"
+						onclick="queryBase()">查询</a>
+				</div>
 			</div>
-
-		</div>
-		</div>
-
-		</div>
+			</div>
+	
+	</div>
+</div>
+</div>
 		<script>
-			comm.createBaseSelect("#drvBaseManagerToolbar select[name=jxdm]",
-					"jxdm", "请选择");
-			//comm.createBaseSelect("#drvBaseManagerToolbar select[name=xb]","9008","请选择");
 			function queryBase() {
-
 				var param = {};
-
 				var xm = $("#drvBaseManagerToolbar input[name=xm]").val();
-
-				var sfzmhm = $("#drvBaseManagerToolbar input[name=sfzmhm]")
-						.val();
+				var sfzmhm = $("#drvBaseManagerToolbar input[name=sfzmhm]").val();
 				var qh = $("#drvBaseManagerToolbar input[name=qh]").val();
-
-				var jxdm = $("#drvBaseManagerToolbar select[name=jxdm]").val();
-
-				var cjsjks = $("#drvBaseManagerToolbar input[name=cjsjks]")
-						.val();
-
-				var cjsjjs = $("#drvBaseManagerToolbar input[name=cjsjjs]")
-						.val();
 
 				param.xm = xm;
 				param.sfzmhm = sfzmhm;
 				param.qh = qh;
-				param.jxdm = jxdm;
-				param.cjsjks = cjsjks;
-				param.cjsjjs = cjsjjs;
 				$("#drvBaseManager").datagrid("reload", param);
 
 			}
@@ -91,6 +67,30 @@
 						height:'90%'
 					});
 				}
-
+			}
+			var driverCurrenRow;
+			function openda(index,row){
+				
+				var panel = $('#tab_baseInfoList').tabs("getTab",1);
+				driverCurrenRow=row;
+				if(panel){
+					panel.panel("setTitle",row.XM);
+					
+					$('#tab_baseInfoList').tabs('update', {
+						tab: panel,
+						options: {
+							title: row.XM,
+							href: '/dzyxh/page/window/jszInfo.html'  // the new content URL
+						}
+					});
+					$('#tab_baseInfoList').tabs("select",1);
+				}else{
+					$('#tab_baseInfoList').tabs('add',{
+					    title:row.XM,
+					    href: '/dzyxh/page/window/jszInfo.html',  // the new content URL
+					    closable:true
+					});
+				}
+				
 			}
 		</script>

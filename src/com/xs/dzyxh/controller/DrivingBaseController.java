@@ -1,42 +1,59 @@
 package com.xs.dzyxh.controller;
 
-import java.util.List;
+import java.io.File;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xs.common.Constant;
-import com.xs.common.ResultHandler;
+import com.xs.common.Sql2WordUtil;
 import com.xs.common.Annotation.FunctionAnnotation;
 import com.xs.common.Annotation.ModuleAnnotation;
-import com.xs.dzyxh.entity.driver.DrivingBase;
-import com.xs.dzyxh.manager.window.IDrivingBaseManager;
+import com.xs.dzyxh.manager.tongan.ITonGanManager;
 
 @Controller
 @RequestMapping(value = "/dbc")
 @ModuleAnnotation(modeName = Constant.ConstantDZYXH.MODE_NAME_WINDOW, appName = Constant.ConstantDZYXH.APP_NAME_DRIVING,icoUrl="/dzyxh/images/fxp_48.png",href="/dzyxh/page/window/jsz.html",modeIndex=1,appIndex=2)
 public class DrivingBaseController {
-	@Resource(name = "driverManager")
-	private IDrivingBaseManager drivingBaseManager;
 	
-	@FunctionAnnotation(name = "基本信息查询")
-	@RequestMapping(value = "getDriBases")
-	public @ResponseBody Map<String, Object> getDriBases(DrivingBase base, Integer page, Integer rows) {
-		List<DrivingBase> baseList = drivingBaseManager.getDrivingBases(base, page, rows);
-		Integer count = drivingBaseManager.getUserCount(base);
-		return ResultHandler.toMyJSON(baseList, count);
-	}
-	@FunctionAnnotation(name = "根据ID查询基本信息")
-	@RequestMapping(value = "getDriBaseById")
-	public @ResponseBody DrivingBase getDrivingBaseById(DrivingBase base){
-		return drivingBaseManager.getDrivingBaseById(base);
+	Logger logger = Logger.getLogger(DrivingBaseController.class);
+	
+	@Resource(name = "tonGanManager")
+	private ITonGanManager tonGanManager;
+	
+	@FunctionAnnotation(name = "查询基本信息")
+	@RequestMapping(value = "getBaseLists")
+	public @ResponseBody Map<String, Object> getBaseLists(@RequestParam Map<String,Object> param){
+		 return tonGanManager.getBaseList(param);
 	}
 	
 	
+	@FunctionAnnotation(name = "查询基本信息")
+	@RequestMapping(value = "getDriverImage",method = RequestMethod.GET)
+	public String getDriverImage(@RequestParam String sfzmhm,@RequestParam String qh, @RequestParam String jxdm,@RequestParam String zplx){
+		
+		String key =jxdm+"_"+qh+"_"+sfzmhm+"_"+zplx+".jpg";
+		
+		String patch =  Sql2WordUtil.getCacheDir()+key;
+		File file=new File(patch);
+		String filePath=key;
+		if(!file.exists()) {
+			//String filePath = Sql2WordUtil.sql2WordUtilCase(template, sql, hibernateTemplate, fileName);
+			
+			//if(filePath==null) {
+				return "forward:/images/no-image.jpg";
+			//}
+			
+		}
+		
+		return "forward:/images/cache/"+filePath;
+		
+	}
 }

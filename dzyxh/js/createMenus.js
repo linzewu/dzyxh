@@ -156,7 +156,7 @@ $(function() {
 			comm.createMume(k + 'Mune', data);
 		})
 		$("#tabAll").tabs();
-		$("#tabAll").tabs("add",{
+		/*$("#tabAll").tabs("add",{
 			title:"机动车档案管理",
 			selected:false,
 			content:comm.creaTemplate({
@@ -186,8 +186,8 @@ $(function() {
 				]
 			})
 		});
-		
-		$("#tabAll").tabs("add",{
+		*/
+		/*$("#tabAll").tabs("add",{
 			title:"库房档案管理",
 			selected:false,
 			content:comm.creaTemplate({
@@ -211,9 +211,9 @@ $(function() {
 					}
 				]
 			})
-		});
+		});*/
 		
-		$("#tabAll").tabs("add",{
+		/*$("#tabAll").tabs("add",{
 			title:"业务监督及预警",
 			selected:false,
 			content:comm.creaTemplate({
@@ -232,7 +232,7 @@ $(function() {
 					}
 				]
 			})
-		});
+		});*/
 	},"json");
 	
 })

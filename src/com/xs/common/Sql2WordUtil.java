@@ -2,8 +2,11 @@ package com.xs.common;
 
 import java.io.InputStream;
 import java.lang.reflect.Proxy;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -19,7 +22,6 @@ import com.aspose.words.NodeCollection;
 import com.aspose.words.NodeType;
 import com.aspose.words.SaveFormat;
 import com.aspose.words.Shape;
-import com.aspose.words.net.System.Data.DataTable;
 
 import oracle.sql.BLOB;
 
@@ -32,12 +34,17 @@ public class Sql2WordUtil {
 		Map<String,Object> data = hibernateTemplate.execute(new HibernateCallback<Map<String,Object>>() {
 			@Override
 			 public Map<String, Object> doInHibernate(Session session) throws HibernateException {
-				 Map<String,Object> data =(Map<String,Object>)session.createSQLQuery(sql).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).uniqueResult();
-				return data;
+				List<Map<String,Object>> datas =(List<Map<String,Object>>)session.createSQLQuery(sql).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
+				if(!CollectionUtils.isEmpty(datas)) {
+					return datas.get(0);
+				}
+				return null;
 			}
 		});
-		Document doc = createTemplate(template,data);
-		
+		Document doc=null;
+		if(data!=null) {
+			 doc = createTemplate(template,data);
+		}
 		//ByteArrayOutputStream out = new ByteArrayOutputStream();
 		//doc.save(out, iso);
 		return doc;
@@ -55,12 +62,14 @@ public class Sql2WordUtil {
 			Shape shape = (Shape) node;
 			com.aspose.words.ImageData i = shape.getImageData();// 获得图片数据
 			Object imgObj=data.get(shape.getAlternativeText()); 
+			if(imgObj==null) {
+				continue;
+			}
 			SerializableBlobProxy proxy = (SerializableBlobProxy )Proxy.getInvocationHandler(imgObj);
 			BLOB blob =(BLOB)proxy.getWrappedBlob();
 			if (blob!=null) {// 如果shape类型是ole类型
 				InputStream inStream = blob.getBinaryStream();
 				i.setImage(inStream);
-				break;
 			}
 		}
 		
@@ -97,21 +106,28 @@ public class Sql2WordUtil {
 	}
 	
 	
-	public static void sql2WordUtilCase(String template, String sql, HibernateTemplate hibernateTemplate,String fileName) throws Exception {
+	public static String sql2WordUtilCase(String template, String sql, HibernateTemplate hibernateTemplate,String fileName) throws Exception {
 		Document doc = sql2WordUtil(template, sql, hibernateTemplate);
 		
-		ImageSaveOptions iso = new ImageSaveOptions(SaveFormat.JPEG);
-		iso.setPrettyFormat(true);
-		iso.setUseAntiAliasing(true);
-		iso.setJpegQuality(80);
-		doc.save(getCacheDir()+fileName,iso);
+		if(doc!=null) {
+			ImageSaveOptions iso = new ImageSaveOptions(SaveFormat.JPEG);
+			iso.setPrettyFormat(true);
+			iso.setUseAntiAliasing(true);
+			iso.setJpegQuality(80);
+			doc.save(getCacheDir()+fileName,iso);
+			return fileName;
+		}else {
+			return null;
+		}
+		
+		
 	}
 	
 	public static String getCacheDir() {
 		String path = Sql2WordUtil.class.getClassLoader().getResource("").getPath().toString();
 		String temp = path.split("WEB-INF")[0];
 		
-		return temp+"cache/";
+		return temp+"images/cache/";
 		
 	}
 

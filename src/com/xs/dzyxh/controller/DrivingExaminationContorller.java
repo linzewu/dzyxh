@@ -25,7 +25,7 @@ import com.xs.dzyxh.manager.window.IDrivingExaminationManager;
 
 @Controller
 @RequestMapping(value = "/exa")
-@ModuleAnnotation(modeName = Constant.ConstantDZYXH.MODE_NAME_WINDOW, appName = Constant.ConstantDZYXH.APP_NAME_EXAMINATION,icoUrl="/dzyxh/images/car_48.png",href="/dzyxh/page/window/tjbxx.html",modeIndex=1,appIndex=1)
+//@ModuleAnnotation(modeName = Constant.ConstantDZYXH.MODE_NAME_WINDOW, appName = Constant.ConstantDZYXH.APP_NAME_EXAMINATION,icoUrl="/dzyxh/images/car_48.png",href="/dzyxh/page/window/tjbxx.html",modeIndex=1,appIndex=1)
 public class DrivingExaminationContorller {
 	@Resource(name = "drivingExamination")
 	private IDrivingExaminationManager drivingExaminationManager;
