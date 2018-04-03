@@ -2,7 +2,10 @@ package com.xs.common;
 
 import java.io.InputStream;
 import java.lang.reflect.Proxy;
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -45,8 +48,6 @@ public class Sql2WordUtil {
 		if(data!=null) {
 			 doc = createTemplate(template,data);
 		}
-		//ByteArrayOutputStream out = new ByteArrayOutputStream();
-		//doc.save(out, iso);
 		return doc;
 	}
 	
@@ -110,14 +111,18 @@ public class Sql2WordUtil {
 				if(fieldName.indexOf("CK")==0) {
 					String[] temp = fieldName.split("##");
 					String value=temp[1];
-					fieldValues[i]=(String)data.get(temp[2]);
+					if(data.get(temp[2]) instanceof Character){
+						fieldValues[i]=((Character)data.get(temp[2])).toString();
+					}else{
+						fieldValues[i]=(String)data.get(temp[2]);
+					}
 					if(value.equals(fieldValues[i])) {
 						fieldValues[i]="☑";
 					}else {
 						fieldValues[i]="□";
 					}
 				}else {
-					fieldValues[i]=(String)data.get(fieldName);
+					fieldValues[i] = translateMapValue(data, fieldName);
 				}
 				i++;
 			}
@@ -157,4 +162,34 @@ public class Sql2WordUtil {
 		
 	}
 
+	public static String getStringDate(Date date,int type){
+		return type==0?new SimpleDateFormat("yyyy年MM月dd日").format(date):new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
+	}
+	
+	public static String translateMapValue(Map<String,Object> map,String key){
+		
+		if(map.get(key) instanceof BigDecimal ){
+			BigDecimal bg = (BigDecimal) map.get(key);
+			return bg.toString();
+		}
+		if(map.get(key) instanceof Date ){
+			if(key.indexOf("PSSJ")==0){
+				return getStringDate((Date) map.get(key),1);
+			}
+			return getStringDate((Date) map.get(key),0);
+		}
+		if(map.get(key) instanceof Character){
+			return ((Character)map.get(key)).toString();
+		}
+		if(key.equals("XB")){
+			return (map.get(key)).equals("1")?"男":"女";
+		}
+		if(key.equals("GJ")){
+			return (map.get(key)).equals("156")?"中国":"外国";
+		}
+		if("ZETL".equals(key)||"YETL".equals(key)||"ZSZ".equals(key)||"ZXZ".equals(key)||"YSZ".equals(key)||"YXZ".equals(key)){
+			return (map.get(key)).equals("1")?"合格":"不合格";
+		}
+		return (String) map.get(key);
+	}
 }
