@@ -50,6 +50,32 @@ public class Sql2WordUtil {
 		return doc;
 	}
 	
+	public static Map<String,Object> sql2MapUtil(final String sql, HibernateTemplate hibernateTemplate) throws Exception{
+		
+		Map<String,Object> data = hibernateTemplate.execute(new HibernateCallback<Map<String,Object>>() {
+			@Override
+			 public Map<String, Object> doInHibernate(Session session) throws HibernateException {
+				List<Map<String,Object>> datas =(List<Map<String,Object>>)session.createSQLQuery(sql).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
+				if(!CollectionUtils.isEmpty(datas)) {
+					return datas.get(0);
+				}
+				return null;
+			}
+		});
+		
+		return data;
+	}
+	
+	public static Document map2WordUtil(final String template,Map<String,Object> data) throws Exception{
+		
+		Document doc=null;
+		if(data!=null) {
+			 doc = createTemplate(template,data);
+		}
+		return doc;
+	}
+	
+	
 	
 	public static Document createTemplate(String template,Map<String, Object> data) throws Exception {
 		

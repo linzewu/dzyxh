@@ -6,6 +6,7 @@
 	.driverImage ul li{
 		float: left;
 		list-style: none;
+		text-align: center;
 	}
 	
 	.driverImage ul li img{
@@ -22,14 +23,18 @@
 	</ul>
 </div>
 <script>
+function imgPrint(e){
+	$(e).siblings("img").print();
+}
 
-
-$(".driverImage ul").append("<li><img src=\"/dzyxh/dbc/getDriverImage?sfzmhm="+driverCurrenRow.SFZMHM+"&jxdm="+driverCurrenRow.JXDM+"&qh="+driverCurrenRow.QH+"&zplx=01\"></li>");
-$(".driverImage ul").append("<li><img src=\"/dzyxh/dbc/getDriverImage?sfzmhm="+driverCurrenRow.SFZMHM+"&jxdm="+driverCurrenRow.JXDM+"&qh="+driverCurrenRow.QH+"&zplx=02\"></li>");
-$(".driverImage ul").append("<li><img src=\"/dzyxh/dbc/getDriverImage?sfzmhm="+driverCurrenRow.SFZMHM+"&jxdm="+driverCurrenRow.JXDM+"&qh="+driverCurrenRow.QH+"&zplx=03\"></li>");
-$(".driverImage ul").append("<li><img src=\"/dzyxh/dbc/getDriverImage?sfzmhm="+driverCurrenRow.SFZMHM+"&jxdm="+driverCurrenRow.JXDM+"&qh="+driverCurrenRow.QH+"&zplx=04\"></li>");
-$(".driverImage ul").append("<li><img src=\"/dzyxh/dbc/getDriverImage?sfzmhm="+driverCurrenRow.SFZMHM+"&jxdm="+driverCurrenRow.JXDM+"&qh="+driverCurrenRow.QH+"&zplx=05\"></li>");
-$(".driverImage ul").append("<li><img src=\"/dzyxh/dbc/getDriverImage?sfzmhm="+driverCurrenRow.SFZMHM+"&jxdm="+driverCurrenRow.JXDM+"&qh="+driverCurrenRow.QH+"&zplx=06\"></li>");
-$(".driverImage ul").append("<li><img src=\"/dzyxh/dbc/getDriverImage?sfzmhm="+driverCurrenRow.SFZMHM+"&jxdm="+driverCurrenRow.JXDM+"&qh="+driverCurrenRow.QH+"&zplx=07\"></li>");
+$(".driverImage").empty();
+$(".driverImage").append("<ul></ul>");
+$(".driverImage ul").append("<li><img src=\"/dzyxh/dbc/getDriverImage?sfzmhm="+driverCurrenRow.SFZMHM+"&jxdm="+driverCurrenRow.JXDM+"&qh="+driverCurrenRow.QH+"&zplx=01\"><br><label>照片1</label><input type='button' value='打印' onclick='imgPrint(this)'></li>");
+$(".driverImage ul").append("<li><img src=\"/dzyxh/dbc/getDriverImage?sfzmhm="+driverCurrenRow.SFZMHM+"&jxdm="+driverCurrenRow.JXDM+"&qh="+driverCurrenRow.QH+"&zplx=02\"><br><label>照片1</label><input type='button' value='打印' onclick='imgPrint(this)'></li>");
+$(".driverImage ul").append("<li><img src=\"/dzyxh/dbc/getDriverImage?sfzmhm="+driverCurrenRow.SFZMHM+"&jxdm="+driverCurrenRow.JXDM+"&qh="+driverCurrenRow.QH+"&zplx=03\"><br><label>照片1</label><input type='button' value='打印' onclick='imgPrint(this)'></li>");
+$(".driverImage ul").append("<li><img src=\"/dzyxh/dbc/getDriverImage?sfzmhm="+driverCurrenRow.SFZMHM+"&jxdm="+driverCurrenRow.JXDM+"&qh="+driverCurrenRow.QH+"&zplx=04\"><br><label>照片1</label><input type='button' value='打印' onclick='imgPrint(this)'></li>");
+$(".driverImage ul").append("<li><img src=\"/dzyxh/dbc/getDriverImage?sfzmhm="+driverCurrenRow.SFZMHM+"&jxdm="+driverCurrenRow.JXDM+"&qh="+driverCurrenRow.QH+"&zplx=05\"><br><label>照片1</label><input type='button' value='打印' onclick='imgPrint(this)'></li>");
+$(".driverImage ul").append("<li><img src=\"/dzyxh/dbc/getDriverImage?sfzmhm="+driverCurrenRow.SFZMHM+"&jxdm="+driverCurrenRow.JXDM+"&qh="+driverCurrenRow.QH+"&zplx=06\"><br><label>照片1</label><input type='button' value='打印' onclick='imgPrint(this)'></li>");
+$(".driverImage ul").append("<li><img src=\"/dzyxh/dbc/getDriverImage?sfzmhm="+driverCurrenRow.SFZMHM+"&jxdm="+driverCurrenRow.JXDM+"&qh="+driverCurrenRow.QH+"&zplx=07\"><br><label>照片1</label><input type='button' value='打印' onclick='imgPrint(this)'></li>");
 $(".driverImage ul").viewer({});
 </script>
