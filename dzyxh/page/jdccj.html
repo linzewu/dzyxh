@@ -8,11 +8,19 @@ POSITION: absolute;
 .docs-pictures li img { width: 100%;}
 
 .docs-pictures li{ display: inline-block; width: 150px; margin-left: 1%; padding-top: 1%; text-align: center;}
-
+.signElement {
+	background-color:white;
+    position: absolute; left: 50%; top: 50%;
+    margin-top: -300px;    /* 高度的一半 */
+    margin-left: -400px;    /* 宽度的一半 */
+    border: 1px solid; z-index: 999;
+}
 </style>
  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>电子影像 业务采集</title>
-  <link rel="stylesheet" href="/dzyxh/js/viewer/viewer.min.css">  
+  <link rel="stylesheet" href="/dzyxh/js/viewer/viewer.min.css">
+<link rel="stylesheet" type="text/css"
+	href="/dzyxh/js/easyui/themes/gray/easyui.css">
 <!--[if lt IE 9]>  
 <script src="/dzyxh/js/viewer/html5shiv.min.js"></script>  
 <script src="/dzyxh/js/viewer/respond.min.js"></script>  
@@ -20,6 +28,10 @@ POSITION: absolute;
 
 <script type="text/javascript" src="/dzyxh/js/easyui/jquery.min.js"></script>
 <script type="text/javascript" src="/dzyxh/js/viewer/viewer.min.js"></script>
+
+<script type="text/javascript" src="/dzyxh/js/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/dzyxh/js/common.js"></script>
+<script type="text/javascript" src="/dzyxh/bps/all.js"></script>
 
 <!--[if lt IE 8]>  
 <p class="browserupgrade">你的浏览器版本太低，为了你正常使用该系统，请最少使用IE8版本，推荐IE11版本</p>  
@@ -187,10 +199,10 @@ $(function(){
 	var hphm=GetQueryString("hphm");
 	
 	$("#hphm").text(hphm);
-	$("#hpzl").text(hpzl);
+	$("#hpzl").text(comm.getParamNameByValue("hpzl",hpzl));
 	$("#clsbdh").text(clsbdh);
 	$("#lsh").text(lsh);
-	$("#ywlx").text(ywlx);
+	$("#ywlx").text(comm.getParamNameByValue("ywlx",ywlx));
 
 	$.post("/dzyxh/vehWin/getZpzl",{ywlx:ywlx},function(data){
 		$.each(data,function(i,n){
@@ -215,7 +227,107 @@ $(function(){
 	});
 
 	start_preview();
-})
+	
+	initSign();
+});
+
+var m_deviceID=2;
+var ulFormat=2;
+var signZpzlValue='099';
+var proxySignZpzlValue='098';
+function initSign(){
+	var signObject = document.getElementById("signObject");
+    var canvasWidth = 800;
+    var canvasHeight = 500;
+    var initial;
+    initial = signObject.PPL398_InitialDevice(m_deviceID, 0, 0, canvasWidth, canvasHeight);
+    if (initial == 0) {
+        setTimeout(function() {
+        	signObject.PPL398_SetCanvasSize(m_deviceID, 0, 0, canvasWidth, canvasHeight);
+        	signObject.PPL398_SetPenColor(m_deviceID, 0, 0, 0);
+        	signObject.PPL398_EnableSaveVideoData(m_deviceID, true);
+            var i = signObject.PPL398_SignatureStatusCallback(m_deviceID, 'jsPPL398_StatusChanged');
+        }, 50);
+        //jsSetCtrStatusByInitial();
+       // InitialSelectOption();
+      //  disabledPointOptions();
+    } else {
+        alert('没有接入签名设备');
+    }
+    $(".signElement").hide();
+}
+
+function showSign(title,zplx){
+	
+	var flag =false;
+	$.each($("input[name=zplx]"),function(i,n){
+		if($(n).val()==zplx){
+			flag =true;
+			return;
+		}
+	});
+	
+	if(!flag){
+		alert("该业务类型无"+title+",请联系管理员配置！")
+		return;
+	}
+	
+	$("#signTitle").text("请"+title+"！");
+	clearSign();
+	$(".signElement").show();
+	$("#ScanCtrl").hide();
+	$("#signType").val(zplx);
+}
+
+function signClose(){
+	$(".signElement").hide();
+	$("#ScanCtrl").show();
+}
+
+function clearSign(){
+	var signObject = document.getElementById("signObject");
+	signObject.PPL398_Clear(m_deviceID);
+}
+
+function saveSign(){
+	var signObject = document.getElementById("signObject");
+	var img64 = signObject.PPL398_PacketsBase64Encode(m_deviceID, ulFormat);
+	
+	if(!img64){
+		alert("签名异常！");
+		return;
+	}
+	
+	var ywlx=GetQueryString("ywlx");
+	var lsh=GetQueryString("lsh");
+	var clsbdh=GetQueryString("clsbdh");
+	var hpzl=GetQueryString("hpzl");
+	var hphm=GetQueryString("hphm");
+	var param={};
+	param.ywlx=ywlx;
+	param.lsh=lsh;
+	param.clsbdh=clsbdh;
+	param.hpzl=hpzl;
+	param.hphm=hphm;
+	param.base64Img=img64;
+	param.zplx=$("#signType").val();
+	var zpObj= $("input[name=zplx][value="+param.zplx+"]");
+	var zpid=zpObj.attr("zpid");
+	if(zpid){
+		param.zpid=zpid;
+	}
+	$.post("/dzyxh/vehWin/saveImg",param,function(data){
+		if(data.state==1){
+			$(".docs-pictures img[zplx="+data.data.zplx+"]").attr("src","/dzyxh/vehWin/getImgById?id="+data.data.id);
+			zpObj.attr("zpid",data.data.id);
+			signClose();
+		}
+	});
+	
+	
+
+}
+
 
 </script>
 <script type="text/javascript" event="DeviceChange(code)" for="ScanCtrl">  
@@ -228,7 +340,7 @@ $(function(){
 		<div style="width: 800px;height: 450px;">
 			<object  classid="clsid:090457CB-DF21-41EB-84BB-39AAFC9E271A"
 							id="ScanCtrl" codebase="*.cab#version=1,0,0,1" width="800"
-							height="450"  ></object>
+							height="450"></object>
 		</div>
 		<div  style="display:block;white-space:nowrap;width:800px;overflow:auto;">
 			 <ul class="docs-pictures">
@@ -257,17 +369,32 @@ $(function(){
 						</td>
 					</tr>
 					<tr>
-						<td><input class="submit_01" type="button" value="开始预览" onclick="start_preview()" />
-							 <input class="submit_01" type="button" value="停止预览" onclick="stop_preview()" /> 
+						<td>
+							 <input class="submit_01" type="button" value="预览" onclick="start_preview()" />
+							 <input class="submit_01" type="button" value="停止" onclick="stop_preview()" /> 
 							 <input class="submit_01" type="button" value="拍照" onclick="TakePic()" />
-							 <input class="submit_01" type="button" value="属性" onclick="Property()" />
-							 <input class="submit_01"  type="button" value="放大" onclick="ZoomIn()" /> 
-							 <input  class="submit_01" type="button" value="缩小" onclick="ZoomOut()" />									</td>
+							 <input class="submit_01" type="button" value="本人签名" onclick="showSign('本人签名',signZpzlValue)" />	
+							 <input class="submit_01" type="button" value="代理人签名" onclick="showSign('代理人签名',proxySignZpzlValue)" />
+						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 	</div>
 </div>
+
+<div  class="signElement">
+	<div style="text-align: center;">
+		<em><h2 id="signTitle">请用户签名</h2></em>
+	</div>
+	<object ID="signObject" border=0 width="800" height="500" classid="clsid:BFAA2FD5-B6E7-41D0-B104-A433ED33F461"></object>
+	<div style="text-align: center;">
+		<input id="signType" type="hidden"  />
+		<input class="submit_01" type="button" value="确定" onclick="saveSign()" /> 
+		<input class="submit_01" type="button" value="重签" onclick="clearSign()" /> 
+		<input class="submit_01" type="button" value="关闭" onclick="signClose()" />
+	</div>
+</div>
+
 </body>
 </html>
