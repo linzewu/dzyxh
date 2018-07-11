@@ -254,7 +254,7 @@ function initSign(){
     } else {
         alert('没有接入签名设备');
     }
-    $(".signElement").hide();
+    setTimeout("$('.signElement').hide()",1000);
 }
 
 function showSign(title,zplx){
