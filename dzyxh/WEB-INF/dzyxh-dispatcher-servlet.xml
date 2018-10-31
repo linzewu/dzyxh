@@ -23,10 +23,12 @@
 	<mvc:resources location="/index.html" mapping="/index.html" />
 	<mvc:resources location="/login.html" mapping="/login.html" />
 	<mvc:resources location="/" mapping="/*.html" />
+	<mvc:resources location="/" mapping="/*.json" />
 
 	<!-- 自动加载构建bean -->
 	<context:component-scan base-package="com.xs.dzyxh.controller" />
 
+	<aop:aspectj-autoproxy expose-proxy="true"/>
 
 	<!-- <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"> 
 		<property name="messageConverters"> <list> <ref bean="stringHttpMessageConverter" 
@@ -106,6 +108,7 @@
 			<mvc:exclude-mapping path="/html/**" />
 			<mvc:exclude-mapping path="/page/**" />
 			<mvc:exclude-mapping path="/*.html" />
+			<mvc:exclude-mapping path="/*.json" />
 			<bean class="com.xs.web.util.UserInterceptor"></bean>
 		</mvc:interceptor>
 	</mvc:interceptors>

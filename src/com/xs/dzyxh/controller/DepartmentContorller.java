@@ -16,7 +16,7 @@ import com.xs.common.ResultHandler;
 import com.xs.common.Annotation.FunctionAnnotation;
 import com.xs.common.Annotation.ModuleAnnotation;
 import com.xs.dzyxh.entity.system.Department;
-import com.xs.dzyxh.manager.sys.impl.DepartmentManagerImpl;
+import com.xs.dzyxh.manager.impl.DepartmentManagerImpl;
 
 @Controller
 @RequestMapping(value = "/dept")

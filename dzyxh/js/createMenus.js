@@ -1,3 +1,8 @@
+//获取用户所有功能点
+var allRolePower;
+//当前登录用户
+var userInfo;
+
 
 function Map() {
 	function KeyIndex(key, index) {
@@ -118,7 +123,85 @@ function Map() {
 }
 // 解析菜单
 $(function() {
-	$.post("role/menu.json",{},function(json){
+	
+	userInfo = $.ajax({
+		url : "user/getCurrentUser",
+		async : false,
+		type:'POST'
+	}).responseText;
+
+	userInfo=$.parseJSON(userInfo);
+	console.log("&&&"+userInfo)
+	allRolePower=$.ajax({
+		url : "role/getRolePower",
+		async : false,
+		type:'POST'
+	}).responseText;
+	
+	function createTab(data){
+		$.each(data,function(i,n){
+			$("#tabAll").tabs("add",{
+				title:n.module,
+				selected:i==0?true:false,
+				href:n.url==null?"page/defaultTemplate.html":n.url,
+				onLoad:function(){
+					if(n.url==null){
+						createDefaultMenu(n.module,n.group);
+					}
+				}
+			});
+		});
+	};
+	
+	function createDefaultMenu(title,group){
+		var currentPanel = $("#tabAll").tabs("getTab",title);
+		var accordion =$(currentPanel).find(".easyui-accordion");
+		var centerPanel = currentPanel.find(".easyui-layout").layout('panel','center');
+		$.each(group,function(i,item){
+			
+			var menus = [];
+			$.each(item.menus,function(i,n){
+				console.log(allRolePower+" "+n.permission)
+				if(allRolePower.indexOf(n.permission) != -1){
+					menus.push(n);
+				}
+			});
+			accordion.accordion('add', {
+				title: item.groupName,
+				content: createItemMume(centerPanel,item.menus),//createItemMume(centerPanel,menus),授权后修改
+				selected: i==0?true:false
+			});
+			
+		});
+		
+		
+	}
+	
+	function createItemMume(centerPanel, data) {
+		var ul = $("<ul class='menus'></ul>");
+		$.each(data,function(i,n){
+			var li = $("<li><a href=\"javascript:void(0)\"><img></a></li>");
+			li.find("img").attr("src", n.icon);
+			li.find("a").append(n.title);
+			li.click(function(){
+				centerPanel.panel("refresh",n.href);
+			});
+			ul.append(li);
+			if(i==0&&centerPanel.html()==""){
+				li.click();
+			}
+		});
+		return ul;
+	}
+	
+	
+	
+	$.get("page/sysMenu.json",function(data){
+		$("#tabAll").tabs();
+		createTab(data);
+	},"json");
+	
+/*	$.post("role/menu.json",{},function(json){
 		json=jQuery.parseJSON(json);
 		var m = new Map();
 		var temp = {};
@@ -156,7 +239,7 @@ $(function() {
 			comm.createMume(k + 'Mune', data);
 		})
 		$("#tabAll").tabs();
-		/*$("#tabAll").tabs("add",{
+		$("#tabAll").tabs("add",{
 			title:"机动车档案管理",
 			selected:false,
 			content:comm.creaTemplate({
@@ -186,8 +269,8 @@ $(function() {
 				]
 			})
 		});
-		*/
-		/*$("#tabAll").tabs("add",{
+		
+		$("#tabAll").tabs("add",{
 			title:"库房档案管理",
 			selected:false,
 			content:comm.creaTemplate({
@@ -211,9 +294,9 @@ $(function() {
 					}
 				]
 			})
-		});*/
+		});
 		
-		/*$("#tabAll").tabs("add",{
+		$("#tabAll").tabs("add",{
 			title:"业务监督及预警",
 			selected:false,
 			content:comm.creaTemplate({
@@ -232,7 +315,7 @@ $(function() {
 					}
 				]
 			})
-		});*/
-	},"json");
+		});
+	},"json");*/
 	
 })

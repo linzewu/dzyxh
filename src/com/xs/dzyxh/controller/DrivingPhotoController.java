@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.xs.common.ResultHandler;
 import com.xs.common.Annotation.FunctionAnnotation;
 import com.xs.dzyxh.entity.driimg.DrivingPhoto;
-import com.xs.dzyxh.manager.driverimg.IDrivingPhotoManager;
+import com.xs.dzyxh.manager.IDrivingPhotoManager;
 
 @Controller
 @RequestMapping(value = "/img")

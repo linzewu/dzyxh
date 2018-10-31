@@ -20,9 +20,9 @@ import com.xs.common.Annotation.FunctionAnnotation;
 import com.xs.dzyxh.entity.driimg.DrivingPhoto;
 import com.xs.dzyxh.entity.driver.DrivingApply;
 import com.xs.dzyxh.entity.driver.DrivingBase;
-import com.xs.dzyxh.manager.driverimg.IDrivingPhotoManager;
-import com.xs.dzyxh.manager.window.IDrivingApplyManager;
-import com.xs.dzyxh.manager.window.IDrivingBaseManager;
+import com.xs.dzyxh.manager.IDrivingApplyManager;
+import com.xs.dzyxh.manager.IDrivingBaseManager;
+import com.xs.dzyxh.manager.IDrivingPhotoManager;
 
 @Controller
 @RequestMapping(value = "/apply")

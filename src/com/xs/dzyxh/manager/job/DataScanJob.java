@@ -43,7 +43,8 @@ import com.xs.dzyxh.entity.tongan.ZwEnrollTempId;
 import com.xs.dzyxh.entity.tongan.ZwInfoData;
 import com.xs.dzyxh.entity.tongan.ZwInfoDataId;
 import com.xs.dzyxh.entity.tongan.ZwUserInfo;
-import com.xs.dzyxh.manager.sys.IScanDataLogManager;
+import com.xs.dzyxh.manager.IDataScanJobManager;
+import com.xs.dzyxh.manager.IScanDataLogManager;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONNull;

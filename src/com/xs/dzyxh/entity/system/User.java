@@ -1,11 +1,14 @@
 package com.xs.dzyxh.entity.system;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
@@ -25,6 +28,8 @@ public class User extends BaseEntity {
 	public final static Integer ZT_CZMM=0;
 	
 	public final static Integer ZT_ZC=1;
+	
+	public static final String SYSTEM_USER="system";
 	
 	@Column(length=32)
 	private String bmdm;
@@ -66,7 +71,7 @@ public class User extends BaseEntity {
 	@Column
 	private Integer zt;
 	
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	@DateTimeFormat( pattern = "yyyy-MM-dd HH:mm:ss" )
 	@Column
 	private Date zjdlsj;
@@ -80,7 +85,44 @@ public class User extends BaseEntity {
 	@Column(length=8000)
 	private String qx;
 	
+	//允许登录时间(开始)
+	@Column(length=10)
+	private String permitBeginTime;
 	
+	//允许登录时间(截止)
+	@Column(length=10)
+	private String permitEndTime;
+	
+	@Column
+	private Character isPolice;
+	
+	@Column
+	private Integer loginFailCou;
+	
+	//本次登陆ip
+	@Column(length=30)
+	private String ip;
+	
+	//上次登录的时间
+	@Column
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	private Date lastTimeLoginDate;
+	
+	//上次登录的IP终端
+	@Column(length=30)
+	private String lastTimeIP;
+	
+	//上次登录失败的时间
+	@Column
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	private Date lastTimeLoginFailDate;
+	
+	//上次登录失败的IP终端
+	@Column(length=30)
+	private String lastTimeLoginFailIP;
+	
+	@Transient
+	private String pwOverdue;
 
 	public String getMm() {
 		return mm;
@@ -212,7 +254,98 @@ public class User extends BaseEntity {
 		this.qxms = qxms;
 	}
 
+	public String getPermitBeginTime() {
+		return permitBeginTime;
+	}
 
+	public String getPermitEndTime() {
+		return permitEndTime;
+	}
+
+	public void setPermitBeginTime(String permitBeginTime) {
+		this.permitBeginTime = permitBeginTime;
+	}
+
+	public void setPermitEndTime(String permitEndTime) {
+		this.permitEndTime = permitEndTime;
+	}
+
+	public Character getIsPolice() {
+		return isPolice;
+	}
+
+	public Integer getLoginFailCou() {
+		return loginFailCou;
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public Date getLastTimeLoginDate() {
+		return lastTimeLoginDate;
+	}
+
+	public String getLastTimeIP() {
+		return lastTimeIP;
+	}
+
+	public Date getLastTimeLoginFailDate() {
+		return lastTimeLoginFailDate;
+	}
+
+	public String getLastTimeLoginFailIP() {
+		return lastTimeLoginFailIP;
+	}
+
+	public void setIsPolice(Character isPolice) {
+		this.isPolice = isPolice;
+	}
+
+	public void setLoginFailCou(Integer loginFailCou) {
+		this.loginFailCou = loginFailCou;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
+	public void setLastTimeLoginDate(Date lastTimeLoginDate) {
+		this.lastTimeLoginDate = lastTimeLoginDate;
+	}
+
+	public void setLastTimeIP(String lastTimeIP) {
+		this.lastTimeIP = lastTimeIP;
+	}
+
+	public void setLastTimeLoginFailDate(Date lastTimeLoginFailDate) {
+		this.lastTimeLoginFailDate = lastTimeLoginFailDate;
+	}
+
+	public void setLastTimeLoginFailIP(String lastTimeLoginFailIP) {
+		this.lastTimeLoginFailIP = lastTimeLoginFailIP;
+	}
+
+	public String getPwOverdue() {
+		return pwOverdue;
+	}
+
+	public void setPwOverdue(String pwOverdue) {
+		this.pwOverdue = pwOverdue;
+	}
+
+	public String encodePwd(String password) {
+		if(StringUtils.isEmpty(password)) {
+			return null;
+		}else {
+			try {
+				return md5(this.getId().toString()+password+this.yhxm);
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+	}
 	
 }
 	

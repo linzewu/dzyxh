@@ -9,6 +9,10 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,24 +25,35 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xs.common.Constant;
 import com.xs.common.ResultHandler;
 import com.xs.common.Annotation.FunctionAnnotation;
+import com.xs.common.Annotation.Modular;
 import com.xs.common.Annotation.ModuleAnnotation;
+import com.xs.common.Annotation.UserOperation;
 import com.xs.dzyxh.entity.system.ModulePower;
 import com.xs.dzyxh.entity.system.Power;
+import com.xs.dzyxh.entity.system.PowerPoint;
 import com.xs.dzyxh.entity.system.Role;
 import com.xs.dzyxh.entity.system.User;
-import com.xs.dzyxh.manager.sys.IRoleManager;
+import com.xs.dzyxh.manager.IRoleManager;
+import com.xs.enums.CommonUserOperationEnum;
 
 import net.sf.json.JSONArray;
 
 @Controller
 @RequestMapping(value = "/role")
 @ModuleAnnotation(modeName = Constant.ConstantDZYXH.MODE_NAME_SYSTEM, appName = Constant.ConstantDZYXH.APP_NAME_ROLE,href="/dzyxh/page/system/RoleManager.html",icoUrl="/dzyxh/images/group_48.png",modeIndex=4,appIndex=3)
+@Modular(modelCode="role",modelName="角色权限管理",isEmpowered=false)
 public class RoleController {
+	
+	protected static Log log = LogFactory.getLog(RoleController.class);
 
 	@Resource(name = "roleManager")
 	private IRoleManager roleManager;
+	
+	@Autowired
+	private ServletContext servletContext;
 
-	@FunctionAnnotation(name = "角色查询")
+	//@FunctionAnnotation(name = "角色查询")
+	@UserOperation(code="getRoles",name="查询角色")
 	@RequestMapping(value = "getRoles", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> getRoles(Role role, Integer page, Integer rows) {
 		List<Role> roles = roleManager.getRoleList(role, page, rows);
@@ -79,6 +94,7 @@ public class RoleController {
 			roleManager.addMenuToMap(menus, jss.toArray());
 		}
 		ObjectMapper objectMapper = new ObjectMapper();
+		log.info(objectMapper.writeValueAsString(roleManager.transformationModules(menus, modules)));
 		return  objectMapper.writeValueAsString(roleManager.transformationModules(menus, modules));
 	}
 	
@@ -122,6 +138,37 @@ public class RoleController {
 	public @ResponseBody Map<String, Object> delete(@RequestParam Integer id) throws Exception {
 		roleManager.delete(id);
 		return ResultHandler.toSuccessJSON("角色删除成功");
+	}
+	
+	@RequestMapping(value = "getPowerPoints", method = RequestMethod.POST)
+	public @ResponseBody List<PowerPoint> getPowerPoints() {
+		List<PowerPoint> powerPoints = (List<PowerPoint>) servletContext.getAttribute("powerPoints");
+		return powerPoints;
+	}
+	
+	@RequestMapping(value = "getRolePower", method = RequestMethod.POST)
+	public @ResponseBody String getRolePower(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute(Constant.ConstantKey.USER_SESSIO_NKEY);
+		String js=user.getJs();
+		StringBuffer roleqx=new StringBuffer("");
+		if (js != null) {
+			Role role = roleManager.getRoleById(Integer.valueOf(js));
+			if (role != null) {
+				if (StringUtils.isNotEmpty(role.getJsqx())) {
+					roleqx.append(role.getJsqx());
+				}
+			}
+			System.out.println(role.getJsmc());
+		}
+		System.out.println(roleqx.toString());
+		return roleqx.toString();
+	}
+	
+	@UserOperation(code="getAllRole",name="获取所有角色",userOperationEnum=CommonUserOperationEnum.AllLoginUser)
+	@RequestMapping(value = "getAllRole", method = RequestMethod.POST)
+	public @ResponseBody List<Role> getAllRole() {
+		return roleManager.getAllRoles();
 	}
 
 }

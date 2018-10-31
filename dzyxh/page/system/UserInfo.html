@@ -1,8 +1,9 @@
-<form id="userInfoForm" method="post"> 
+
 <div class="easyui-layout" fit=true style="min-height: 480px;min-width: 800px;">
 	  <div data-options="region:'center'" style="padding:5px" >
 	  	<div class="easyui-tabs"  data-options="fit:true" id="user-info-tab" >
 			<div data-options="title:'基本信息'" >
+			<form id="userInfoForm" method="post"> 
 				<table class="base_table" cellspacing="0" cellpadding="0"> 
 					<tr><td class="info_title">部门代码：</td>
 						<td class="info"><input name="bmdm" class="easyui-validatebox readonly" readonly="readonly" data-options="required:true">
@@ -11,15 +12,22 @@
 						<td class="info_title">部门名称：</td>
 						<td class="info"><input name="bmmc" class="easyui-validatebox readonly" data-options="required:true"> </td>
 					</tr>
+					<tr><td class="info_title">用户角色：</td>
+						<td class="info"><input id="js" name="js"></td>
+						<td class="info_title">用户名：</td>
+						<td class="info"><input name="yhm" id="yhm" class="easyui-validatebox" data-options="required:true,validType:{userVad:['#userInfoForm input[name=id]']}"></td>
+					</tr>
 					<tr><td class="info_title">用户姓名：</td>
 						<td class="info"><input name="yhxm"  class="easyui-validatebox" data-options="required:true"></td>
-						<td class="info_title">用户名：</td>
-						<td class="info"><input name="yhm" class="easyui-validatebox" data-options="required:true,validType:{userVad:['#userInfoForm input[name=id]']}"></td>
+						<td class="info_title">身份证号码：</td>
+						<td class="info" >
+							<input name="sfzh" id="sfzh" class="easyui-validatebox" data-options="required:true,validType:{idCardVad:'',remote:['user/validateIdCard','sfzh']}">
+						</td>
 					</tr>
 					<tr>
-						<td class="info_title">身份证号码</td>
+						<td class="info_title">是否民警：</td>
 						<td class="info" >
-							<input name="sfzh" class="easyui-validatebox" data-options="required:true,validType:'idCardVad'">
+							<input value="Y" name="isPolice" type="checkbox" >
 						</td>
 						<td class="info_title">警号</td>
 						<td class="info" >
@@ -29,12 +37,18 @@
 					<tr>
 						<td class="info_title">密码有效期</td>
 						<td class="info" >
-							<input name="mmyxq" readonly="readonly" onFocus="WdatePicker()" class="Wdate" >
+							<input name="mmyxq" id="mmyxq" readonly="readonly" onFocus="WdatePicker()" class="Wdate" >
 						</td>
 						<td class="info_title">账户有效期</td>
 						<td class="info" >
-							<input name="zhyxq" readonly="readonly" onFocus="WdatePicker()" class="Wdate" >
+							<input name="zhyxq" id="zhyxq" readonly="readonly" onFocus="WdatePicker()" class="Wdate" >
 						</td>
+					</tr>
+					<tr>
+						<td class="info_title"><label>允许登录时间(开始)：</label></td>
+						<td class="info"><input id="permitBeginTime" name="permitBeginTime" data-options="required:true,showSeconds:false" class="easyui-timespinner">(00:00)</td>
+						<td class="info_title"><label>允许登录时间(截止)：</label></td>
+						<td class="info"><input id="permitEndTime" name="permitEndTime" data-options="required:true,showSeconds:false" class="easyui-timespinner">(20:00)</td>
 					</tr>
 					<tr>
 						<td class="info_title">IP起始地址</td>
@@ -59,12 +73,17 @@
 						</td>
 						<td class="info_title">状态</td>
 						<td class="info">
-							<input type="hidden" name="jsqx" >
+							<label for="zt_0">正常</label><input id="zt_0" value="0" name="zt" type="radio" checked="checked" />
+							<label for="zt_1">锁定</label><input id="zt_1" value="1" name="zt" type="radio" />
+							<label for="zt_2">停用</label><input id="zt_2" value="2" name="zt" type="radio" />
+							<!--<input type="hidden" name="jsqx" >-->
 						</td>
 					</tr>
 				</table>
+				<input type="hidden" name="id" >
+				</form>
 			</div>
-			<div data-options="title:'授权信息'">
+			<!--<div data-options="title:'授权信息'">
 				<table class="base_table"  cellspacing="0" cellpadding="0">
 					<tr >
 						<td  class="info_title">权限模式</td>
@@ -77,7 +96,7 @@
 						</td>
 					</tr>
 				</table>
-			</div>
+			</div>-->
 		</div>
 	  </div>
 	  <div data-options="region:'south'" style="height:100px;width: 100%;">
@@ -85,17 +104,24 @@
 			   <a href="#" id="userSave" style="width:80px" ></a>
 			   <a href="#" id="userClose" style="width:80px" ></a>
 			</div>
-			<input type="hidden" name="id" >
-			<input type="hidden" name="qx" >
-			<input type="hidden" name="js" >
+			
+			<!--<input type="hidden" name="qx" >
+			<input type="hidden" name="js" >-->
 	  </div>
 </div>
-</form>
+
 
 <script type="text/javascript">
 
 $(function(){
 	initEditAttr();
+	$('#js').combobox({
+	    url:'role/getAllRole',
+	    valueField:'id',
+	    textField:'jsmc',
+	    editable:false,
+	    required:true	    
+	});
 });
 
 
@@ -143,10 +169,19 @@ function createPowerList(type){
 function initEditAttr(rows){
 	
 	var title =  $("#user-tabs").tabs("getSelected").panel("options").title;;
-	
+	$("#userInfoForm").form("clear");
 	if(title=="添加用户"){
+		var date = new Date();
+		var str1 =  (date.getFullYear()+1)+"-"+(date.getMonth()+1)+"-"+date.getDate();
+		$("#zhyxq").val(str1);
+		date.setMonth(date.getMonth()+3);
+		var str2 =  (date.getFullYear())+"-"+(date.getMonth()+1)+"-"+date.getDate();
+		$("#mmyxq").val(str2);
+		
+		$("#permitBeginTime").val("08:00");
+		$("#permitEndTime").val("18:00");
 		setCurrentDeptNode();
-		createPowerList(0);
+		//createPowerList(0);
 		$("#userSave").linkbutton({
 			text:'保存',
 			onClick:function(){
@@ -172,9 +207,10 @@ function initEditAttr(rows){
 		var row = $("#userManager").datagrid("getSelected");
 		if(row){
 			$("#userInfoForm").form("load",row);
-			
+			$("#yhm").textbox({disabled:true});
+			$("#sfzh").textbox({disabled:true});
 			$("#userInfoForm input[name=bmmc]").val($("#dept-list").tree("find",row.bmdm).text);
-			createPowerList(row.qxms);
+			//createPowerList(row.qxms);
 			
 			$("#userSave").linkbutton({
 				text:'保存',
@@ -182,6 +218,7 @@ function initEditAttr(rows){
 					saveUser('user/saveUser',function(){
 						$.messager.confirm("提示","保存成功,是否关闭编辑页面？",function(r){
 							if(r){
+								$("#userInfoForm").form("clear");
 								$("#user-tabs").tabs("close",1);
 							}
 							$("#userManager").datagrid("reload");
@@ -213,9 +250,13 @@ function setPower(data){
 	var qxms=$("#userInfoForm input[name=qxms]:checked").val();
 	
 	if(qxms==0){
-		powers = $.parseJSON(js);
+		if(js != ""){
+			powers = $.parseJSON(js);
+		}
 	}else{
-		powers = $.parseJSON(qx);
+		if(qx != ""){
+			powers = $.parseJSON(qx);
+		}
 	}
 	$.each(powers,function(i,n){
 		$.each(rows,function(j,k){
@@ -238,9 +279,9 @@ function saveUser(url,callback){
 	if(!flag){
 		return;
 	}
-	var rows = $("#power-list").datagrid("getChecked");
+	//var rows = $("#power-list").datagrid("getChecked");
 	
-	if(!rows||rows.length==0){
+	/**if(!rows||rows.length==0){
 		$.messager.alert("提示","请对当前用户进行授权！","info",function(){
 			$("#user-info-tab").tabs("select",1);
 		});
@@ -266,14 +307,14 @@ function saveUser(url,callback){
 			$("#userInfoForm input[name=js]").val('');
 		}
 		
-	}
+	}**/
 	
 	$.messager.progress({
 		title:"提示",
 		msg:"数据保存中..."
 	});
 	
-	$.post(url,$("#userInfoForm").serializeJson(),callback).error(function(){
+	$.post(url,$('#user-info-tab').tabs('getSelected').find("form").serializeJson(),callback).error(function(){
 		$.messager.alert("错误","保存错误","error");
 	}).complete(function() {
 		$.messager.progress("close");

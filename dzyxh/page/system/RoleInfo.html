@@ -3,7 +3,9 @@
 		<tr><td class="info_title">角色名称：</td>
 			<td class="info"><input name="jsmc" class="easyui-validatebox" data-options="required:true"></td>
 			<td class="info_title">角色级别：</td>
-			<td class="info"><select name="jsjb" class="easyui-validatebox" data-options="required:true"></select> </td>
+			<td class="info"><input id="jsjb" name="jsjb"   prompt='请选择角色级别' data-options="required:true,editable:false,data:comm.getBaseParames('role.jsjb'),	valueField: 'id',
+		textField: 'value'"  class="easyui-combobox">
+		<!--<select name="jsjb" class="easyui-validatebox" data-options="required:true"></select>--> </td>
 		</tr>
 		<tr><td class="info_title">角色类型：</td>
 			<td class="info"><input name="jslx" value="1" type="hidden">自定义角色</td>
@@ -14,7 +16,10 @@
 			<td class="info_title">功能权限</td>
 			<td class="info2" colspan="3">
 				<input type="hidden" name="jsqx" >
-				<table id="power-list"></table>
+				<!--<table id="power-list"></table>-->
+				<div class="easyui-panel" style="padding:5px" >
+			        <ul id="powerListTree" ></ul>
+			    </div>
 			</td>
 		</tr>
 	</table>
@@ -29,8 +34,14 @@
 
 $(function(){
 	
-	comm.createBaseSelect("#roleInfoForm select[name=jsjb]","role.jsjb","请选择角色级别");
-	$("#power-list").datagrid({
+	/**comm.createBaseSelect("#roleInfoForm select[name=jsjb]","role.jsjb","请选择角色级别");**/
+	var title = $("#tab-role").tabs("getSelected").panel("options").title;
+	var row;
+	if(title=="编辑角色"){
+		row = $("#roleManager").datagrid("getSelected");
+		$("#roleInfoForm").form("load",row);
+	}
+	/**$("#power-list").datagrid({
 		url:'role/getPowers',
 		height:300,
 		selectOnCheck:false,
@@ -44,17 +55,78 @@ $(function(){
 	    onLoadSuccess:function(data){
 	    	initEditAttr(data.rows);
 	    }
+	});**/
+	$.post("role/getPowerPoints",function(data){
+		var pwGroup={};
+		$.each(data,function(i,n){
+			if(!pwGroup[n.modeCode]){
+				pwGroup[n.modeCode]=[n];
+			}else{
+				pwGroup[n.modeCode].push(n);
+			}
+		});
+		var treeArray =[];
+		
+		var isCheck=function(code){
+			if(row&&row.jsqx){
+				return row.jsqx.indexOf(code)!=-1;
+			}
+			return false;
+		};
+		
+		$.each(pwGroup,function(i,n){
+			var treeObj={};
+			treeObj.text=n[0].model;
+			treeObj.attributes = {"empowered":n[0].empowered};
+			treeObj.children=[];
+			$.each(n,function(j,k){
+				var child={};
+				child.id=k.code;
+				child.text=k.name;
+				child.checked= isCheck(k.code);
+				child.attributes = {"empowered":k.empowered};
+				treeObj.children.push(child);
+				
+			});
+			
+			treeArray.push(treeObj);
+		});
+		$("#powerListTree").tree({
+			checkbox:
+				/**function(node){
+				if (node.attributes.empowered){
+					return true;
+				}else{
+					return false;
+				}
+			},**/
+			true,
+			data:treeArray,
+			onCheck:function(){
+				var checkedArray = $("#powerListTree").tree("getChecked");
+				var fp="";
+				$.each(checkedArray,function(i,n){
+					if(n.id){
+						fp+=","+n.id;
+					}
+				});
+				if(fp.length>0){
+					fp=fp.substring(1);
+				}
+				$("#roleInfoForm input[name=jsqx]").val(fp);
+			}
+		});
+		initEditAttr();
 	});
-	
 	
 });
 
-function initEditAttr(rows){
+function initEditAttr(){
 	
 	var title = $("#tab-role").tabs("getSelected").panel("options").title;
 	if(title=="编辑角色"){
-		var row = $("#roleManager").datagrid("getSelected");
-		$("#roleInfoForm").form("load",row);
+		//var row = $("#roleManager").datagrid("getSelected");
+		//$("#roleInfoForm").form("load",row);
 		$("#roleSave").linkbutton({
 			text:'修改',
 			onClick:function(){
@@ -69,7 +141,7 @@ function initEditAttr(rows){
 			}
 		});
 		
-		var keys = row.jsqx.split(",");
+		/**var keys = row.jsqx.split(",");
 		
 		$.each(keys,function(i,n){
 			$.each(rows,function(j,k){
@@ -77,7 +149,7 @@ function initEditAttr(rows){
 					$("#power-list").datagrid("selectRow",j);
 				}
 			})
-		});
+		});**/
 		
 	}
 	
@@ -89,7 +161,7 @@ function initEditAttr(rows){
 					if(data.state==1){
 						$.messager.confirm("提示","保存成功，您是否继续新增？",function(r){
 							if(r){
-								$("#power-list").datagrid("uncheckAll");
+								//$("#power-list").datagrid("uncheckAll");
 								$("#roleInfoForm").form("clear");
 							}else{
 								$("#tab-role").tabs("close","新增角色");
@@ -116,7 +188,7 @@ function saveRole(url,callback){
 	if(!flag){
 		return false;
 	}
-	var rows = $("#power-list").datagrid("getChecked");
+	/**var rows = $("#power-list").datagrid("getChecked");
 	if(rows.length==0){
 		$.messager.alert("提示","请选择角色的权限");
 		return false;
@@ -126,7 +198,7 @@ function saveRole(url,callback){
 		var data =  rows[i];
 		keys.push(data.key);
 	}
-	$("#roleInfoForm input[name=jsqx]").val( keys.toString());
+	$("#roleInfoForm input[name=jsqx]").val( keys.toString());**/
 	
 	$.messager.progress({
 		title:"提示",

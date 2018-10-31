@@ -17,7 +17,7 @@ import com.xs.common.Constant;
 import com.xs.common.Sql2WordUtil;
 import com.xs.common.Annotation.FunctionAnnotation;
 import com.xs.common.Annotation.ModuleAnnotation;
-import com.xs.dzyxh.manager.tongan.ITonGanManager;
+import com.xs.dzyxh.manager.ITonGanManager;
 
 @Controller
 @RequestMapping(value = "/dbc")

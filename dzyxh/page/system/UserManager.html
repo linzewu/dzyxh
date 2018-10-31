@@ -13,11 +13,11 @@
 						<tr>
 							<th data-options="field:'yhm'"  style="width:100px;">用户名</th>
 							<th data-options="field:'yhxm'"  style="width:100px;">姓名</th>
-							<th data-options="field:'sfzh'"  style="width:200px;">身份证号码</th>
+							<th data-options="field:'sfzh',formatter:idCardFormatter"  style="width:200px;">身份证号码</th>
 							<th data-options="field:'bmdm',formatter:deptFormatter"  style="width:200px;">管理部门</th>
 							<th data-options="field:'mmyxq'"  style="width:100px;">密码有效期</th>
 							<th data-options="field:'zjdlsj'"  style="width:100px;">最近登陆时间</th>
-							<th data-options="field:'zt'"  style="width:80px;">状态</th>
+							<th data-options="field:'zt',formatter:userStateFormatter"  style="width:80px;">状态</th>
 						</tr>
 					</thead>
 				</table>
@@ -44,6 +44,19 @@
 </div>
 
 <script type="text/javascript">
+function idCardFormatter(value,row,index){
+	return value.replace(value.substr(6,6),"******");
+}
+function userStateFormatter(value,row,index){
+	if(value == 0){
+		return "正常";
+	}else if (value == 1){
+		return "锁定";
+	}else if(value == 2){
+		return "停用";
+	}
+	return  "";
+}
 
 function deleteUser(){
 	
@@ -61,7 +74,7 @@ function deleteUser(){
 					"msg" : "数据删除中..."
 				});
 				
-				$.post("user/delete", row ,function(data) {
+				$.post("user/delete", {id:row.id} ,function(data) {
 					if(data.state==1){
 						$.messager.alert("提示","用户删除成功！","info",function(){
 							$("#userManager").datagrid("reload");
@@ -99,7 +112,7 @@ function passwordReset(){
 					"msg" : "处理中..."
 				});
 				
-				$.post("user/passwordReset", row ,function(data) {
+				$.post("user/passwordReset", {id:row.id} ,function(data) {
 					if(data.state==1){
 						$.messager.alert("提示","密码重置成功！","info",function(){
 							$("#userManager").datagrid("reload");

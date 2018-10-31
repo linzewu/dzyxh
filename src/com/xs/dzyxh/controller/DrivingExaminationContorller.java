@@ -19,9 +19,9 @@ import com.xs.common.Annotation.FunctionAnnotation;
 import com.xs.common.Annotation.ModuleAnnotation;
 import com.xs.dzyxh.entity.driver.DrivingBase;
 import com.xs.dzyxh.entity.driver.DrivingExamination;
-import com.xs.dzyxh.manager.driverimg.IDrivingPhotoManager;
-import com.xs.dzyxh.manager.window.IDrivingBaseManager;
-import com.xs.dzyxh.manager.window.IDrivingExaminationManager;
+import com.xs.dzyxh.manager.IDrivingBaseManager;
+import com.xs.dzyxh.manager.IDrivingExaminationManager;
+import com.xs.dzyxh.manager.IDrivingPhotoManager;
 
 @Controller
 @RequestMapping(value = "/exa")

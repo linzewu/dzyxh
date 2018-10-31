@@ -41,7 +41,7 @@
 		</property>
 	</bean>
 
-	<bean id="sysHibernateTemplate" class="org.springframework.orm.hibernate4.HibernateTemplate">
+	<bean id="sysHibernateTemplate" class="com.xs.common.MyHibernateTemplate">
 		<property name="sessionFactory" ref="sysSessionFactory" />
 	</bean>
 
@@ -69,7 +69,7 @@
 	<aop:config expose-proxy="true">
 		<!-- 只对业务逻辑层实施事务 -->
 		<aop:pointcut id="systxPointcut"
-			expression="execution(* com.xs.dzyxh.manager.sys.*.*(..))||execution(* com.xs.dzyxh.manager.window.IWinEquipmentManager.*(..))" />
+			expression="execution(* com.xs.dzyxh.manager.*.*(..))||execution(* com.xs.dzyxh.manager.IWinEquipmentManager.*(..))" />
 		<aop:advisor pointcut-ref="systxPointcut" advice-ref="txAdvice" />
 	</aop:config>
 

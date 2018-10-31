@@ -27,9 +27,9 @@ import com.xs.dzyxh.entity.system.ModulePower;
 import com.xs.dzyxh.entity.system.Power;
 import com.xs.dzyxh.entity.system.Role;
 import com.xs.dzyxh.entity.system.User;
-import com.xs.dzyxh.manager.sys.IDepartmentManager;
-import com.xs.dzyxh.manager.sys.IRoleManager;
-import com.xs.dzyxh.manager.sys.IUserManager;
+import com.xs.dzyxh.manager.IDepartmentManager;
+import com.xs.dzyxh.manager.IRoleManager;
+import com.xs.dzyxh.manager.IUserManager;
 
 @Component("initServerCommonUtil")
 public class InitServerCommonUtil {
@@ -176,9 +176,8 @@ public class InitServerCommonUtil {
 			Role role = roleManager.getSystemRole();
 			User user = new User();
 			user.setBmdm(bmdm);
-			user.setJs(role.getId().toString());
-			user.setMm("888888");
-			user.setMmyxq(new Date());
+			user.setJs(role.getId().toString());			
+			
 			user.setYhm("admin");
 			user.setSeq(1);
 			user.setSfzh("000000000000000000");
@@ -186,7 +185,10 @@ public class InitServerCommonUtil {
 			Calendar calendar = Calendar.getInstance();
 			calendar.add(Calendar.YEAR, 3);
 			user.setZhyxq(calendar.getTime());
+			user.setMmyxq(user.getZhyxq());
 			user.setYhxm("系统超级管理员");
+			user = this.userManager.saveUser(user);
+			user.setMm(user.encodePwd("888888"));
 			this.userManager.saveUser(user);
 		}
 	}

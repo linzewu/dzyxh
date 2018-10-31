@@ -66,7 +66,8 @@ function login() {
 		if(data.state==1){
 			window.location.href="index.html";
 		}else{
-			$.messager.alert("登陆失败","用户名或密码错误！","info");
+			$.messager.alert("登陆失败",data.message,"info");
+			//$.messager.alert("登陆失败","用户名或密码错误！","info");
 		}
 	},"json").error(function(e){
 		$.messager.alert("提示",e.responseText);

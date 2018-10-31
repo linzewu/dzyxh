@@ -13,11 +13,14 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.xs.common.DSACoder;
+import com.xs.common.InitServerCommonPowerUtil;
 import com.xs.common.InitServerCommonUtil;
 import com.xs.dzyxh.entity.system.BaseParams;
 import com.xs.dzyxh.entity.system.ModulePower;
 import com.xs.dzyxh.entity.system.Power;
-import com.xs.dzyxh.manager.sys.IBaseParamsManager;
+import com.xs.dzyxh.entity.system.PowerPoint;
+import com.xs.dzyxh.manager.IBaseParamsManager;
+
 
 /**
  * Application Lifecycle Listener implementation class InitListener
@@ -31,7 +34,6 @@ public class InitListener implements ServletContextListener {
 
 	private ServletContext servletContext;
 	
-	private InitServerCommonUtil initServerCommonUtil;
 	
 	/**
 	 * Default constructor.
@@ -64,6 +66,12 @@ public class InitListener implements ServletContextListener {
 			}
 
 			wac = WebApplicationContextUtils.getWebApplicationContext(contextEvent.getServletContext());
+			
+			InitServerCommonPowerUtil initServerCommonPowerUtil = (InitServerCommonPowerUtil) wac.getBean("initServerCommonPowerUtil");
+			
+			List<PowerPoint> powerPoints = initServerCommonPowerUtil.initPower(new String[] {"com.xs.dzyxh.controller"});
+			
+			servletContext.setAttribute("powerPoints", powerPoints);
 
 			// 加载参数表
 			IBaseParamsManager baseParamsManager = (IBaseParamsManager) wac.getBean("baseParamsManager");
@@ -75,6 +83,8 @@ public class InitListener implements ServletContextListener {
 			// 加功能列表
 			List<ModulePower> modules = initServerCommonUtil.initPower(new String[] { "com.xs.dzyxh.controller" });
 			List<Power> powers =initServerCommonUtil.getAllPowers(modules);
+			
+			
 			servletContext.setAttribute("modules", modules);
 			servletContext.setAttribute("powers", powers);
 			

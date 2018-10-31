@@ -1,0 +1,111 @@
+[{
+	"module": "驾驶人档案管理",
+	"group": [
+		{
+			"groupName": "驾驶人档案管理",
+			"menus": [
+				{
+					"icon": "/dzyxh/images/pd_48.png",
+					"title": "窗口设备",
+					"href": "/dzyxh/page/window/winEquipment.html",
+					"permission":""
+				},
+				{
+					"icon": "/dzyxh/images/fxp_48.png",
+					"title": "驾驶人业务",
+					"href": "/dzyxh/page/window/jsz.html",
+					"permission":""
+				}
+			]
+		}
+	]
+},
+{
+	"module": "系统管理",
+	"group": [
+		{
+			"groupName": "系统管理",
+			"menus": [				
+				{
+					"icon": "/dzyxh/images/system.png",
+					"title": "系统参数管理",
+					"href": "/dzyxh/page/system/systemInfo.html",
+					"permission":""
+				},				
+				{
+					"icon" : "/dzyxh/images/function.png",
+					"title" : "核心功能管理",
+					"href" : "/dzyxh/page/system/coreFunction.html",
+					"permission":"coreFunction.getAllCoreFunction"		
+				},
+				{
+					"icon" : "/dzyxh/images/warning.png",
+					"title" : "非常规功能管理",
+					"href" : "/dzyxh/page/system/SpecialCoreFunction.html",
+					"permission":"coreFunction.getAllSpecialCoreFunction"				
+				},{
+					"icon" : "/dzyxh/images/police.png",
+					"title" : "警员功能管理",
+					"href" : "/dzyxh/page/system/policeCoreFunction.html",
+					"permission":"coreFunction.getAllPoliceCoreFunction"			
+				},
+				{
+					"icon" : "/dzyxh/images/security.png",
+					"title" : "安全审计策略设置",
+					"href" : "/dzyxh/page/system/securityAuditPolicySetting.html",
+					"permission":"securityAuditPolicySetting.getPolicySettingList"
+				},
+				{
+					"icon" : "/dzyxh/images/blackList.png",
+					"title" : "黑名单管理",
+					"href" : "/dzyxh/page/system/BlackListManager.html",
+					"permission":"blackList.getBlackList"
+				}
+			]
+		},{
+			"groupName": "权限管理",
+			"menus": [
+				{
+					"icon": "/dzyxh/images/user.png",
+					"title": "用户管理",
+					"href": "/dzyxh/page/system/UserManager.html",
+					"permission":""
+				},
+				{
+					"icon": "/dzyxh/images/group_48.png",
+					"title": "角色权限管理",
+					"href": "/dzyxh/page/system/RoleManager.html",
+					"permission":""
+				},
+				{
+					"icon": "/dzyxh/images/Organization_48.png",
+					"title": "组织架构管理",
+					"href": "/dzyxh/page/system/department.html",
+					"permission":""
+				}
+			]
+		},{
+			"groupName": "日志管理",
+			"menus": [
+				{
+					"icon" : "/dzyxh/images/LOG.png",
+					"title" : "操作日志",
+					"href" : "/dzyxh/page/system/operationLog.html",
+					"permission":"OperationLog.getOperationLog"
+				},
+				{
+					"icon" : "/dzyxh/images/loginlog.png",
+					"title" : "登录日志",
+					"href" : "/dzyxh/page/system/loginOperationLog.html",
+					"permission":"OperationLog.getLoginOperationLog"
+				},
+				{		
+					"icon" : "/dzyxh/images/logsec.png",
+					"title" : "安全日志",
+					"href" : "/dzyxh/page/system/securityLog.html",
+					"permission":"SecurityLog.getSecurityLog"
+				}
+			]
+		}
+	]
+}]

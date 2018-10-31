@@ -19,7 +19,7 @@ import com.xs.common.ImageBase64Cash;
 import com.xs.common.ResultHandler;
 import com.xs.dzyxh.entity.system.BaseParams;
 import com.xs.dzyxh.entity.vehimg.VehImg;
-import com.xs.dzyxh.manager.veh.IVehImgManager;
+import com.xs.dzyxh.manager.IVehImgManager;
 
 @Controller
 @RequestMapping(value = "/vehWin")

@@ -22,7 +22,7 @@ import com.xs.common.ResultHandler;
 import com.xs.common.Annotation.FunctionAnnotation;
 import com.xs.common.Annotation.ModuleAnnotation;
 import com.xs.dzyxh.entity.system.BaseParams;
-import com.xs.dzyxh.manager.sys.IBaseParamsManager;
+import com.xs.dzyxh.manager.IBaseParamsManager;
 import com.xs.web.util.PageInfo;
 
 @Controller
