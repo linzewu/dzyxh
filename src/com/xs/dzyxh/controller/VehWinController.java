@@ -7,8 +7,9 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.apache.axiom.om.util.Base64;
+//import org.apache.axiom.om.util.Base64;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,7 +37,7 @@ public class VehWinController {
 			return ResultHandler.toErrorJSON("图片不能为空");
 		}else{
 			this.vehImgManager.updateVehImgZpztOfzplx(vehimg.getLsh(), vehimg.getZplx());
-			byte[] zp = Base64.decode(base64Img);
+			byte[] zp = Base64Utils.decodeFromString(base64Img);//Base64.decode(base64Img);
 			vehimg.setZp(zp);
 			vehimg.setPssj(new Date());
 			vehimg.setZpzt("0");

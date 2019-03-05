@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>电子影像 拓印膜扫描</title>
+ <link rel="stylesheet" href="/dzyxh/js/viewer/viewer.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="/dzyxh/js/easyui/themes/gray/easyui.css" />
+<script type="text/javascript" src="/dzyxh/js/easyui/jquery.min.js"></script>
+<script type="text/javascript" src="/dzyxh/js/viewer/viewer.min.js"></script>
+
+<script type="text/javascript" src="/dzyxh/js/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript">
+function uploadFile(){
+	var base64_data = document.getElementById('scaner1').jpegBase64Data();
+	var clsbdh = $("#clsbdh").text();
+	$.post("../imageScan/uploadScanImage",{clsbdh:clsbdh,picData:base64_data}, function(data){
+		if(data.state==1){
+			$.messager.alert("上传成功","上传扫描文件到综合平台成功！","info");
+		}else{
+			$.messager.alert("上传失败","上传扫描文件到综合平台异常！","info");
+		}
+	},"json").error(function(e){
+		$.messager.alert("提示",e.responseText);
+	}).complete(function(){
+	});
+}
+
+function GetQueryString(name)
+{
+     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null)return  unescape(r[2]); return null;
+}
+
+$(function(){
+	var lsh=GetQueryString("lsh");
+	var clsbdh=GetQueryString("clsbdh");
+	
+	$("#clsbdh").text(clsbdh);
+	$("#lsh").text(lsh);
+});
+</script>
+</head>
+<body>
+ <div id="p" class="easyui-panel" title="车架号拓印膜扫描" style="width:100%;padding:10px;" align="center">
+ 	<table>
+				<tr>
+					<td align="right" width="120px">车辆识别代号：</td><td width="120px"><span id="clsbdh"></span> </td>
+					<td align="right" width="120px">流水号：</td><td width="120px"><span id="lsh"></span></td>
+					<td align="right" width="130px"><a id="btn" href="#" class="easyui-linkbutton" onclick="uploadFile()">上传综合平台</a></td>
+				</tr>
+			</table>
+	<object classid="clsid:15D142CD-E529-4B01-9D62-22C9A6C00E9B" id="scaner1" width="70%" height="500" codebase="../cabs/ScanOnWeb.cab#version=1,0,0,10">
+</object>
+ </div>
+
+</body>
+</html>
