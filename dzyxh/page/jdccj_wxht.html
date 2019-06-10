@@ -1,0 +1,421 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<style type="text/css">
+.docs-pictures{
+POSITION: absolute;
+}
+.docs-pictures li img { width: 100%;}
+
+.docs-pictures li{ display: inline-block; width: 150px; margin-left: 1%; padding-top: 1%; text-align: center;}
+.signElement {
+	background-color:white;
+    position: absolute; left: 50%; top: 50%;
+    margin-top: -300px;    /* 高度的一半 */
+    margin-left: -400px;    /* 宽度的一半 */
+    border: 1px solid; z-index: 999;
+}
+</style>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>电子影像 业务采集</title>
+  <link rel="stylesheet" href="/dzyxh/js/viewer/viewer.min.css">
+<link rel="stylesheet" type="text/css"
+	href="/dzyxh/js/easyui/themes/gray/easyui.css">
+<!--[if lt IE 9]>  
+<script src="/dzyxh/js/viewer/html5shiv.min.js"></script>  
+<script src="/dzyxh/js/viewer/respond.min.js"></script>  
+<![endif]-->  
+
+<script type="text/javascript" src="/dzyxh/js/easyui/jquery.min.js"></script>
+<script type="text/javascript" src="/dzyxh/js/viewer/viewer.min.js"></script>
+
+<script type="text/javascript" src="/dzyxh/js/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/dzyxh/js/common.js"></script>
+<script type="text/javascript" src="/dzyxh/bps/all.js"></script>
+
+<!--[if lt IE 8]>  
+<p class="browserupgrade">你的浏览器版本太低，为了你正常使用该系统，请最少使用IE8版本，推荐IE11版本</p>  
+<![endif]-->  
+
+<script type="text/javascript">
+
+function addoption(id,s)   
+{
+    var obj=document.getElementById(id).options; 
+    var opt = new Option(s, obj.length ); 
+    obj.options.add(opt);   
+}
+function init(){
+	try{
+		//$("#selDev").empty();
+		//$("#selRes").empty();
+
+		ScanCtrl.vSetWaterPrint(1,"盐城市车管所",0);
+		//ScanCtrl.SetWaterInfoA(100, 10, "", "red", 0.1, 100, 100, 0.8,"宋体", 50);
+		
+		/**var iResIndex = ScanCtrl.GetCurResolutionIndex();
+		var iDevIndex = ScanCtrl.GetCurDevIndex();
+		
+		if(iDevIndex != -1){
+			var deviceCount = ScanCtrl.GetDeviceCount();
+			for(var i = 0; i < deviceCount; i++)
+		   	{
+		       	var s = ScanCtrl.GetDevName(i);
+		       	addoption("selDev",s);
+		   	}
+			document.getElementById("selDev").value=iDevIndex;
+		}
+		
+		if(iResIndex != -1)
+		{
+			var resCount = ScanCtrl.GetResolutionCount();
+			for(var i = 0;i < resCount; i++)
+			{
+		    	var w=ScanCtrl.GetResolutionWidth(i);
+		    	var h=ScanCtrl.GetResolutionHeight(i);
+		    	var str=w.toString()+"x"+h.toString();
+		    	addoption("selRes",str);
+			}
+			document.getElementById("selRes").value=iResIndex;
+		}**/
+	}catch(e){
+		alert(e);
+	}
+}
+
+function changeresolution()
+{
+   // var num= ScanCtrl.GetResolutionCount();
+    //var obj=document.getElementById("selRes").options; 
+    var x = document.getElementById("selRes").value;//obj.selectedIndex;    
+    
+ScanCtrl.vSetResolution(x);  
+init();   
+}
+function changedev()
+{
+    var num= ScanCtrl.GetDeviceCount();
+    var obj=document.getElementById("selDev").options; 
+    var x = obj.selectedIndex;    
+
+ScanCtrl.SetCurDev(x); 
+init();
+}
+
+function start_preview_z(url)  
+{   
+	stop_preview();
+	ScanCtrl.bStartPlay();
+	init();
+}
+function start_preview_f(url)  
+{   
+	stop_preview();
+	ScanCtrl.bStartPlay2(0);
+	init();
+}
+function stop_preview() 
+{   
+	ScanCtrl.bStopPlay();
+	init();
+}
+
+function ZoomIn()
+{
+	ScanCtrl.SetZoomIn();
+}
+function ZoomOut()
+{
+	ScanCtrl.SetZoomOut();
+}
+
+function Property(url) 
+{
+	ScanCtrl.Property();
+}
+
+function TakePic(url)    
+{
+	var zplx=$("input[name=zplx]:checked").val();
+
+	var zpid=$("input[name=zplx]:checked").attr("zpid");
+
+
+	if(!zplx){
+		alert("请选择照片类型！");
+		return;
+	}
+
+	if(zpid&&!confirm("该照片种类已拍摄，是否覆盖？")){
+
+		return false;
+		
+	} 
+	
+	//ScanCtrl.EnableDateRecord(1);
+	var imageData = ScanCtrl.sGetBase64();
+	var ywlx=GetQueryString("ywlx");
+	var lsh=GetQueryString("lsh");
+	var clsbdh=GetQueryString("clsbdh");
+	var hpzl=GetQueryString("hpzl");
+	var hphm=GetQueryString("hphm");
+
+	
+	
+
+	var param={};
+	param.ywlx=ywlx;
+	param.lsh=lsh;
+	param.clsbdh=clsbdh;
+	param.hpzl=hpzl;
+	param.hphm=hphm;
+	param.base64Img=imageData;
+	param.zplx=zplx;
+
+	if(zpid){
+		param.zpid=zpid;
+	}
+
+	if(!imageData){
+		alert("拍摄异常，请检查设备！");
+		return;
+	}else{
+		$.post("/dzyxh/vehWin/saveImg",param,function(data){
+			
+			if(data.state==1){
+				$(".docs-pictures img[zplx="+data.data.zplx+"]").attr("src","/dzyxh/vehWin/getImgById?id="+data.data.id);
+				$("input[name=zplx]:checked").attr("zpid",data.data.id);
+			}
+		});
+	}
+	
+}
+
+function GetQueryString(name)
+{
+     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null)return  unescape(r[2]); return null;
+}
+
+$(function(){
+	var ywlx=GetQueryString("ywlx");
+	var lsh=GetQueryString("lsh");
+	var clsbdh=GetQueryString("clsbdh");
+	var hpzl=GetQueryString("hpzl");
+	var hphm=GetQueryString("hphm");
+	
+	$("#hphm").text(hphm);
+	$("#hpzl").text(comm.getParamNameByValue("hpzl",hpzl));
+	$("#clsbdh").text(clsbdh);
+	$("#lsh").text(lsh);
+	$("#ywlx").text(comm.getParamNameByValue("ywlx",ywlx));
+
+	$.post("/dzyxh/vehWin/getZpzl",{ywlx:ywlx},function(data){
+		$.each(data,function(i,n){
+			var temp="<li><img  src=\"/dzyxh/images/no-image.jpg\" alt="+n.paramName+" zplx="+n.paramValue+"></img><br/><input value="+n.paramValue+" type=radio name=zplx /> <label>"+n.paramName+"</label> </li>";
+			$(".docs-pictures").append(temp);
+		});
+
+		$.post("/dzyxh/vehWin/getImgBylsh",{lsh:lsh},function(data){
+			$.each(data,function(i,n){
+				$(".docs-pictures img[zplx="+n.zplx+"]").attr("src","/dzyxh/vehWin/getImgById?id="+n.id);
+				$(".docs-pictures input[value="+n.zplx+"]").attr("zpid",n.id);
+			});
+
+			$(".docs-pictures").viewer({
+				show:function(){
+					$("#ScanCtrl").hide();
+				},
+				hide:function(){
+					$("#ScanCtrl").show();
+			}});
+		});
+	});
+
+	start_preview();
+	
+	initSign();
+});
+
+var m_deviceID=2;
+var ulFormat=2;
+var signZpzlValue='099';
+var proxySignZpzlValue='098';
+function initSign(){
+	var signObject = document.getElementById("signObject");
+    var canvasWidth = 800;
+    var canvasHeight = 500;
+    var initial;
+    initial = signObject.PPL398_InitialDevice(m_deviceID, 0, 0, canvasWidth, canvasHeight);
+    if (initial == 0) {
+        setTimeout(function() {
+        	signObject.PPL398_SetCanvasSize(m_deviceID, 0, 0, canvasWidth, canvasHeight);
+        	signObject.PPL398_SetPenColor(m_deviceID, 0, 0, 0);
+        	signObject.PPL398_EnableSaveVideoData(m_deviceID, true);
+            var i = signObject.PPL398_SignatureStatusCallback(m_deviceID, 'jsPPL398_StatusChanged');
+        }, 50);
+        //jsSetCtrStatusByInitial();
+       // InitialSelectOption();
+      //  disabledPointOptions();
+    } else {
+        alert('没有接入签名设备');
+    }
+    setTimeout("$('.signElement').hide()",1000);
+}
+
+function showSign(title,zplx){
+	
+	var flag =false;
+	$.each($("input[name=zplx]"),function(i,n){
+		if($(n).val()==zplx){
+			flag =true;
+			return;
+		}
+	});
+	
+	if(!flag){
+		alert("该业务类型无"+title+",请联系管理员配置！")
+		return;
+	}
+	
+	$("#signTitle").text("请"+title+"！");
+	clearSign();
+	$(".signElement").show();
+	$("#ScanCtrl").hide();
+	$("#signType").val(zplx);
+}
+
+function signClose(){
+	$(".signElement").hide();
+	$("#ScanCtrl").show();
+}
+
+function clearSign(){
+	var signObject = document.getElementById("signObject");
+	signObject.PPL398_Clear(m_deviceID);
+}
+
+function saveSign(){
+	var signObject = document.getElementById("signObject");
+	var img64 = signObject.PPL398_PacketsBase64Encode(m_deviceID, ulFormat);
+	
+	if(!img64){
+		alert("签名异常！");
+		return;
+	}
+	
+	var ywlx=GetQueryString("ywlx");
+	var lsh=GetQueryString("lsh");
+	var clsbdh=GetQueryString("clsbdh");
+	var hpzl=GetQueryString("hpzl");
+	var hphm=GetQueryString("hphm");
+	var param={};
+	param.ywlx=ywlx;
+	param.lsh=lsh;
+	param.clsbdh=clsbdh;
+	param.hpzl=hpzl;
+	param.hphm=hphm;
+	param.base64Img=img64;
+	param.zplx=$("#signType").val();
+	var zpObj= $("input[name=zplx][value="+param.zplx+"]");
+	var zpid=zpObj.attr("zpid");
+	if(zpid){
+		param.zpid=zpid;
+	}
+	$.post("/dzyxh/vehWin/saveImg",param,function(data){
+		if(data.state==1){
+			$(".docs-pictures img[zplx="+data.data.zplx+"]").attr("src","/dzyxh/vehWin/getImgById?id="+data.data.id);
+			zpObj.attr("zpid",data.data.id);
+			signClose();
+		}
+	});
+	
+	
+
+}
+
+
+</script>
+<script type="text/javascript" event="DeviceChange(code)" for="ScanCtrl">  
+    init();
+</script>
+</head>
+<body style="margin: 0 auto;" onload="init()">
+<div style=" width:100%;height: 100%;">
+	<div style="float: left;">
+		<div style="width: 800px;height: 450px;">
+			<!--<object  classid="clsid:090457CB-DF21-41EB-84BB-39AAFC9E271A"
+							id="ScanCtrl" codebase="*.cab#version=1,0,0,1" width="800"
+							height="450"></object>-->
+			<object classid="clsid:454C18E2-8B7D-43C6-8C17-B1825B49D7DE" id="ScanCtrl"  width="800" height="450" ></object>
+		</div>
+		<div  style="display:block;white-space:nowrap;width:800px;overflow:auto;">
+			 <ul class="docs-pictures">
+	            
+          	 </ul>
+		</div>
+	</div>
+	<div style="width: 600px;height: 620px; float: left;">
+		<div style="width: 100%;height: 460px;margin: 20px 0 0 20px ;">
+			<table>
+				<tr><td align="right">车辆识别代号：</td><td><span id="clsbdh"></span> </td></tr>
+				<tr><td align="right">号牌号码：</td><td><span id="hphm"></span></td></tr>
+				<tr><td align="right">号牌种类：</td><td><span id="hpzl"></span></td></tr>
+				<tr><td align="right">业务类型：</td><td><span id="ywlx"></span></td></tr>
+				<tr><td align="right">流水号：</td><td><span id="lsh"></span></td></tr>
+			</table>
+		</div>
+		<div style="width: 100%;height: 160px;">
+			<table id="table-1"> 
+				<tbody>
+					<!--<tr>
+						<td>
+							设备列表：<select id="selDev" style="width: 90px" name="selDev" onchange="changedev()">
+												<option value="0">主摄像头视频源</option>
+												<option value="1">副摄像头视频源</option>
+											</select> 
+							分辨率：
+							<select name="selRes"  id="selRes" style="width: 90px" onchange="changeresolution()">
+								<option value="1">320*240</option>
+								<option value="2">640*480</option>
+								<option value="3">800*600</option>
+								<option value="4">1024*768</option>
+								<option value="5">1600*1200</option>
+								<option value="6">2048*1536</option>
+								<option value="7">2592*1944</option>
+								<option value="0">设备默认值分辨率</option>
+							</select>
+						</td>
+					</tr> -->
+					<tr>
+						<td>
+							 <input class="submit_01" type="button" value="打开主摄像头视频源" onclick="start_preview_z()" />
+							 <input class="submit_01" type="button" value="打开副摄像头视频源" onclick="start_preview_f()" />
+							 <input class="submit_01" type="button" value="停止" onclick="stop_preview()" /> 
+							 <input class="submit_01" type="button" value="拍照" onclick="TakePic()" />
+							 <input class="submit_01" type="button" value="本人签名" onclick="showSign('本人签名',signZpzlValue)" />	
+							 <input class="submit_01" type="button" value="代理人签名" onclick="showSign('代理人签名',proxySignZpzlValue)" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<div  class="signElement">
+	<div style="text-align: center;">
+		<em><h2 id="signTitle">请用户签名</h2></em>
+	</div>
+	<object ID="signObject" border=0 width="800" height="500" classid="clsid:BFAA2FD5-B6E7-41D0-B104-A433ED33F461"></object>
+	<div style="text-align: center;">
+		<input id="signType" type="hidden"  />
+		<input class="submit_01" type="button" value="确定" onclick="saveSign()" /> 
+		<input class="submit_01" type="button" value="重签" onclick="clearSign()" /> 
+		<input class="submit_01" type="button" value="关闭" onclick="signClose()" />
+	</div>
+</div>
+
+</body>
+</html>
