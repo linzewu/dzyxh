@@ -77,11 +77,11 @@ public class Sql2WordUtil {
 		return doc;
 	}
 	
-	public static Document map2WordUtil(final String template,Map<String,Object> data,Map<String,List<BaseParams>> bpsMap) throws Exception{
+	public static Document map2WordUtil2(final String template,Map<String,Object> data) throws Exception{
 		
 		Document doc=null;
 		if(data!=null) {
-			 doc = createTemplate(template,data,bpsMap);
+			 doc = createTemplate2(template,data);
 		}
 		return doc;
 	}
@@ -146,7 +146,7 @@ public class Sql2WordUtil {
 		
 	}
 	
-	public static Document createTemplate(String template,Map<String, Object> data,Map<String,List<BaseParams>> bpsMap) throws Exception {
+	public static Document createTemplate2(String template,Map<String, Object> data) throws Exception {
 		
 		InputStream wordTemplate = Sql2WordUtil.class.getClassLoader().getResourceAsStream(template);
 		Document doc = new Document(wordTemplate);
@@ -193,11 +193,13 @@ public class Sql2WordUtil {
 					}else {
 						fieldValues[i]="□";
 					}
-				}else if(bpsMap!=null&&bpsMap.containsKey(fieldName.toLowerCase())){
-					
-					fieldValues[i] = translateParamVlaue(data.get(fieldName),bpsMap.get(fieldName.toLowerCase()));
-					
-				}else {
+				}
+//				else if(bpsMap!=null&&bpsMap.containsKey(fieldName.toLowerCase())){
+//					
+//					fieldValues[i] = translateParamVlaue(data.get(fieldName),bpsMap.get(fieldName.toLowerCase()));
+//					
+//				}
+				else {
 					fieldValues[i] = translateMapValue(data, fieldName.toLowerCase());
 				}
 				i++;

@@ -1,6 +1,6 @@
 
 $(function(){
-	$("input[name=buttonOK]").parent().append("<input type=button class=button z_idx value='ÅÄÕÕ' onClick=openWinOfyx()>");
+	$("input[name=buttonOK]").parent().append("<input type=button class=button z_idx value='ÅÄÕÕ'  onClick=openWinOfyx()>");
 });
 
 function openWinOfyx(){
