@@ -239,6 +239,14 @@ public class Sql2WordUtil {
 		return temp+"images/cache/";
 		
 	}
+	
+	public static String getCacheDir2() {
+		String path = Sql2WordUtil.class.getClassLoader().getResource("").getPath().toString();
+		String temp = path.split("WEB-INF")[0];
+		
+		return temp+"images/cache/qmtp/";
+		
+	}
 
 	public static String getStringDate(Date date,int type){
 		return type==0?new SimpleDateFormat("yyyy年MM月dd日").format(date):new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
@@ -299,10 +307,10 @@ public class Sql2WordUtil {
 			if(resolution!=null) {
 				iso.setResolution(resolution);
 			}
-			doc.save(getCacheDir()+fileName,iso);
+			doc.save(getCacheDir2()+fileName,iso);
 			//doc.save(paht+fileName,iso);
 			
-			doc.save(getCacheDir()+fileName+"_"+".doc");
+			doc.save(getCacheDir2()+fileName+"_"+".doc");
 			return fileName;
 		}else {
 			return null;

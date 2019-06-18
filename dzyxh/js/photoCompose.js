@@ -477,7 +477,7 @@ function b1(){
 }**/
 
 function createImg(PARAMS){//(URL, PARAMS){
-	var dzyxh_win_ip="10.39.147.126";
+	var dzyxh_win_ip="10.39.147.1";
 	var dzyxh_win_port="8080";
 	var URL = "http://"+dzyxh_win_ip+":"+dzyxh_win_port+"/dzyxh/photoCompose/toHctp";
 	//var PARAMS = [];
@@ -490,14 +490,34 @@ function createImg(PARAMS){//(URL, PARAMS){
      temp.action = URL;
      temp.target="_blank"
      temp.method = "post";
+     //temp["accept-charset"] = "UTF-8";
      temp.style.display = "none";
      for (var x in PARAMS) {
          var opt = document.createElement("input");
          opt.name = x;
-         opt.value = PARAMS[x];
+         opt.value = encodeURIComponent(PARAMS[x]);
          // alert(opt.name)
          temp.appendChild(opt);
      }
+     var opt1 = document.createElement("input");
+     opt1.name = "tempName";
+     var meth = $("input[value='申请表']").attr("onclick");
+ 	 var methodName = meth.substring(0,meth.indexOf("(")).toString();
+ 	 if(methodName == "print_sqb_one"){
+ 		opt1.value = "注册申请表";
+ 	 }else if(methodName == "print_sqb_two"){
+ 		opt1.value = "机动车变更登记备案申请表";
+ 	 }else if(methodName == "print_sqb_three"){
+ 		opt1.value = "机动车抵押登记质押备案申请表";
+ 	 }else if(methodName == "print_sqb_four"){
+ 		opt1.value = "机动车牌证申请表";
+ 	 }else if(methodName == "print_sqb_four_new"){
+ 		opt1.value = "机动车牌证申请表";
+ 	 }else if(methodName == "print_sqb_five"){
+ 		opt1.value = "校车标牌领取表";
+ 	 }
+ 	 temp.appendChild(opt1);
+ 	 
      document.body.appendChild(temp);
      temp.submit();
      return temp;

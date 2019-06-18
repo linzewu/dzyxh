@@ -3,10 +3,14 @@ package com.xs.dzyxh.controller;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.net.URLDecoder;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.imageio.stream.FileImageInputStream;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.axiom.om.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +33,26 @@ public class PhotoComposeController {
 	
 //	@Resource(name = "baseParamsManager")
 //	private IBaseParamsManager baseParamsManager;
+	@Autowired
+	private HttpServletRequest request;
 	
 	@RequestMapping(value = "toHctp", method = RequestMethod.POST)
-	public String toHctp(@RequestParam Map param) {
+	public String toHctp(@RequestParam Map param) throws Exception {
+		Iterator it = param.keySet().iterator();
+		while(it.hasNext()){
+		    String paramName = (String) it.next();
+		    String paramValue = URLDecoder.decode(param.get(paramName).toString(),"UTF-8");
+		    param.put(paramName, paramValue);
+		}
 		System.out.println(param);
+		
+		String templateName = param.get("tempName").toString();//"注册申请表";
+		String template = templateName+".doc";
+		com.aspose.words.Document doc = Sql2WordUtil.map2WordUtil2(template, param);
+		String fileName = UUID.randomUUID().toString()+".jpg";// templateName+"_"+param.get("clsbdh")+".jpg";
+		Sql2WordUtil.toCase(doc, "", fileName);
+		//param.put("bgdImage", Base64.encode(image2byte(Sql2WordUtil.getCacheDir()+fileName)));
+		request.setAttribute("bgdImage", Sql2WordUtil.getCacheDir2()+fileName);
 		return "qmtphc";
 	}
 	
@@ -42,16 +62,24 @@ public class PhotoComposeController {
 //		if(bps == null) {
 //			bps = convertBaseParam2Map();
 //		}
+		Iterator it = param.keySet().iterator();
+		while(it.hasNext()){
+		    String paramName = (String) it.next();
+		    String paramValue = URLDecoder.decode(param.get(paramName).toString());
+		    param.put(paramName, paramValue);
+		}
+		System.out.println(param);
+		
 		byte[] zp = Base64.decode(param.get("base64Img").toString());
 		param.put("qmzp",new ByteArrayInputStream(zp));
 		String templateName = param.get("mbmc").toString();//"注册申请表";
 		String template = templateName+".doc";
 		com.aspose.words.Document doc = Sql2WordUtil.map2WordUtil2(template, param);
-		String fileName = templateName+"_"+param.get("clsbdh")+".jpg";
+		String fileName = UUID.randomUUID().toString()+".jpg";
 		Sql2WordUtil.toCase(doc, "", fileName);
-		System.out.println("(((((((((((((((((((((((((((("+Sql2WordUtil.getCacheDir()+fileName);
-		byte[] imgByte = image2byte(Sql2WordUtil.getCacheDir()+fileName);
-		return ResultHandler.toMyJSON(Constant.ConstantState.STATE_SUCCESS, "生成图片成功！", fileName);	
+		System.out.println("(((((((((((((((((((((((((((("+Sql2WordUtil.getCacheDir2()+fileName);
+		byte[] imgByte = image2byte(Sql2WordUtil.getCacheDir2()+fileName);
+		return ResultHandler.toMyJSON(Constant.ConstantState.STATE_SUCCESS, "生成图片成功！", Sql2WordUtil.getCacheDir2()+fileName);	
 	}
 	
 	//图片到byte数组
