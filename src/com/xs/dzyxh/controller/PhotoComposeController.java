@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.net.URLDecoder;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -85,6 +86,17 @@ public class PhotoComposeController {
 			    param.put(paramName, paramValue);
 		    }		    
 		}
+		
+		Calendar calendar = Calendar.getInstance();//日历对象
+		String yearStr = calendar.get(Calendar.YEAR)+"";//获取年份
+        int month = calendar.get(Calendar.MONTH) + 1;//获取月份
+        String monthStr = month < 10 ? "0" + month : month + "";
+        int day = calendar.get(Calendar.DATE);//获取日
+        String dayStr = day < 10 ? "0" + day : day + "";
+
+        param.put("currYear", yearStr);
+        param.put("currMonth", monthStr);
+        param.put("currDate", dayStr);
 		
 		byte[] zp = Base64Utils.decodeFromString(param.get("base64Img").toString());//Base64.decode(param.get("base64Img").toString());
 		param.put("qmzp",new ByteArrayInputStream(zp));
