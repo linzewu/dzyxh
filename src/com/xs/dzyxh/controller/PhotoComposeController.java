@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
@@ -60,7 +61,9 @@ public class PhotoComposeController {
 		    String paramValue = URLDecoder.decode(param.get(paramName).toString(),"UTF-8");
 		    param.put(paramName, paramValue);
 		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
 		
+        param.put("currDate", sdf.format(new Date()));
 		String templateName = param.get("tempName").toString();//"注册申请表";
 		String template = templateName+".doc";
 		com.aspose.words.Document doc = Sql2WordUtil.map2WordUtil2(template, param);
@@ -86,17 +89,9 @@ public class PhotoComposeController {
 			    param.put(paramName, paramValue);
 		    }		    
 		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
 		
-		Calendar calendar = Calendar.getInstance();//日历对象
-		String yearStr = calendar.get(Calendar.YEAR)+"";//获取年份
-        int month = calendar.get(Calendar.MONTH) + 1;//获取月份
-        String monthStr = month < 10 ? "0" + month : month + "";
-        int day = calendar.get(Calendar.DATE);//获取日
-        String dayStr = day < 10 ? "0" + day : day + "";
-
-        param.put("currYear", yearStr);
-        param.put("currMonth", monthStr);
-        param.put("currDate", dayStr);
+        param.put("currDate", sdf.format(new Date()));
 		
 		byte[] zp = Base64Utils.decodeFromString(param.get("base64Img").toString());//Base64.decode(param.get("base64Img").toString());
 		param.put("qmzp",new ByteArrayInputStream(zp));
@@ -110,14 +105,15 @@ public class PhotoComposeController {
 		
 		
 		VehImg vehimg = new VehImg();
-		vehimg.setHphm(param.get("hphm").toString());
-		vehimg.setHpzl(param.get("hpzl_bm").toString());
-		vehimg.setLsh(param.get("lsh").toString());
-		vehimg.setYwlx(param.get("ywlx_bm").toString());
+		
 		vehimg.setZplx("123");
 		if(!CollectionUtils.isEmpty(flowList)) {
 			Map<String,Object> map = flowList.get(0);
-			vehimg.setLsh(map.get("lsh").toString());
+			vehimg.setLsh(map.get("LSH").toString());
+			vehimg.setHphm(map.get("HPHM").toString());
+			vehimg.setHpzl(map.get("HPZL").toString());
+			vehimg.setClsbdh(map.get("CLSBDH").toString());
+			vehimg.setYwlx(map.get("YWLX").toString());
 		}
 		
 		this.vehImgManager.updateVehImgZpztOfzplx(vehimg.getLsh(), vehimg.getZplx());
